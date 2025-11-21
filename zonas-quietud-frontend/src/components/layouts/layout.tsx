@@ -86,9 +86,9 @@ export default function Layout() {
             </div>
 
             <nav className="nav-links" aria-label="Menú principal">
-              <a href="#" className="nav-link">Inicio</a>
+              <a href="/" className="nav-link">Inicio</a>
 
-              <a href="/app/mapa" className="nav-link nav-link-map" aria-label="Explorar mapa">
+              <a href="/mapa" className="nav-link nav-link-map" aria-label="Explorar mapa">
                 <Map size={16} aria-hidden={true} />
                 <span style={{ color: 'var(--principal)' }}>Explorar Mapa</span>
               </a>
@@ -116,7 +116,7 @@ export default function Layout() {
             </button>
 
             <button className="icon-bell" title="Notificaciones" aria-label="Notificaciones" aria-live="polite">
-              <Bell style={{ color: 'var(--principal)' }}  size={18} className="bell-icon" aria-hidden={true} />
+              <Bell style={{ color: 'var(--principal)' }} size={18} className="bell-icon" aria-hidden={true} />
               <span className="badge" aria-hidden={true}>3</span>
             </button>
 
@@ -132,45 +132,45 @@ export default function Layout() {
           </div>
         </header>
 
-          {/* Mobile drawer (slide from left) */}
-          <div className={`mobile-backdrop ${mobileOpen ? 'open' : ''}`} onClick={() => setMobileOpen(false)} />
-          <aside className={`mobile-drawer ${mobileOpen ? 'open' : ''}`} aria-hidden={!mobileOpen}>
-            <div className="drawer-header">
-              <div className="brand-drawer">
-                <MapPin style={{ color: 'var(--principal)' }} />
-                <span className="brand-text">Zonas de Quietud</span>
-              </div>
-              <button className="drawer-close" aria-label="Cerrar" onClick={() => setMobileOpen(false)}>
-                <X size={20} />
-              </button>
+        {/* Mobile drawer (slide from left) */}
+        <div className={`mobile-backdrop ${mobileOpen ? 'open' : ''}`} onClick={() => setMobileOpen(false)} />
+        <aside className={`mobile-drawer ${mobileOpen ? 'open' : ''}`} aria-hidden={!mobileOpen}>
+          <div className="drawer-header">
+            <div className="brand-drawer">
+              <MapPin style={{ color: 'var(--principal)' }} />
+              <span className="brand-text">Zonas de Quietud</span>
             </div>
+            <button className="drawer-close" aria-label="Cerrar" onClick={() => setMobileOpen(false)}>
+              <X size={20} />
+            </button>
+          </div>
 
-            <div className="drawer-search">
-              <Search size={18} />
-              <input placeholder="Buscar..." aria-label="Buscar" />
-            </div>
+          <div className="drawer-search">
+            <Search size={18} />
+            <input placeholder="Buscar..." aria-label="Buscar" />
+          </div>
 
-            <nav className="drawer-nav">
-              <a href="#" onClick={() => setMobileOpen(false)}><Search size={16} /> <span>Buscar</span></a>
-                <a href="/app/mapa" onClick={() => setMobileOpen(false)}><MapPin size={16} /> <span>Explorar Mapa</span></a>
-                <a href="#" onClick={() => setMobileOpen(false)}><Map size={16} /> <span>Distritos</span> <ChevronDown size={14} className="chev" /></a>
-              <a href="#" onClick={() => setMobileOpen(false)}><Info size={16} /> <span>Cómo Funciona</span></a>
-              <a href="#" onClick={() => setMobileOpen(false)}><Calendar size={16} /> <span>Planes</span></a>
-            </nav>
+          <nav className="drawer-nav">
+            <a href="#" onClick={() => setMobileOpen(false)}><Search size={16} /> <span>Buscar</span></a>
+            <a href="/mapa" onClick={() => setMobileOpen(false)}><MapPin size={16} /> <span>Explorar Mapa</span></a>
+            <a href="#" onClick={() => setMobileOpen(false)}><Map size={16} /> <span>Distritos</span> <ChevronDown size={14} className="chev" /></a>
+            <a href="#" onClick={() => setMobileOpen(false)}><Info size={16} /> <span>Cómo Funciona</span></a>
+            <a href="#" onClick={() => setMobileOpen(false)}><Calendar size={16} /> <span>Planes</span></a>
+          </nav>
 
-            <div className="drawer-note">Usa el botón flotante "+" para contribuir</div>
+          <div className="drawer-note">Usa el botón flotante "+" para contribuir</div>
 
-            <nav className="drawer-account">
-              <a href="#" onClick={() => setMobileOpen(false)}><LayoutIcon size={16} /> <span>Mi Dashboard</span></a>
-              <a href="#" onClick={() => setMobileOpen(false)}><Star size={16} /> <span>Mis Calificaciones</span></a>
-              <a href="#" onClick={() => setMobileOpen(false)}><Users size={16} /> <span>Mis Zonas de Interés</span></a>
-              <a href="#" onClick={() => setMobileOpen(false)}><Settings size={16} /> <span>Configuración</span></a>
-              <a href="#" onClick={() => setMobileOpen(false)}><Info size={16} /> <span>Ayuda</span></a>
-              <a href="#" className="logout" onClick={() => setMobileOpen(false)}><LogOut size={16} /> <span>Cerrar Sesión</span></a>
-            </nav>
-          </aside>
+          <nav className="drawer-account">
+            <a href="#" onClick={() => setMobileOpen(false)}><LayoutIcon size={16} /> <span>Mi Dashboard</span></a>
+            <a href="#" onClick={() => setMobileOpen(false)}><Star size={16} /> <span>Mis Calificaciones</span></a>
+            <a href="#" onClick={() => setMobileOpen(false)}><Users size={16} /> <span>Mis Zonas de Interés</span></a>
+            <a href="#" onClick={() => setMobileOpen(false)}><Settings size={16} /> <span>Configuración</span></a>
+            <a href="#" onClick={() => setMobileOpen(false)}><Info size={16} /> <span>Ayuda</span></a>
+            <a href="#" className="logout" onClick={() => setMobileOpen(false)}><LogOut size={16} /> <span>Cerrar Sesión</span></a>
+          </nav>
+        </aside>
 
-          <div className="filter-bar" role="region" aria-label="Explorar por">
+        <div className="filter-bar" role="region" aria-label="Explorar por">
           <div className="filter-left">
             <div className="filter-label">Explorar por:</div>
 
@@ -215,11 +215,9 @@ export default function Layout() {
         </div>
       </div>
 
-      {typeof window !== 'undefined' && (window.location.pathname === '/' || window.location.pathname === '') ? (
-        <HomePage />
-      ) : (
+      <main>
         <Outlet />
-      )}
+      </main>
 
       <footer className="site-footer" role="contentinfo">
         <div className="footer-inner">
@@ -233,8 +231,8 @@ export default function Layout() {
 
           <div className="footer-col">
             <nav className="footer-nav" aria-label="Enlaces de pie de página">
-              <a href="#">Inicio</a>
-              <a href="#">Explorar Mapa</a>
+              <a href="/">Inicio</a>
+              <a href="/mapa">Explorar Mapa</a>
               <a href="#">Recursos</a>
               <a href="#">Comunidad</a>
               <a href="#">Planes</a>
@@ -251,7 +249,7 @@ export default function Layout() {
           <span>© {new Date().getFullYear()} Zonas de Quietud. Todos los derechos reservados.</span>
         </div>
       </footer>
-      
+
     </div>
   )
 }
