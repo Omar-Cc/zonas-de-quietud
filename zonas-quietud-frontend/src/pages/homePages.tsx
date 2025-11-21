@@ -1,9 +1,10 @@
-import { MapPin, Search, LogOut, Layout, Calendar, Map, Star, CheckCircle } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { MapPin, Search, Map, Star, CheckCircle } from 'lucide-react'
 function HomePage() {
   return (
-    <div className="hero" role="main">
+    <main className="hero">
       
-      <main className="hero-inner">
+  <div className="hero-inner">
         <h1 className="title">Encuentra tu Lugar Ideal en <span className="accent">Lima</span></h1>
         <p className="subtitle">Una plataforma colaborativa para evaluar la calidad de vida en espacios urbanos</p>
 
@@ -13,8 +14,8 @@ function HomePage() {
           <button className="search-button" aria-label="Buscar"><Search size={16} /></button>
         </div>
 
-        <button className="cta">Explorar el Mapa</button>
-      </main>
+        <Button size={"lg"} className='mt-20'>Explorar el Mapa</Button>
+      </div>
 
       {/* Características clave */}
       <section className="features" aria-labelledby="features-title">
@@ -25,7 +26,7 @@ function HomePage() {
           <div className="feature-grid">
             <article className="feature-card">
               <div className="feature-icon" aria-hidden>
-                <Map style={{ color: 'var(--principal)' }} />
+                <Map className="text-(--principal)" />
               </div>
               <h3>Mapas Interactivos</h3>
               <p className="feature-desc">Visualiza datos de calidad de vida con mapas de calor intuitivos</p>
@@ -36,7 +37,7 @@ function HomePage() {
 
             <article className="feature-card">
               <div className="feature-icon" aria-hidden>
-                <Star style={{ color: 'var(--principal)' }} />
+                <Star className="text-(--principal)" />
               </div>
               <h3>Calificación Ciudadana</h3>
               <p className="feature-desc">Evaluaciones reales de residentes sobre su vecindario</p>
@@ -47,7 +48,7 @@ function HomePage() {
 
             <article className="feature-card">
               <div className="feature-icon" aria-hidden>
-                <Map style={{ color: 'var(--principal)' }} />
+                <Map className="text-(--principal)" />
               </div>
               <h3>Decisiones Informadas</h3>
               <p className="feature-desc">Análisis detallados para elegir tu próximo hogar</p>
@@ -66,33 +67,33 @@ function HomePage() {
           <p className="features-sub">Tres pasos simples para comenzar</p>
 
           <div className="feature-grid">
-            <article className="feature-card" style={{ border: '1px solid var(--principal)', position: 'relative' }}>
-              <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-                <div style={{ width: 44, height: 44, borderRadius: 22, background: 'var(--principal)', color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>1</div>
-                <div className="feature-icon" aria-hidden style={{ background: 'rgba(8,160,156,0.06)' }}>
-                  <Map />
+            <article className="feature-card relative" style={{ borderColor: 'var(--principal)' }}>
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-full bg-(--principal) text-white inline-flex items-center justify-center font-bold">1</div>
+                <div className="feature-icon bg-[rgba(8,160,156,0.06)]" aria-hidden>
+                  <Map className="text-(--principal)" />
                 </div>
               </div>
               <h3>Busca una Calle</h3>
               <p className="feature-desc">Ingresa la dirección que quieres evaluar en Lima y descubre información detallada</p>
             </article>
 
-            <article className="feature-card" style={{ border: '1px solid rgba(8,160,156,0.06)', position: 'relative' }}>
-              <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-                <div style={{ width: 44, height: 44, borderRadius: 22, background: 'var(--principal)', color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>2</div>
-                <div className="feature-icon" aria-hidden style={{ background: 'rgba(8,160,156,0.06)' }}>
-                  <MapPin />
+            <article className="feature-card relative">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-full bg-(--principal) text-white inline-flex items-center justify-center font-bold">2</div>
+                <div className="feature-icon bg-[rgba(8,160,156,0.06)]" aria-hidden>
+                  <MapPin className="text-(--principal)" />
                 </div>
               </div>
               <h3>Explora los Datos</h3>
               <p className="feature-desc">Revisa calificaciones, mapas de calor y opiniones de la comunidad</p>
             </article>
 
-            <article className="feature-card" style={{ border: '1px solid var(--verdeBoton)', position: 'relative' }}>
-              <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-                <div style={{ width: 44, height: 44, borderRadius: 22, background: 'var(--verdeBoton)', color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 }}>3</div>
-                <div className="feature-icon" aria-hidden style={{ background: 'rgba(76,175,80,0.06)' }}>
-                  <Star />
+            <article className="feature-card relative" style={{ borderColor: 'var(--verdeBoton)' }}>
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-full bg-(--verdeBoton) text-white inline-flex items-center justify-center font-bold">3</div>
+                <div className="feature-icon bg-[rgba(76,175,80,0.06)]" aria-hidden>
+                  <Star className="text-(--principal)" />
                 </div>
               </div>
               <h3>Aporta tu Calificación</h3>
@@ -106,7 +107,7 @@ function HomePage() {
       <section className="cta-hero" aria-labelledby="cta-title">
         <div className="cta-inner">
           <div className="cta-icon" aria-hidden>
-            <CheckCircle size={48} style={{ color: 'white' }} />
+            <CheckCircle size={48} className="text-white" />
           </div>
           <h2 id="cta-title">Listo para Descubrir tu Próximo Hogar</h2>
           <p className="cta-sub">Únete a miles de limeños que ya están tomando decisiones informadas sobre dónde vivir</p>
@@ -133,7 +134,7 @@ function HomePage() {
         </div>
       </section>
       
-    </div>
+  </main>
   )
 }
 export default HomePage

@@ -20,11 +20,15 @@ import {
   Settings,
   Layout as LayoutIcon,
   Sparkle,
+  HelpCircle,
+  Video,
+  BarChart2,
 } from 'lucide-react'
 
 export default function Layout() {
   const [showTopBar, setShowTopBar] = useState(true)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [resourcesOpen, setResourcesOpen] = useState(false)
   const onCloseTopBar = () => setShowTopBar(false)
   const toggleMobile = () => setMobileOpen((s) => !s)
 
@@ -82,7 +86,7 @@ export default function Layout() {
 
             <div className="brand">
               <MapPin style={{ color: 'var(--principal)' }} />
-              <span className="brand-text">Zonas de Quietud</span>
+              <a href="/" className="brand-text">Zonas de Quietud</a>
             </div>
 
             <nav className="nav-links" aria-label="Menú principal">
@@ -93,15 +97,76 @@ export default function Layout() {
                 <span style={{ color: 'var(--principal)' }}>Explorar Mapa</span>
               </a>
 
-              <a href="#" className="nav-link has-chevron" aria-haspopup="true" aria-expanded={false}>
-                <span>Recursos</span>
-                <ChevronDown size={12} aria-hidden={true} />
-              </a>
+              {/* Recursos dropdown */}
+              <div
+                className="relative"
+                onMouseEnter={() => setResourcesOpen(true)}
+                onMouseLeave={() => setResourcesOpen(false)}
+              >
+                <button
+                  className="nav-link has-chevron flex items-center gap-1"
+                  aria-haspopup="true"
+                  aria-expanded={resourcesOpen}
+                  onClick={() => setResourcesOpen((s) => !s)}
+                >
+                  <span>Recursos</span>
+                  <ChevronDown size={12} aria-hidden={true} />
+                </button>
+
+                {/* Dropdown panel */}
+                {resourcesOpen && (
+                  <div className="absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg ring-1 ring-black/5 z-40">
+                    <ul className="divide-y divide-[rgba(0,0,0,0.06)]">
+                      <li>
+                        <a href="#" className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50">
+                          <Info size={16} style={{ color: 'var(--principal)' }} />
+                          <span>Cómo Funciona</span>
+                        </a>
+                      </li>
+
+                      <li>
+                        <a href="#" className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50">
+                          <HelpCircle size={16} style={{ color: 'var(--principal)' }} />
+                          <span>Centro de Ayuda</span>
+                        </a>
+                      </li>
+
+                      <li>
+                        <a href="/faq" className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50">
+                          <HelpCircle size={16} style={{ color: 'var(--principal)' }} />
+                          <span>FAQ</span>
+                        </a>
+                      </li>
+
+                      <li>
+                        <a href="#" className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50">
+                          <Sparkle size={16} style={{ color: 'var(--principal)' }} />
+                          <span>Guía de Calificación</span>
+                        </a>
+                      </li>
+
+                      <li>
+                        <a href="#" className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50">
+                          <Video size={16} style={{ color: 'var(--principal)' }} />
+                          <span>Video Tutoriales</span>
+                        </a>
+                      </li>
+
+                      <li>
+                        <a href="#" className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50">
+                          <BarChart2 size={16} style={{ color: 'var(--principal)' }} />
+                          <span>Estadísticas</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
               <a href="#" className="nav-link has-chevron" aria-haspopup="true" aria-expanded={false}>
                 <span>Comunidad</span>
                 <ChevronDown size={12} aria-hidden={true} />
               </a>
-              <a href="#" className="nav-link">Planes</a>
+              <a href="/planes" className="nav-link">Planes</a>
             </nav>
           </div>
 
