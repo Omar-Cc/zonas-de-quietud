@@ -1,0 +1,17 @@
+{
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#4B2212",
+    "titleBar.activeBackground": "#683019",
+    "titleBar.activeForeground": "#FDF9F7"
+  },
+  "java.compile.nullAnalysis.mode": "automatic",
+  "files.readonlyInclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "files.watcherExclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "search.exclude": {
+    "**/routeTree.gen.ts": true
+  }
+}
