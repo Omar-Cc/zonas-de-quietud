@@ -25,9 +25,10 @@ import {
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { TopBar } from "./topBar";
 import { MainNavbar } from "./mainNavbar";
-import { SearchBar } from "./SearchBar";
-import { SearchDialog } from "./SearchDialog";
-import { QuickAccessBar } from "./QuickAccessBar"; */
+import { SearchBar } from "./searchBar";
+import { SearchDialog } from "./searchDialog";
+import { QuickAccessBar } from "./quickAccessBar";
+import { ContributionDialog } from "@/components/contributionDialog";
 
 interface NavbarProps {
 	isAuthenticated?: boolean;

@@ -37,7 +37,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-/* import { ContributionDialog } from "./ContributionDialog"; */
+import { ContributionDialog } from "../../contributionDialog";
 
 interface MainNavbarProps {
 	isAuthenticated?: boolean;
@@ -211,9 +211,7 @@ export function MainNavbar({
 						<span className="text-sm hidden xl:inline" style={{ color: '#6c757d' }}>
 							Buscar
 						</span>
-						<kbd className="hidden xl:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 text-[10px] opacity-70">
-							<span className="text-xs">⌘</span>K
-						</kbd>
+
 					</Button>
 
 					{isAuthenticated ? (

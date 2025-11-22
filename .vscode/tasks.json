@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "build",
+			"path": "zonas-quietud-frontend",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: build - zonas-quietud-frontend",
+			"detail": "tsc -b && vite build"
+		}
+	]
+}
