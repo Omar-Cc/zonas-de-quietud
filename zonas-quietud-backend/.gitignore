@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+serviceAccountKey.json
+keys/
+
+.env
+!.env.example
