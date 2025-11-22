@@ -1,230 +1,441 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from "react";
+import { Menu, ZoomIn, ZoomOut, Layers, Navigation, Search, Star, AlertTriangle } from "lucide-react";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { FilterSidebar } from "../components/filterSidebar";
+import { MapLegend } from "../components/mapLegend";
+import { StreetPopup } from "../components/streetPopup";
+import { RatingForm } from "../components/ratingForm";
+import { IncidentReportForm } from "../components/incidentReportForm";
+import { Navbar } from "../components/layouts/navbar/navbar";
 
-const districts = ['Miraflores', 'San Isidro', 'Barranco', 'Surco', 'La Molina', 'San Borja']
-
-function LeftSidebar({
-  filters,
-  setFilters,
-  onApply,
-  onReset,
-}: {
-  filters: any
-  setFilters: (f: any) => void
-  onApply: () => void
-  onReset: () => void
-}) {
-  return (
-    <aside className="w-80">
-      <div className="p-5">
-        <h3 className="flex items-center gap-2 m-0">
-          <span className="text-[var(--principal)] text-[18px]">🔎</span>
-          <span className="font-bold">Filtros</span>
-        </h3>
-
-        <section className="mt-4 bg-white rounded-lg p-3.5 shadow-lg">
-          <strong className="block mb-2.5">Distritos</strong>
-          <div className="flex flex-col gap-2.5">
-            {districts.map((d) => (
-              <label key={d} className="flex justify-between items-center">
-                <span className="font-semibold">{d}</span>
-                <input
-                  type="checkbox"
-                  checked={filters.districts.includes(d)}
-                  onChange={() =>
-                    setFilters({
-                      ...filters,
-                      districts: filters.districts.includes(d) ? filters.districts.filter((x: string) => x !== d) : [...filters.districts, d],
-                    })
-                  }
-                />
-              </label>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-4 bg-white rounded-lg p-3.5 shadow-md">
-          <strong className="block mb-2.5">Seguridad</strong>
-          <div className="flex gap-3 items-center">
-            <input
-              type="range"
-              min={0}
-              max={100}
-              value={filters.seguridad}
-              onChange={(e) => setFilters({ ...filters, seguridad: Number(e.target.value) })}
-              className="flex-1"
-            />
-            <span className="w-9 text-right text-[var(--muted)] font-bold">{filters.seguridad}%</span>
-          </div>
-        </section>
-
-        <section className="mt-3 bg-white rounded-lg p-3.5 shadow-md">
-          <strong className="block mb-2.5">Nivel de Ruido</strong>
-          <div className="flex gap-3 items-center">
-            <input
-              type="range"
-              min={0}
-              max={100}
-              value={filters.ruido}
-              onChange={(e) => setFilters({ ...filters, ruido: Number(e.target.value) })}
-              className="flex-1"
-            />
-            <span className="w-9 text-right text-[var(--muted)] font-bold">{filters.ruido}%</span>
-          </div>
-        </section>
-
-        <section className="mt-3 bg-white rounded-lg p-3.5 shadow-md">
-          <strong className="block mb-2.5">Calidad del Aire</strong>
-          <div className="flex gap-3 items-center">
-            <input
-              type="range"
-              min={0}
-              max={100}
-              value={filters.aire}
-              onChange={(e) => setFilters({ ...filters, aire: Number(e.target.value) })}
-              className="flex-1"
-            />
-            <span className="w-9 text-right text-[var(--muted)] font-bold">{filters.aire}%</span>
-          </div>
-        </section>
-
-        <section className="mt-4 flex gap-2.5">
-          <button className="btn contrib flex-1" onClick={onApply}>
-            Aplicar Filtros
-          </button>
-          <button className="flex-1 rounded-[10px] px-3 py-2 border border-[rgba(0,0,0,0.08)] bg-white" onClick={onReset}>
-            Restablecer
-          </button>
-        </section>
-      </div>
-    </aside>
-  )
-}
-
-function TopCards() {
-  return (
-    <div className="absolute left-1/2 -translate-x-1/2 top-4 flex gap-3 z-10">
-      <div className="bg-white px-4 py-3 rounded-lg shadow-lg flex gap-6">
-        <div className="text-center">
-          <div className="text-xs text-[var(--muted)]">Calles</div>
-          <div className="font-extrabold">142</div>
-        </div>
-        <div className="text-center">
-          <div className="text-xs text-[var(--muted)]">Evaluaciones</div>
-          <div className="font-extrabold">3,421</div>
-        </div>
-        <div className="text-center">
-          <div className="text-xs text-[var(--muted)]">Promedio</div>
-          <div className="font-extrabold">7.2</div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function Legend() {
-  const items = [
-    { label: 'Excelente', color: '#0bb27f', range: '8.0 - 10.0' },
-    { label: 'Bueno', color: '#7dd56b', range: '6.0 - 7.9' },
-    { label: 'Regular', color: '#f1c40f', range: '4.0 - 5.9' },
-    { label: 'Malo', color: '#ff8a00', range: '2.0 - 3.9' },
-    { label: 'Crítico', color: '#ff4d4d', range: '0.0 - 1.9' },
-  ]
-
-  return (
-    <aside className="absolute right-5 top-1/2 -translate-y-1/2 z-10">
-      <div className="w-40 bg-white rounded-xl p-3.5 shadow-xl">
-        <strong className="block mb-2.5">Calidad de Vida</strong>
-        <div className="flex flex-col gap-2.5">
-          {items.map((it) => (
-            <div key={it.label} className="flex gap-2.5 items-center">
-              <div className="w-3 h-3 rounded-full" style={{ background: it.color }} />
-              <div className="flex-1">
-                <div className="font-bold">{it.label}</div>
-                <div className="text-xs text-[var(--muted)]">{it.range}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </aside>
-  )
-}
-
-function MapCanvas() {
-  return (
-    <div className="flex-1 flex items-center justify-center">
-      <div className="w-4/5 h-[520px] bg-[#f3f4f6] rounded-md relative flex items-center justify-center">
-        <svg width="90%" height="80%" viewBox="0 0 900 520" preserveAspectRatio="xMidYMid meet">
-          {/* vertical streets */}
-          <line x1="140" y1="40" x2="140" y2="480" stroke="#7dd56b" strokeWidth={14} strokeLinecap="round" />
-          <line x1="320" y1="20" x2="320" y2="500" stroke="#f1c40f" strokeWidth={14} strokeLinecap="round" />
-          <line x1="560" y1="0" x2="560" y2="520" stroke="#f1c40f" strokeWidth={14} strokeLinecap="round" />
-          <line x1="760" y1="10" x2="760" y2="510" stroke="#ff8a00" strokeWidth={14} strokeLinecap="round" />
-
-          {/* horizontal streets */}
-          <line x1="40" y1="120" x2="860" y2="120" stroke="#00b894" strokeWidth={14} strokeLinecap="round" />
-          <line x1="40" y1="200" x2="860" y2="200" stroke="#ff4d4d" strokeWidth={14} strokeLinecap="round" />
-          <line x1="40" y1="280" x2="860" y2="280" stroke="#7dd56b" strokeWidth={14} strokeLinecap="round" />
-          <line x1="40" y1="360" x2="860" y2="360" stroke="#7dd56b" strokeWidth={14} strokeLinecap="round" />
-
-          {/* diagonal streets */}
-          <line x1="360" y1="480" x2="520" y2="40" stroke="#ff8a00" strokeWidth={14} strokeLinecap="round" />
-          <line x1="410" y1="40" x2="550" y2="480" stroke="#00b894" strokeWidth={18} strokeLinecap="round" />
-          <line x1="220" y1="420" x2="620" y2="120" stroke="#ff8a00" strokeWidth={12} strokeLinecap="round" />
-
-          {/* labels (simple) */}
-          <text x="150" y="110" fontSize={14} fill="#082" fontWeight={700}>Av. Pardo</text>
-          <text x="540" y="100" fontSize={14} fill="#082" fontWeight={700}>Av. Arequipa</text>
-          <text x="360" y="190" fontSize={14} fill="#082" fontWeight={700}>Av. Benavides</text>
-
-          {/* blue points */}
-          <circle cx="520" cy="140" r="8" fill="#3b82f6" />
-          <circle cx="700" cy="220" r="8" fill="#3b82f6" />
-          <circle cx="470" cy="300" r="8" fill="#3b82f6" />
-        </svg>
-      </div>
-    </div>
-  )
-}
+// Mock street data
+const streets = [
+  {
+    id: 1,
+    name: "Av. Arequipa",
+    district: "Miraflores",
+    path: "M 100 200 L 700 200",
+    overallScore: 8.5,
+    security: 8.2,
+    noise: 5.5,
+    airQuality: 7.8,
+    reviews: 245,
+    color: "#22c55e",
+  },
+  {
+    id: 2,
+    name: "Av. Pardo",
+    district: "Miraflores",
+    path: "M 200 100 L 200 500",
+    overallScore: 7.8,
+    security: 8.5,
+    noise: 6.2,
+    airQuality: 7.5,
+    reviews: 189,
+    color: "#84cc16",
+  },
+  {
+    id: 3,
+    name: "Calle Berlin",
+    district: "Miraflores",
+    path: "M 150 300 L 650 300",
+    overallScore: 6.5,
+    security: 7.0,
+    noise: 5.8,
+    airQuality: 6.8,
+    reviews: 134,
+    color: "#84cc16",
+  },
+  {
+    id: 4,
+    name: "Av. Benavides",
+    district: "Miraflores",
+    path: "M 400 100 L 400 500",
+    overallScore: 5.2,
+    security: 5.5,
+    noise: 4.2,
+    airQuality: 5.8,
+    reviews: 201,
+    color: "#eab308",
+  },
+  {
+    id: 5,
+    name: "Calle Schell",
+    district: "Miraflores",
+    path: "M 100 400 L 700 400",
+    overallScore: 7.2,
+    security: 7.8,
+    noise: 6.5,
+    airQuality: 7.0,
+    reviews: 167,
+    color: "#84cc16",
+  },
+  {
+    id: 6,
+    name: "Av. Angamos",
+    district: "Miraflores",
+    path: "M 600 100 L 600 500",
+    overallScore: 4.5,
+    security: 4.8,
+    noise: 3.5,
+    airQuality: 5.2,
+    reviews: 298,
+    color: "#eab308",
+  },
+  {
+    id: 7,
+    name: "Calle Tacna",
+    district: "Miraflores",
+    path: "M 250 150 L 550 450",
+    overallScore: 3.8,
+    security: 4.2,
+    noise: 3.0,
+    airQuality: 4.2,
+    reviews: 112,
+    color: "#f97316",
+  },
+  {
+    id: 8,
+    name: "Jr. Colina",
+    district: "Miraflores",
+    path: "M 350 120 L 450 480",
+    overallScore: 8.8,
+    security: 9.0,
+    noise: 8.5,
+    airQuality: 8.8,
+    reviews: 423,
+    color: "#22c55e",
+  },
+  {
+    id: 9,
+    name: "Av. Larco",
+    district: "Miraflores",
+    path: "M 500 130 L 580 470",
+    overallScore: 2.5,
+    security: 3.0,
+    noise: 1.8,
+    airQuality: 2.8,
+    reviews: 534,
+    color: "#f97316",
+  },
+  {
+    id: 10,
+    name: "Calle Porta",
+    district: "Miraflores",
+    path: "M 120 250 L 680 250",
+    overallScore: 1.5,
+    security: 2.0,
+    noise: 1.2,
+    airQuality: 1.3,
+    reviews: 421,
+    color: "#ef4444",
+  },
+];
 
 export default function MapaPage() {
-  const [filters, setFilters] = useState({ districts: ['Miraflores'], seguridad: 70, ruido: 50, aire: 60 })
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [selectedStreet, setSelectedStreet] = useState<typeof streets[0] | null>(null);
+  const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
+  const [hoveredStreet, setHoveredStreet] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isRatingFormOpen, setIsRatingFormOpen] = useState(false);
+  const [streetToRate, setStreetToRate] = useState<{ name: string; district: string } | null>(null);
+  const [isIncidentFormOpen, setIsIncidentFormOpen] = useState(false);
+  // Zoom & pan state for simple interactions
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [showLayers, setShowLayers] = useState(true);
 
-  function apply() {
-    // placeholder: aquí podríamos aplicar filtros reales
-    console.log('Aplicar filtros', filters)
-  }
+  const svgContainerRef = useRef<HTMLDivElement | null>(null);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
 
-  function reset() {
-    setFilters({ districts: [], seguridad: 70, ruido: 50, aire: 60 })
-  }
+  const handleStreetClick = (street: typeof streets[0], event: React.MouseEvent) => {
+    const rect = (event.target as SVGElement).getBoundingClientRect();
+    setPopupPosition({
+      x: rect.left + rect.width / 2,
+      y: rect.top,
+    });
+    setSelectedStreet(street);
+  };
 
+  // Controls: zoom, layers, center
+  const zoomIn = () => setZoom((z) => Math.min(2, +(z + 0.1).toFixed(2)));
+  const zoomOut = () => setZoom((z) => Math.max(0.5, +(z - 0.1).toFixed(2)));
+  const toggleLayers = () => setShowLayers((s) => !s);
+  const centerMap = () => setPan({ x: 0, y: 0 });
+  const focusSearch = () => {
+    if (searchInputRef.current) searchInputRef.current.focus();
+  };
+
+  // When zoom/ pan changes, update transform on container
+  useEffect(() => {
+    const el = svgContainerRef.current;
+    if (!el) return;
+    el.style.transform = `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`;
+    el.style.transformOrigin = `center center`;
+  }, [zoom, pan]);
+  
   return (
-    <div className="hero bg-transparent">
-      <div className="relative">
-        <div className="filter-bar">
-          <div className="filter-left">
-            <div className="filter-label">Opciones de Vista</div>
-            <div className="filter-items">
-              <label className="filter-item">Mostrar Heat Map <input type="checkbox" defaultChecked className="ml-2" /></label>
-              <label className="filter-item">Mostrar Etiquetas <input type="checkbox" defaultChecked className="ml-2" /></label>
+    <div className="h-screen flex flex-col overflow-hidden bg-gray-100 dark:bg-gray-900">
+      {/* Navbar */}
+      <Navbar isAuthenticated={true} userName="María García" notificationCount={3} />
+
+      <div className="flex flex-1 relative overflow-hidden pt-[140px] lg:pt-[160px]">
+        {/* Filter Sidebar */}
+        <FilterSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+
+        {/* Main Map Area */}
+        <div className="flex-1 relative">
+          {/* Top Controls Bar */}
+          <div className="absolute top-4 left-4 right-4 z-30 flex items-center gap-4">
+            {/* Toggle Sidebar Button */}
+            <Button
+              variant="secondary"
+              size="icon"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="bg-white dark:bg-gray-950 shadow-lg"
+            >
+              <Menu className="w-5 h-5" />
+            </Button>
+
+            {/* Search Bar */}
+            <div className="flex-1 max-w-md">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  placeholder="Buscar calle o dirección..."
+                  className="pl-10 bg-white dark:bg-gray-950 shadow-lg"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </div>
+
+            {/* Quick Action Buttons */}
+            <div className="flex gap-2">
+              <Button
+                className="bg-orange-500 hover:bg-orange-600 shadow-lg"
+                onClick={() => {
+                  setStreetToRate({ name: "Av. Arequipa", district: "Miraflores" });
+                  setIsRatingFormOpen(true);
+                }}
+              >
+                <Star className="w-4 h-4 mr-2" />
+                Calificar
+              </Button>
+              <Button
+                variant="secondary"
+                className="bg-red-600 hover:bg-red-700 text-white shadow-lg"
+                onClick={() => setIsIncidentFormOpen(true)}
+              >
+                <AlertTriangle className="w-4 h-4 mr-2" />
+                Reportar
+              </Button>
             </div>
           </div>
-          <div className="filter-right">
-            <a className="all-cats">Aplicar filtros</a>
+
+          {/* Map Controls - Right Side */}
+          <div className="absolute top-4 right-4 z-30 flex flex-col gap-2">
+            <Button
+              variant="secondary"
+              size="icon"
+              className="bg-white dark:bg-gray-950 shadow-lg"
+              onClick={zoomIn}
+            >
+              <ZoomIn className="w-5 h-5" />
+            </Button>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="bg-white dark:bg-gray-950 shadow-lg"
+              onClick={zoomOut}
+            >
+              <ZoomOut className="w-5 h-5" />
+            </Button>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="bg-white dark:bg-gray-950 shadow-lg"
+              onClick={toggleLayers}
+            >
+              <Layers className="w-5 h-5" />
+            </Button>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="bg-white dark:bg-gray-950 shadow-lg"
+              onClick={centerMap}
+            >
+              <Navigation className="w-5 h-5" />
+            </Button>
           </div>
+
+          {/* Legend - Bottom Right */}
+          <div className="absolute bottom-6 right-6 z-30">
+            <MapLegend />
+          </div>
+
+          {/* Map SVG */}
+          <div className="w-full h-full bg-gray-200 dark:bg-gray-800 relative overflow-hidden">
+            <div
+              ref={svgContainerRef}
+              className="w-full h-full transition-transform duration-200"
+              style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`, transformOrigin: 'center center' }}
+            >
+              <svg
+                viewBox="0 0 800 600"
+                className="w-full h-full"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+              {/* Background Grid */}
+              <defs>
+                <pattern
+                  id="grid"
+                  width="40"
+                  height="40"
+                  patternUnits="userSpaceOnUse"
+                >
+                  <path
+                    d="M 40 0 L 0 0 0 40"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="0.5"
+                    className="text-gray-300 dark:text-gray-700"
+                  />
+                </pattern>
+              </defs>
+              <rect width="800" height="600" fill="url(#grid)" />
+
+              {/* District Background */}
+              <rect
+                x="80"
+                y="80"
+                width="640"
+                height="440"
+                fill="currentColor"
+                className="text-gray-100 dark:text-gray-900"
+                opacity="0.5"
+              />
+
+              {/* Streets */}
+              <g className="streets">
+                {streets.map((street) => (
+                  <g key={street.id}>
+                    {/* Street base (wider, semi-transparent) */}
+                    <path
+                      d={street.path}
+                      stroke="#9ca3af"
+                      strokeWidth="12"
+                      fill="none"
+                      opacity="0.3"
+                    />
+                    {/* Street heatmap color */}
+                    <path
+                      d={street.path}
+                      stroke={street.color}
+                      strokeWidth="8"
+                      fill="none"
+                      className={`cursor-pointer transition-all ${
+                        hoveredStreet === street.id ? "brightness-110" : ""
+                      }`}
+                      style={{
+                        filter: hoveredStreet === street.id ? "drop-shadow(0 0 8px rgba(0,0,0,0.3))" : "none",
+                        strokeWidth: hoveredStreet === street.id ? "10" : "8",
+                      }}
+                      onClick={(e) => handleStreetClick(street, e)}
+                      onMouseEnter={() => setHoveredStreet(street.id)}
+                      onMouseLeave={() => setHoveredStreet(null)}
+                    />
+                  </g>
+                ))}
+              </g>
+
+              {/* Street Labels (conditional) */}
+              <g className="labels">
+                <text x="400" y="210" textAnchor="middle" className="text-foreground" fontSize="10">
+                  Av. Arequipa
+                </text>
+                <text x="210" y="180" textAnchor="middle" className="text-foreground" fontSize="10">
+                  Av. Pardo
+                </text>
+                <text x="360" y="240" textAnchor="middle" className="text-foreground" fontSize="10">
+                  Av. Benavides
+                </text>
+              </g>
+
+              {/* Points of Interest */}
+              <g className="poi">
+                <circle cx="300" cy="250" r="6" fill="#3b82f6" opacity="0.7" />
+                <circle cx="500" cy="300" r="6" fill="#3b82f6" opacity="0.7" />
+                <circle cx="400" cy="350" r="6" fill="#3b82f6" opacity="0.7" />
+              </g>
+            </svg>
+
+            {/* District Label Overlay */}
+            <div className="absolute top-8 left-8 bg-white/90 dark:bg-gray-950/90 backdrop-blur-sm rounded-lg shadow-lg px-4 py-2 border border-border">
+              <p className="text-muted-foreground">Distrito</p>
+              <h2 className="text-foreground">Miraflores</h2>
+            </div>
+
+            {/* Optional layers overlay (toggle) */}
+            {!showLayers && (
+              <div className="absolute inset-0 bg-white/60 dark:bg-black/50 flex items-center justify-center pointer-events-none">
+                <p className="text-sm text-foreground/80">Capas ocultas</p>
+              </div>
+            )}
+
+            {/* Stats Overlay */}
+            <div className="absolute top-8 left-1/2 -translate-x-1/2 bg-white/90 dark:bg-gray-950/90 backdrop-blur-sm rounded-lg shadow-lg px-6 py-3 border border-border flex items-center gap-6">
+              <div className="text-center">
+                <p className="text-muted-foreground">Calles</p>
+                <p className="text-foreground">142</p>
+              </div>
+              <div className="w-px h-8 bg-border" />
+              <div className="text-center">
+                <p className="text-muted-foreground">Evaluaciones</p>
+                <p className="text-foreground">3,421</p>
+              </div>
+              <div className="w-px h-8 bg-border" />
+              <div className="text-center">
+                <p className="text-muted-foreground">Promedio</p>
+                <p className="text-foreground">7.2</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Street Popup */}
+          {selectedStreet && (
+            <StreetPopup
+              street={selectedStreet}
+              position={popupPosition}
+              onClose={() => setSelectedStreet(null)}
+              onRate={(street) => {
+                setStreetToRate({ name: street.name, district: street.district });
+                setIsRatingFormOpen(true);
+              }}
+            />
+          )}
+
+          {/* Rating Form Modal */}
+          <RatingForm
+            isOpen={isRatingFormOpen}
+            onClose={() => {
+              setIsRatingFormOpen(false);
+              setStreetToRate(null);
+            }}
+            streetName={streetToRate?.name}
+            district={streetToRate?.district}
+          />
+
+          {/* Incident Report Form Modal */}
+          <IncidentReportForm
+            isOpen={isIncidentFormOpen}
+            onClose={() => setIsIncidentFormOpen(false)}
+          />
         </div>
       </div>
-
-      <div className="flex gap-[18px] py-[22px] px-[18px]">
-        <LeftSidebar filters={filters} setFilters={setFilters} onApply={apply} onReset={reset} />
-
-        <main className="flex-1 relative">
-          <TopCards />
-          <MapCanvas />
-          <Legend />
-        </main>
-      </div>
     </div>
-  )
+    </div>
+  );
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import {
 	MapPin,
 	Star,
@@ -46,7 +47,7 @@ interface MainNavbarProps {
 	notificationCount?: number;
 	onMenuClick?: () => void;
 	onSearchClick?: () => void;
-	onNavigate?: (page: string) => void;
+
 }
 
 export function MainNavbar({
@@ -56,27 +57,14 @@ export function MainNavbar({
 	notificationCount = 0,
 	onMenuClick,
 	onSearchClick,
-	onNavigate,
 }: MainNavbarProps) {
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [contributionDialogOpen, setContributionDialogOpen] = useState(false);
 	const [contributionDefaultTab, setContributionDefaultTab] = useState<"evaluate" | "report">("evaluate");
 
-	// Mock data para distritos
-	const distritos = [
-		"Miraflores",
-		"San Isidro",
-		"Barranco",
-		"Surco",
-		"La Molina",
-		"San Borja",
-		"Jesús María",
-		"Lince",
-	];
-
 	// Recursos dropdown items
 	const recursosItems = [
-		{ icon: Info, label: "Cómo Funciona", page: "como-funciona" },
+		{ icon: Info, label: "Cómo Funciona", page: "recursosPage" },
 		{ icon: HelpCircle, label: "Centro de Ayuda", page: "ayuda" },
 		{ icon: MessageCircle, label: "FAQ", page: "faq" },
 		{ icon: GraduationCap, label: "Guía de Calificación", page: "guia" },
@@ -120,46 +108,51 @@ export function MainNavbar({
 					</Button>
 
 					{/* Logo */}
-					<button
-						onClick={() => onNavigate?.("home")}
-						className="flex items-center gap-2 hover:opacity-80 transition-opacity bg-transparent border-none cursor-pointer"
+					<Link
+						to="/"
+						className="flex items-center gap-2 hover:opacity-80 transition-opacity"
 					>
 						<MapPin className="w-6 h-6" style={{ color: '#08A09C' }} />
 						<span className="hidden md:block" style={{ color: '#08A09C' }}>Zonas de Quietud</span>
-					</button>
+					</Link>
 
 					{/* Desktop Navigation Links */}
 					<div className="hidden lg:flex items-center gap-1">
-						<Button variant="ghost" onClick={() => onNavigate?.("home")}>
-							Inicio
-						</Button>
+						<Link to="/">
+							<Button variant="ghost">
+								Inicio
+							</Button>
+						</Link>
 
-						<Button variant="ghost" style={{ color: '#08A09C' }} onClick={() => onNavigate?.("map")}>
-							<Map className="w-4 h-4 mr-2" />
-							Explorar Mapa
-						</Button>
+						<Link to="/app/mapa">
+							<Button variant="ghost" style={{ color: '#08A09C' }}>
+								<Map className="w-4 h-4 mr-2" />
+								Explorar Mapa
+							</Button>
+						</Link>
 
 						{/* Recursos Dropdown */}
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>
+
 								<Button variant="ghost">
 									Recursos
 									<ChevronDown className="w-4 h-4 ml-1" />
 								</Button>
+
 							</DropdownMenuTrigger>
 							<DropdownMenuContent align="start" className="w-56">
 								<DropdownMenuLabel>Aprende y Explora</DropdownMenuLabel>
 								<DropdownMenuSeparator />
 								{recursosItems.map((item) => {
 									const Icon = item.icon;
+									const to = `/app/recursos?tab=${encodeURIComponent(item.label)}`;
 									return (
-										<DropdownMenuItem
-											key={item.label}
-											onClick={() => onNavigate?.(item.page)}
-											className="cursor-pointer"
-										>
-											<Icon className="w-4 h-4 mr-2" style={{ color: '#08A09C' }} />
-											{item.label}
+										<DropdownMenuItem key={item.label} asChild>
+											<Link to={to} className="flex items-center gap-2">
+												<Icon className="w-4 h-4 mr-2" style={{ color: '#08A09C' }} />
+												{item.label}
+											</Link>
 										</DropdownMenuItem>
 									);
 								})}
@@ -179,27 +172,26 @@ export function MainNavbar({
 								<DropdownMenuSeparator />
 								{comunidadItems.map((item) => {
 									const Icon = item.icon;
+									const to = `/app/comunidad?tab=${encodeURIComponent(item.label)}`;
 									return (
-										<DropdownMenuItem
-											key={item.label}
-											onClick={() => onNavigate?.(item.page)}
-											className="cursor-pointer"
-										>
-											<Icon className="w-4 h-4 mr-2" style={{ color: '#007BFF' }} />
-											{item.label}
+										<DropdownMenuItem key={item.label} asChild>
+											<Link to={to} className="flex items-center gap-2">
+												<Icon className="w-4 h-4 mr-2" style={{ color: '#007BFF' }} />
+												{item.label}
+											</Link>
 										</DropdownMenuItem>
 									);
 								})}
 							</DropdownMenuContent>
 						</DropdownMenu>
 
-						<Button variant="ghost" onClick={() => onNavigate?.("pricing")}>
-							Planes
-						</Button>
+						<Link to="/app/planes">
+							<Button variant="ghost">
+								Planes
+							</Button>
+						</Link>
 					</div>
 				</div>
-
-				{/* RIGHT SECTION */}
 				<div className="flex items-center gap-2">
 					{/* Search Button (Desktop) */}
 					<Button
@@ -261,6 +253,7 @@ export function MainNavbar({
 
 							{/* Notifications */}
 							<div className="relative">
+								<Link to="/app/notificaciones">
 								<Button variant="ghost" size="icon" className="relative">
 									<Bell className="w-5 h-5" />
 									{notificationCount > 0 && (
@@ -272,6 +265,7 @@ export function MainNavbar({
 										</Badge>
 									)}
 								</Button>
+								</Link>
 							</div>
 
 							{/* User Menu */}
@@ -292,35 +286,49 @@ export function MainNavbar({
 										</div>
 									</DropdownMenuLabel>
 									<DropdownMenuSeparator />
-									<DropdownMenuItem>
-										<LayoutDashboard className="w-4 h-4 mr-2" />
-										Mi Dashboard
+									<DropdownMenuItem asChild>
+										<Link to="/app/miDashboard" className="flex items-center gap-4">
+											<LayoutDashboard className="w-4 h-4 mr-2" />
+											Mi Dashboard
+										</Link>
 									</DropdownMenuItem>
-									<DropdownMenuItem>
-										<Star className="w-4 h-4 mr-2" />
-										Mis Calificaciones
+									<DropdownMenuItem asChild>
+										<Link to="/app/calificaciones" className="flex items-center gap-4">
+											<Star className="w-4 h-4 mr-2" />
+											Mis Calificaciones
+										</Link>
 									</DropdownMenuItem>
-									<DropdownMenuItem>
-										<Heart className="w-4 h-4 mr-2" />
-										Mis Zonas de Interés
+									<DropdownMenuItem asChild>
+										<Link to="/app/zonasInteres" className="flex items-center gap-4">
+											<Heart className="w-4 h-4 mr-2" />
+											Mis Zonas de Interés
+										</Link>
 									</DropdownMenuItem>
-									<DropdownMenuItem>
-										<FileText className="w-4 h-4 mr-2" />
-										Mis Reportes
+									<DropdownMenuItem asChild>
+										<Link to="/app/reportes" className="flex items-center gap-4">
+											<FileText className="w-4 h-4 mr-2" />
+											Mis Reportes
+										</Link>
 									</DropdownMenuItem>
 									<DropdownMenuSeparator />
-									<DropdownMenuItem>
-										<Settings className="w-4 h-4 mr-2" />
-										Configuración
+									<DropdownMenuItem asChild>
+										<Link to="/app/configuracion" className="flex items-center gap-4">
+											<Settings className="w-4 h-4 mr-2" />
+											Configuración
+										</Link>
 									</DropdownMenuItem>
-									<DropdownMenuItem>
-										<HelpCircle className="w-4 h-4 mr-2" />
-										Ayuda
+									<DropdownMenuItem asChild>
+										<Link to="/app/ayuda" className="flex items-center gap-4">
+											<HelpCircle className="w-4 h-4 mr-2" />
+											Ayuda
+										</Link>
 									</DropdownMenuItem>
 									<DropdownMenuSeparator />
 									<DropdownMenuItem className="text-destructive focus:text-destructive">
-										<LogOut className="w-4 h-4 mr-2" />
-										Cerrar Sesión
+										{/* <Link to="/app/logout" className="flex items-center gap-4"> */}
+											<LogOut className="w-4 h-4 mr-2" />
+											Cerrar Sesión
+										{/* </Link> */}
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
@@ -338,11 +346,11 @@ export function MainNavbar({
 			</div>
 
 			{/* Contribution Dialog */}
-			{/* 			<ContributionDialog
+			<ContributionDialog
 				isOpen={contributionDialogOpen}
 				onClose={() => setContributionDialogOpen(false)}
 				defaultTab={contributionDefaultTab}
-			/> */}
+			/>
 		</nav>
 	);
 }

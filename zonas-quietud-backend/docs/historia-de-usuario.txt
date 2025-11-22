@@ -1,0 +1,103 @@
+Épica 1: Evaluación y Percepción Ciudadana (Core)
+Estas historias alimentan la tabla street_ratings.
+
+HU-01: Calificar una calle
+
+Como ciudadano de Lima, quiero calificar una calle en aspectos específicos (seguridad, ruido, aire), para contribuir al mapa de calidad de vida de mi ciudad.
+
+Criterios de Aceptación:
+
+El usuario debe poder puntuar del 1 al 10 en: security, air_quality, noise_level, accessibility, tranquility.
+
+El sistema debe calcular automáticamente el overall_score (promedio) antes de guardar.
+
+Se debe registrar el momento del día (time_of_day) y día de la semana (day_of_week) automáticamente según el created_at.
+
+
+Dato Técnico: La ubicación GPS exacta (location tipo POINT) debe guardarse al momento de enviar el formulario.
+
+HU-02: Evidencia visual en calificaciones
+
+Como usuario, quiero adjuntar una foto al calificar una calle, para dar credibilidad a mi reporte sobre basura o mal estado de la vía.
+
+Criterios de Aceptación:
+
+Permitir la subida de imágenes (JPG/PNG).
+
+El sistema debe almacenar la URL de la imagen (ej. Cloudflare R2) en la tabla evidences.
+
+La foto debe vincularse al rating_id correspondiente.
+
+Épica 2: Visualización y Mapa de Calor
+Estas historias consumen la tabla streets y districts.
+
+HU-03: Visualizar el "Semáforo" de las calles
+
+Como peatón, quiero ver las calles coloreadas en el mapa (Verde, Amarillo, Rojo), para decidir qué ruta es más segura o tranquila para caminar.
+
+Criterios de Aceptación:
+
+El mapa debe renderizar las geometrías (LINESTRING) de la tabla streets.
+
+El color de la línea debe corresponder al campo color_code (GREEN, YELLOW, ORANGE, RED, GRAY).
+
+Al hacer clic en una calle, se debe mostrar el full_address y los promedios de avg_security_score, avg_noise_score, etc..
+
+HU-04: Filtrar por Distrito
+
+Como usuario, quiero buscar un distrito específico (ej. "San Juan de Lurigancho"), para ver el estado general de esa zona.
+
+Criterios de Aceptación:
+
+Búsqueda por nombre en la tabla districts.
+
+Al seleccionar el distrito, el mapa debe hacer zoom a los límites definidos en boundary (POLYGON).
+
+Mostrar estadísticas resumen del distrito: total_incidents y avg_overall_score.
+
+Épica 3: Gestión de Incidentes y Comunidad
+Estas historias utilizan incidents, validations y votes.
+
+HU-05: Reportar un incidente urbano
+
+Como vecino, quiero reportar un problema específico (ej. bache, robo, basura acumulada), para alertar a otros vecinos.
+
+Criterios de Aceptación:
+
+El usuario debe seleccionar un tipo de incidente: INFRASTRUCTURE, CLEANLINESS, SECURITY, etc..
+
+El incidente debe tener un estado inicial de REPORTED.
+
+Se requiere título, descripción y ubicación exacta.
+
+HU-06: Validación Comunitaria ("Yo también lo vi")
+
+Como usuario, quiero confirmar un incidente reportado por otro vecino, para que el reporte tenga más peso y credibilidad.
+
+Criterios de Aceptación:
+
+El usuario puede dar clic en "Validar" en un incidente existente.
+
+Se crea un registro en la tabla validations con confirms = TRUE.
+
+El contador community_validations en la tabla incidents debe incrementarse.
+
+HU-07: Votar utilidad de una calificación
+
+Como usuario, quiero indicar si una reseña me fue útil o no, para destacar la información más valiosa.
+
+• Criterios de Aceptación:
+  • Interacción tipo "Like/Dislike" que alimenta la tabla votes.
+  • Actualizar contadores helpful_votes o not_helpful_votes en la tabla street_ratings.
+
+Épica 4: Alertas y Personalización (Growth)
+Estas historias utilizan interest_zones.
+
+HU-08: Configurar "Zona de Interés" (Mi Barrio)
+
+Como residente, quiero dibujar un área en el mapa (ej. alrededor de mi casa) y ponerle nombre, para monitorear lo que sucede allí.
+
+• Criterios de Aceptación:
+  • El usuario define un polígono en el frontend que se guarda como boundary (POLYGON) en la tabla interest_zones.
+  • El usuario puede activar/desactivar notificaciones (email_enabled, push_enabled).
+  • Se debe definir un umbral (min_score_threshold) para disparar alertas si la calidad de la zona baja.

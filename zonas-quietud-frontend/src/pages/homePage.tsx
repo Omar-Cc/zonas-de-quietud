@@ -1,139 +1,18 @@
-import { Search, MapPin, Users, TrendingUp, Map, Star, CheckCircle, ArrowRight } from "lucide-react";
+import { Search, MapPin, TrendingUp, Map, Star, CheckCircle, ArrowRight } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { MapVisualization } from "../components/mapVisualization";
 import { HeatmapVisualization } from "../components/heatmapVisualization";
 import { RatingVisualization } from "../components/ratingVisualization";
 import { ChartVisualization } from "../components/chartVisualization";
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import { Navbar } from "../components/Navbar";
-import { Footer } from "../components/Footer";
+import { Navbar } from "../components/layouts/navbar/navbar";
 import { useState } from "react";
-import InteractiveMap from "./pages/InteractiveMap";
-import StreetDetail from "./pages/StreetDetail";
-import UserDashboard from "./pages/UserDashboard";
-import Pricing from "./pages/Pricing";
-import Statistics from "./pages/Statistics";
+
 
 export default function HomePage() {
   // Estado para simular autenticación - cambiar a true para ver el navbar autenticado
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
-  // Estado para cambiar entre páginas
-  const [currentPage, setCurrentPage] = useState<"home" | "map" | "detail" | "dashboard" | "pricing" | "statistics">("home");
-
-  // Si estamos en la página de pricing
-  if (currentPage === "pricing") {
-    return (
-      <div className="relative">
-        <Pricing />
-        {/* Demo navigation button */}
-        <button
-          onClick={() => setCurrentPage("home")}
-          className="fixed bottom-6 left-6 z-50 bg-white border-2 border-primary text-primary px-4 py-2 rounded-lg shadow-lg hover:bg-primary hover:text-white transition-colors"
-        >
-          ← Volver al Inicio
-        </button>
-      </div>
-    );
-  }
-
-  // Si estamos en la página de estadísticas
-  if (currentPage === "statistics") {
-    return (
-      <div className="relative">
-        <Statistics />
-        {/* Demo navigation button */}
-        <button
-          onClick={() => setCurrentPage("home")}
-          className="fixed bottom-6 left-6 z-50 bg-white border-2 border-primary text-primary px-4 py-2 rounded-lg shadow-lg hover:bg-primary hover:text-white transition-colors"
-        >
-          ← Volver al Inicio
-        </button>
-      </div>
-    );
-  }
-
-  // Si estamos en la página del dashboard
-  if (currentPage === "dashboard") {
-    return (
-      <div className="relative">
-        <UserDashboard />
-        {/* Demo navigation buttons */}
-        <div className="fixed bottom-6 left-6 z-50 flex gap-3">
-          <button
-            onClick={() => setCurrentPage("home")}
-            className="bg-white border-2 border-primary text-primary px-4 py-2 rounded-lg shadow-lg hover:bg-primary hover:text-white transition-colors"
-          >
-            ← Volver al Inicio
-          </button>
-          <button
-            onClick={() => setCurrentPage("map")}
-            className="bg-white border-2 border-primary text-primary px-4 py-2 rounded-lg shadow-lg hover:bg-primary hover:text-white transition-colors"
-          >
-            Mapa
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // Si estamos en la página de detalle
-  if (currentPage === "detail") {
-    return (
-      <div className="relative">
-        <StreetDetail />
-        {/* Demo navigation buttons */}
-        <div className="fixed bottom-6 left-6 z-50 flex gap-3">
-          <button
-            onClick={() => setCurrentPage("map")}
-            className="bg-white border-2 border-primary text-primary px-4 py-2 rounded-lg shadow-lg hover:bg-primary hover:text-white transition-colors"
-          >
-            ← Volver al Mapa
-          </button>
-          <button
-            onClick={() => setCurrentPage("home")}
-            className="bg-white border-2 border-primary text-primary px-4 py-2 rounded-lg shadow-lg hover:bg-primary hover:text-white transition-colors"
-          >
-            Inicio
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // Si estamos en la página del mapa, mostrar solo esa vista
-  if (currentPage === "map") {
-    return (
-      <div className="relative">
-        <InteractiveMap />
-        {/* Demo navigation buttons */}
-        <div className="fixed bottom-6 left-6 z-50 flex flex-wrap gap-3">
-          <button
-            onClick={() => setCurrentPage("home")}
-            className="bg-white border-2 border-primary text-primary px-4 py-2 rounded-lg shadow-lg hover:bg-primary hover:text-white transition-colors"
-          >
-            ← Inicio
-          </button>
-          <button
-            onClick={() => setCurrentPage("detail")}
-            className="bg-white border-2 border-orange-500 text-orange-500 px-4 py-2 rounded-lg shadow-lg hover:bg-orange-500 hover:text-white transition-colors"
-          >
-            Ver Detalle
-          </button>
-          <button
-            onClick={() => setCurrentPage("dashboard")}
-            className="bg-white border-2 border-purple-500 text-purple-500 px-4 py-2 rounded-lg shadow-lg hover:bg-purple-500 hover:text-white transition-colors"
-          >
-            Dashboard
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  const handleNavigate = (page: string) => {
-    setCurrentPage(page as any);
-  };
+  const [isAuthenticated] = useState(true);
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden" style={{ backgroundColor: '#F8F9FA' }}>
@@ -145,7 +24,6 @@ export default function HomePage() {
         notificationCount={3}
         showTopBar={true}
         showQuickAccess={true}
-        onNavigate={handleNavigate}
       />
 
       {/* Spacer para el navbar fixed (TopBar + MainNavbar + QuickAccessBar) */}
@@ -153,7 +31,7 @@ export default function HomePage() {
 
       {/* Background image with overlay - fixed */}
       <div className="fixed inset-0 z-0">
-        <ImageWithFallback
+        <img
           src="https://images.unsplash.com/photo-1648108759484-f1e17cc249cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxMaW1hJTIwUGVydSUyMHVyYmFuJTIwY2l0eXxlbnwxfHx8fDE3NjA2MzgxMjh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
           alt=""
           className="w-full h-full object-cover blur-sm opacity-30"
@@ -207,14 +85,15 @@ export default function HomePage() {
 
             {/* CTA Button - Modified to navigate to map */}
             <div className="flex justify-center">
-              <Button
-                size="lg"
-                className="px-12 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all hover:opacity-90"
-                style={{ backgroundColor: '#08A09C', color: '#FFFFFF' }}
-                onClick={() => setCurrentPage("map")}
-              >
-                Explorar el Mapa
-              </Button>
+              <Link to="/app/mapa">
+                <Button
+                  size="lg"
+                  className="px-12 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all hover:opacity-90"
+                  style={{ backgroundColor: '#08A09C', color: '#FFFFFF' }}
+                >
+                  Explorar el Mapa
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
@@ -234,9 +113,9 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Feature 1: Interactive Maps */}
-              <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                style={{ borderWidth: '1px', borderColor: '#6EEB83' }}
-                onClick={() => setCurrentPage("map")}>
+              <Link to="/app/mapa">
+                <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                  style={{ borderWidth: '1px', borderColor: '#6EEB83' }}>
                 <div className="mb-6">
                   <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: 'rgba(110, 235, 131, 0.2)' }}>
                     <Map className="w-7 h-7" style={{ color: '#08A09C' }} />
@@ -247,9 +126,10 @@ export default function HomePage() {
                   <p className="mb-6" style={{ color: '#6c757d' }}>
                     Visualiza datos de calidad de vida con mapas de calor intuitivos
                   </p>
+                  </div>
+                  <HeatmapVisualization />
                 </div>
-                <HeatmapVisualization />
-              </div>
+              </Link>
 
               {/* Feature 2: Citizen Rating */}
               <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
@@ -394,15 +274,16 @@ export default function HomePage() {
             </div>
 
             <div className="space-y-6">
-              <Button
-                size="lg"
-                className="px-16 py-8 rounded-2xl shadow-2xl transition-all hover:opacity-90"
-                style={{ backgroundColor: '#007BFF', color: '#FFFFFF' }}
-                onClick={() => setCurrentPage("map")}
-              >
-                <span className="mr-3">Explorar el Mapa Ahora</span>
-                <ArrowRight className="w-6 h-6" />
-              </Button>
+              <Link to="/app/mapa">
+                <Button
+                  size="lg"
+                  className="px-16 py-8 rounded-2xl shadow-2xl transition-all hover:opacity-90"
+                  style={{ backgroundColor: '#007BFF', color: '#FFFFFF' }}
+                >
+                  <span className="mr-3">Explorar el Mapa Ahora</span>
+                  <ArrowRight className="w-6 h-6" />
+                </Button>
+              </Link>
               
               <p className="text-white/90">
                 No se requiere registro para comenzar
@@ -426,31 +307,6 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-
-        {/* Footer */}
-        <Footer />
-      </div>
-
-      {/* Demo navigation buttons */}
-      <div className="fixed bottom-6 left-6 z-50 flex flex-wrap gap-3">
-        <button
-          onClick={() => setIsAuthenticated(!isAuthenticated)}
-          className="bg-white border-2 border-primary text-primary px-4 py-2 rounded-lg shadow-lg hover:bg-primary hover:text-white transition-colors"
-        >
-          {isAuthenticated ? "Cerrar Sesión" : "Iniciar Sesión"}
-        </button>
-        <button
-          onClick={() => setCurrentPage("dashboard")}
-          className="bg-white border-2 border-purple-500 text-purple-500 px-4 py-2 rounded-lg shadow-lg hover:bg-purple-500 hover:text-white transition-colors"
-        >
-          Dashboard
-        </button>
-        <button
-          onClick={() => setCurrentPage("pricing")}
-          className="bg-white border-2 border-green-500 text-green-500 px-4 py-2 rounded-lg shadow-lg hover:bg-green-500 hover:text-white transition-colors"
-        >
-          Planes
-        </button>
       </div>
     </div>
   );

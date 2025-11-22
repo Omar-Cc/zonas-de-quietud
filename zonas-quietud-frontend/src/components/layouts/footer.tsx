@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import {
   MapPin,
   Twitter,
@@ -49,7 +50,7 @@ export function Footer() {
   ];
 
   const recursos = [
-    { label: "Centro de Ayuda", href: "#" },
+    { label: "Centro de Ayuda", href: "app/recursos" },
     { label: "Preguntas Frecuentes (FAQ)", href: "#" },
     { label: "Guía de Calificación", href: "#" },
     { label: "Términos y Condiciones", href: "#" },
@@ -129,12 +130,21 @@ export function Footer() {
               <ul className="space-y-3">
                 {recursos.map((item) => (
                   <li key={item.label}>
-                    <a
-                      href={item.href}
-                      className="text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {item.label}
-                    </a>
+                    {item.href.startsWith("/") ? (
+                      <Link
+                        to={item.href}
+                        className="text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {item.label}
+                      </Link>
+                    ) : (
+                      <a
+                        href={item.href}
+                        className="text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {item.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -266,12 +276,21 @@ export function Footer() {
                 <ul className="space-y-3">
                   {recursos.slice(0, 4).map((item) => (
                     <li key={item.label}>
-                      <a
-                        href={item.href}
-                        className="text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        {item.label}
-                      </a>
+                      {item.href.startsWith("/") ? (
+                        <Link
+                          to={item.href}
+                          className="text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                          {item.label}
+                        </Link>
+                      ) : (
+                        <a
+                          href={item.href}
+                          className="text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                          {item.label}
+                        </a>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -374,12 +393,21 @@ export function Footer() {
                   <ul className="space-y-3">
                     {recursos.map((item) => (
                       <li key={item.label}>
-                        <a
-                          href={item.href}
-                          className="text-muted-foreground hover:text-foreground transition-colors block"
-                        >
-                          {item.label}
-                        </a>
+                        {item.href.startsWith("/") ? (
+                          <Link
+                            to={item.href}
+                            className="text-muted-foreground hover:text-foreground transition-colors block"
+                          >
+                            {item.label}
+                          </Link>
+                        ) : (
+                          <a
+                            href={item.href}
+                            className="text-muted-foreground hover:text-foreground transition-colors block"
+                          >
+                            {item.label}
+                          </a>
+                        )}
                       </li>
                     ))}
                   </ul>
@@ -451,7 +479,7 @@ export function Footer() {
           <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
             {/* Left - Copyright */}
             <div className="text-muted-foreground text-center lg:text-left">
-              © 2024 Zonas de Quietud - Lima, Perú. Todos los derechos reservados.
+              © 2025 Zonas de Quietud - Lima, Perú. Todos los derechos reservados.
             </div>
 
             {/* Center - Made with Love */}

@@ -45,12 +45,11 @@ export function QuickAccessBar({ onCategoryClick }: QuickAccessBarProps = {}) {
   ];
 
   return (
-    <div className="bg-white border-b border-border">
+    <div className="bg-white border-b border-border mb-50">
       <div className="max-w-[1400px] mx-auto px-4 py-3">
         <div className="flex items-center justify-between gap-4 overflow-x-auto scrollbar-hide">
           {/* Left - Categories title */}
           <div className="flex items-center gap-2 shrink-0">
-            <MapPin className="w-4 h-4" style={{ color: "#08A09C" }} />
             <span className="text-sm" style={{ color: "#6c757d" }}>
               Explorar por:
             </span>

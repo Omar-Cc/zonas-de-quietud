@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import {
 	Search,
 	MapPin,
@@ -25,7 +26,6 @@ import {
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { TopBar } from "./topBar";
 import { MainNavbar } from "./mainNavbar";
-import { SearchBar } from "./searchBar";
 import { SearchDialog } from "./searchDialog";
 import { QuickAccessBar } from "./quickAccessBar";
 import { ContributionDialog } from "@/components/contributionDialog";
@@ -86,7 +86,6 @@ export function Navbar({
 					notificationCount={notificationCount}
 					onMenuClick={() => setMobileMenuOpen(true)}
 					onSearchClick={() => setSearchDialogOpen(true)}
-					onNavigate={onNavigate}
 				/>
 
 				{/* Quick Access Bar - Only on desktop */}
@@ -139,19 +138,15 @@ export function Navbar({
 								Buscar
 							</Button>
 
-							<Button
-								variant="ghost"
-								className="justify-start"
-								onClick={() => setMobileMenuOpen(false)}
-								asChild
-							>
-								<a href="/mapa">
+							<Link to="/app/mapa" onClick={() => setMobileMenuOpen(false)}>
+								<Button
+									variant="ghost"
+									className="justify-start w-full"
+								>
 									<Map className="w-4 h-4 mr-2" />
 									Explorar Mapa
-								</a>
-							</Button>
-
-							<DropdownMenu>
+								</Button>
+							</Link>							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
 									<Button variant="ghost" className="justify-start">
 										<MapPin className="w-4 h-4 mr-2" />
@@ -171,26 +166,24 @@ export function Navbar({
 							<Button
 								variant="ghost"
 								className="justify-start"
-								onClick={() => setMobileMenuOpen(false)}
-								asChild
+								onClick={() => {
+									onNavigate?.("como-funciona");
+									setMobileMenuOpen(false);
+								}}
 							>
-								<a href="/como-funciona">
-									<Info className="w-4 h-4 mr-2" />
-									Cómo Funciona
-								</a>
+								<Info className="w-4 h-4 mr-2" />
+								Cómo Funciona
 							</Button>
 
-							<Button
-								variant="ghost"
-								className="justify-start"
-								onClick={() => setMobileMenuOpen(false)}
-								asChild
-							>
-								<a href="/planes">Planes</a>
-							</Button>
-						</div>
-
-						{/* Mobile Action Buttons - Ya no se usan aquí, se usa el FAB */}
+							<Link to="/app/planes" onClick={() => setMobileMenuOpen(false)}>
+								<Button
+									variant="ghost"
+									className="justify-start w-full"
+								>
+									Planes
+								</Button>
+							</Link>
+						</div>						{/* Mobile Action Buttons - Ya no se usan aquí, se usa el FAB */}
 						{isAuthenticated && (
 							<div className="flex flex-col gap-2 pt-4 border-t">
 								<p className="text-xs text-muted-foreground text-center">
@@ -202,14 +195,16 @@ export function Navbar({
 						{/* Mobile User Menu */}
 						{isAuthenticated ? (
 							<div className="flex flex-col gap-2 pt-4 border-t">
-								<Button
-									variant="ghost"
-									className="justify-start"
-									onClick={() => setMobileMenuOpen(false)}
-								>
-									<LayoutDashboard className="w-4 h-4 mr-2" />
-									Mi Dashboard
-								</Button>
+
+								<Link to="/app/miDashboard" onClick={() => setMobileMenuOpen(false)}>
+									<Button
+										variant="ghost"
+										className="justify-start"
+									>
+										<LayoutDashboard className="w-4 h-4 mr-2" />
+										Mi Dashboard
+									</Button>
+								</Link>
 								<Button
 									variant="ghost"
 									className="justify-start"

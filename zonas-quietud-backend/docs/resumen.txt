@@ -1,0 +1,23 @@
+Zonas de Quietud
+
+El proyecto Zonas de Quietud es una plataforma web colaborativa cuyo propósito principal es permitir a los ciudadanos de Lima, Perú, evaluar y calificar calles urbanas.
+
+Descripción y Objetivos
+
+• Plataforma Integral: Combina la percepción ciudadana con datos ambientales en tiempo real obtenidos de APIs externas.
+
+• Criterios de Evaluación: Los ciudadanos califican las calles basándose en diversos criterios de calidad de vida, incluyendo: seguridad, calidad del aire, niveles de ruido, accesibilidad y tranquilidad general.
+
+• Visualización: Genera mapas interactivos que visualizan las evaluaciones de forma intuitiva, utilizando indicadores de colores (Verde, Amarillo, Naranja, Rojo).
+
+• Objetivo General: Desarrollar una plataforma web que integre calificaciones ciudadanas y datos ambientales en tiempo real para evaluar la calidad de las calles urbanas en Lima, mejorando así la toma de decisiones informadas por parte de ciudadanos y comunidades.
+
+Relevancia y Justificación
+
+El proyecto es altamente relevante en el contexto urbano de Lima, una megaciudad que enfrenta serios desafíos como la alta contaminación atmosférica, la inseguridad ciudadana y la contaminación sonora.
+
+• Necesidad: Responde a la brecha existente donde la información sobre calidad ambiental y seguridad está fragmentada, y no recoge la percepción ciudadana de manera integrada.
+
+• Impacto Social: Empodera al ciudadano al facilitar el acceso a información que tradicionalmente solo tenían las autoridades. Proporciona datos valiosos para la futura planificación urbana participativa.
+
+• Innovación: Combina fuentes oficiales con inteligencia colectiva (Crowd Sensing) y aprovecha la geolocalización social para generar datos hiperlocales.
