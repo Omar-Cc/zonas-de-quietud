@@ -141,7 +141,7 @@ export default function StreetDetail() {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-            <Navbar isAuthenticated={true} userName="María García" notificationCount={3} />
+            {/* <Navbar isAuthenticated={true} userName="María García" notificationCount={3} /> */}
 
             <div className="pt-[70px]">
                 <div className="max-w-7xl mx-auto px-4 py-8">

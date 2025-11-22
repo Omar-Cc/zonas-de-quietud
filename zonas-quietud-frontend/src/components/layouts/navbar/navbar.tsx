@@ -40,20 +40,29 @@ interface NavbarProps {
 	onNavigate?: (page: string) => void;
 }
 
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "@tanstack/react-router";
+
+// ...
+
 export function Navbar({
-	isAuthenticated = false,
-	userName = "Usuario",
-	userAvatar,
-	notificationCount = 0,
 	showTopBar = true,
 	showQuickAccess = true,
 	onNavigate,
 }: NavbarProps) {
+	const { user, isAuthenticated, logout } = useAuth();
+	const navigate = useNavigate();
 	const [searchValue, setSearchValue] = useState("");
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [searchDialogOpen, setSearchDialogOpen] = useState(false);
 	const [contributionDialogOpen, setContributionDialogOpen] = useState(false);
 	const [contributionDefaultTab, setContributionDefaultTab] = useState<"evaluate" | "report">("evaluate");
+
+    const handleLogout = async () => {
+        await logout();
+        setMobileMenuOpen(false);
+        navigate({ to: "/" });
+    };
 
 	// Mock data para distritos
 	const distritos = [
@@ -81,11 +90,12 @@ export function Navbar({
 				{/* Main Navbar */}
 				<MainNavbar
 					isAuthenticated={isAuthenticated}
-					userName={userName}
-					userAvatar={userAvatar}
-					notificationCount={notificationCount}
+					userName={user?.firstName || "Usuario"}
+					userAvatar={user?.photoURL || undefined}
+					notificationCount={0}
 					onMenuClick={() => setMobileMenuOpen(true)}
 					onSearchClick={() => setSearchDialogOpen(true)}
+					onLogout={handleLogout}
 				/>
 
 				{/* Quick Access Bar - Only on desktop */}
@@ -142,6 +152,7 @@ export function Navbar({
 								<Button
 									variant="ghost"
 									className="justify-start w-full"
+									style={{ color: '#08A09C' }}
 								>
 									<Map className="w-4 h-4 mr-2" />
 									Explorar Mapa
@@ -248,7 +259,7 @@ export function Navbar({
 								<Button
 									variant="ghost"
 									className="justify-start text-destructive hover:text-destructive"
-									onClick={() => setMobileMenuOpen(false)}
+									onClick={handleLogout}
 								>
 									<LogOut className="w-4 h-4 mr-2" />
 									Cerrar Sesión
@@ -256,10 +267,14 @@ export function Navbar({
 							</div>
 						) : (
 							<div className="flex flex-col gap-2 pt-4 border-t">
-								<Button variant="outline" className="w-full">
-									Iniciar Sesión
-								</Button>
-								<Button className="w-full">Registrarse</Button>
+								<Link to="/login" onClick={() => setMobileMenuOpen(false)}>
+									<Button variant="outline" className="w-full">
+										Iniciar Sesión
+									</Button>
+								</Link>
+								<Link to="/register" onClick={() => setMobileMenuOpen(false)}>
+									<Button className="w-full">Registrarse</Button>
+								</Link>
 							</div>
 						)}
 					</div>

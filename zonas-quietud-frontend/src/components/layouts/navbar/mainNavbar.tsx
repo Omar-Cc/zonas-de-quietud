@@ -47,7 +47,7 @@ interface MainNavbarProps {
 	notificationCount?: number;
 	onMenuClick?: () => void;
 	onSearchClick?: () => void;
-
+	onLogout?: () => void;
 }
 
 export function MainNavbar({
@@ -57,6 +57,7 @@ export function MainNavbar({
 	notificationCount = 0,
 	onMenuClick,
 	onSearchClick,
+	onLogout,
 }: MainNavbarProps) {
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [contributionDialogOpen, setContributionDialogOpen] = useState(false);
@@ -324,23 +325,28 @@ export function MainNavbar({
 										</Link>
 									</DropdownMenuItem>
 									<DropdownMenuSeparator />
-									<DropdownMenuItem className="text-destructive focus:text-destructive">
-										{/* <Link to="/app/logout" className="flex items-center gap-4"> */}
-											<LogOut className="w-4 h-4 mr-2" />
-											Cerrar Sesión
-										{/* </Link> */}
+									<DropdownMenuItem 
+										className="text-destructive focus:text-destructive cursor-pointer"
+										onClick={onLogout}
+									>
+										<LogOut className="w-4 h-4 mr-2" />
+										Cerrar Sesión
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
 						</>
 					) : (
-						<>
+						<div className="flex items-center gap-2">
 							{/* Not Authenticated */}
-							<Button variant="outline" className="hidden md:flex">
-								Iniciar Sesión
-							</Button>
-							<Button>Registrarse</Button>
-						</>
+							<Link to="/login">
+								<Button variant="outline" className="hidden md:flex">
+									Iniciar Sesión
+								</Button>
+							</Link>
+							<Link to="/register">
+								<Button>Registrarse</Button>
+							</Link>
+						</div>
 					)}
 				</div>
 			</div>
