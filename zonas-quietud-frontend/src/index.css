@@ -118,3 +118,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+:root {
+  --fondo: #ffffff;
+  --principal: #08a09c; /* color principal (verde/teal) */
+  --Azul: #007bff;
+  --buscador: #f8f9fa;
+  --morado: #ad46ff;
+  --verdeBoton: #00c950;
+  --muted: #97a6a6;
+  --verde2: #4caf50;
+  --verde3: #8bc34a;
+}
+
+* {
+  box-sizing: border-box;
+}

@@ -1,0 +1,656 @@
+import { useState } from "react";
+import {
+  Star,
+  AlertTriangle,
+  Award,
+  TrendingUp,
+  Calendar,
+  MapPin,
+  Trophy,
+  Target,
+  Zap,
+  Heart,
+  Shield,
+  Crown,
+  Flame,
+  Users,
+  MessageSquare,
+  ThumbsUp,
+} from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../components/ui/avatar";
+import { Badge } from "../components/ui/badge";
+import { Progress } from "../components/ui/progress";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/tabs";
+import { ScrollArea } from "../components/ui/scroll-area";
+import { Separator } from "../components/ui/separator";
+import { Button } from "../components/ui/button";
+import { Navbar } from "../components/layouts/navbar/navbar";
+import { AchievementBadge } from "../components/achievementBadge";
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+
+const userData = {
+  name: "María García",
+  avatar:
+    "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria",
+  joinDate: "Marzo 2025",
+  level: 12,
+  xp: 3450,
+  nextLevelXp: 4000,
+  stats: {
+    totalRatings: 45,
+    totalReports: 12,
+    helpfulVotes: 234,
+    streakDays: 15,
+  },
+  recentContributions: [
+    {
+      id: 1,
+      type: "rating",
+      street: "Av. Arequipa",
+      district: "Miraflores",
+      score: 8.5,
+      date: "Hace 2 días",
+      likes: 12,
+    },
+    {
+      id: 2,
+      type: "report",
+      street: "Calle Berlin",
+      district: "Miraflores",
+      incidentType: "Falta de Iluminación",
+      date: "Hace 5 días",
+      status: "resolved",
+    },
+    {
+      id: 3,
+      type: "rating",
+      street: "Av. Pardo",
+      district: "San Isidro",
+      score: 9.0,
+      date: "Hace 1 semana",
+      likes: 8,
+    },
+    {
+      id: 4,
+      type: "report",
+      street: "Av. Benavides",
+      district: "Surco",
+      incidentType: "Daño a Infraestructura",
+      date: "Hace 1 semana",
+      status: "pending",
+    },
+  ],
+  achievements: [
+    {
+      icon: Star,
+      title: "Primera Calificación",
+      description: "Completaste tu primera evaluación",
+      unlocked: true,
+      rarity: "common" as const,
+    },
+    {
+      icon: Flame,
+      title: "Racha de Fuego",
+      description: "15 días consecutivos contribuyendo",
+      unlocked: true,
+      rarity: "rare" as const,
+    },
+    {
+      icon: Trophy,
+      title: "Top Colaborador",
+      description: "Entre los 10 usuarios más activos del mes",
+      unlocked: true,
+      rarity: "epic" as const,
+    },
+    {
+      icon: Crown,
+      title: "Guardián Urbano",
+      description: "100 contribuciones verificadas",
+      unlocked: false,
+      rarity: "legendary" as const,
+      progress: 57,
+      total: 100,
+    },
+    {
+      icon: Heart,
+      title: "Muy Útil",
+      description: "Recibe 200 votos de utilidad",
+      unlocked: true,
+      rarity: "epic" as const,
+    },
+    {
+      icon: Shield,
+      title: "Reportero de Elite",
+      description: "10 reportes de incidentes verificados",
+      unlocked: true,
+      rarity: "rare" as const,
+    },
+    {
+      icon: Target,
+      title: "Calificador Experto",
+      description: "50 calificaciones detalladas",
+      unlocked: false,
+      rarity: "rare" as const,
+      progress: 45,
+      total: 50,
+    },
+    {
+      icon: Users,
+      title: "Líder Comunitario",
+      description:
+        "Invita a 5 usuarios que completen su primera evaluación",
+      unlocked: false,
+      rarity: "epic" as const,
+      progress: 2,
+      total: 5,
+    },
+  ],
+  activityData: [
+    { month: "Ene", ratings: 3, reports: 1 },
+    { month: "Feb", ratings: 5, reports: 2 },
+    { month: "Mar", ratings: 8, reports: 3 },
+    { month: "Abr", ratings: 12, reports: 2 },
+    { month: "May", ratings: 10, reports: 3 },
+    { month: "Jun", ratings: 7, reports: 1 },
+  ],
+};
+
+export default function UserDashboard() {
+  const [activeTab, setActiveTab] = useState("overview");
+
+  const levelProgress =
+    (userData.xp / userData.nextLevelXp) * 100;
+  const unlockedAchievements = userData.achievements.filter(
+    (a) => a.unlocked,
+  ).length;
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      <Navbar
+        isAuthenticated={true}
+        userName={userData.name}
+        notificationCount={3}
+      />
+
+      <div className="pt-[70px]">
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          {/* Header Section */}
+          <div className="mb-8">
+            <div className="flex flex-col lg:flex-row gap-6">
+              {/* Profile Card */}
+              <Card className="lg:w-80">
+                <CardContent className="pt-6">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="relative mb-4">
+                      <Avatar className="w-24 h-24 border-4 border-primary">
+                        <AvatarImage
+                          src={userData.avatar}
+                          alt={userData.name}
+                        />
+                        <AvatarFallback>
+                          {userData.name.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-primary rounded-full flex items-center justify-center border-4 border-white dark:border-gray-950">
+                        <span className="text-primary-foreground">
+                          {userData.level}
+                        </span>
+                      </div>
+                    </div>
+                    <h2 className="text-foreground mb-1">
+                      {userData.name}
+                    </h2>
+                    <p className="text-muted-foreground mb-4">
+                      Miembro desde {userData.joinDate}
+                    </p>
+
+                    {/* Level Progress */}
+                    <div className="w-full space-y-2 mb-4">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">
+                          Nivel {userData.level}
+                        </span>
+                        <span className="text-muted-foreground">
+                          Nivel {userData.level + 1}
+                        </span>
+                      </div>
+                      <Progress
+                        value={levelProgress}
+                        className="h-3"
+                      />
+                      <p className="text-xs text-muted-foreground text-center">
+                        {userData.xp} / {userData.nextLevelXp}{" "}
+                        XP
+                      </p>
+                    </div>
+
+                    <Separator className="my-4" />
+
+                    {/* Quick Stats */}
+                    <div className="w-full space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Flame className="w-4 h-4 text-orange-500" />
+                          <span className="text-sm text-muted-foreground">
+                            Racha
+                          </span>
+                        </div>
+                        <span className="text-foreground">
+                          {userData.stats.streakDays} días
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Award className="w-4 h-4 text-primary" />
+                          <span className="text-sm text-muted-foreground">
+                            Logros
+                          </span>
+                        </div>
+                        <span className="text-foreground">
+                          {unlockedAchievements}/
+                          {userData.achievements.length}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <ThumbsUp className="w-4 h-4 text-green-500" />
+                          <span className="text-sm text-muted-foreground">
+                            Votos Útiles
+                          </span>
+                        </div>
+                        <span className="text-foreground">
+                          {userData.stats.helpfulVotes}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Stats Cards */}
+              <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+                  <CardContent className="pt-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center">
+                        <Star className="w-6 h-6 text-primary" />
+                      </div>
+                      <TrendingUp className="w-5 h-5 text-green-500" />
+                    </div>
+                    <p className="text-muted-foreground mb-1">
+                      Total Calificaciones
+                    </p>
+                    <p className="text-4xl text-foreground mb-2">
+                      {userData.stats.totalRatings}
+                    </p>
+                    <Badge
+                      variant="secondary"
+                      className="bg-green-100 text-green-700 border-green-200"
+                    >
+                      +12 este mes
+                    </Badge>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950/20 dark:to-orange-900/20 border-orange-200 dark:border-orange-800">
+                  <CardContent className="pt-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-12 h-12 rounded-lg bg-orange-200 dark:bg-orange-900/40 flex items-center justify-center">
+                        <AlertTriangle className="w-6 h-6 text-orange-600" />
+                      </div>
+                      <TrendingUp className="w-5 h-5 text-green-500" />
+                    </div>
+                    <p className="text-muted-foreground mb-1">
+                      Reportes Realizados
+                    </p>
+                    <p className="text-4xl text-foreground mb-2">
+                      {userData.stats.totalReports}
+                    </p>
+                    <Badge
+                      variant="secondary"
+                      className="bg-orange-200 text-orange-700 border-orange-300 dark:bg-orange-900/40 dark:text-orange-400"
+                    >
+                      +3 este mes
+                    </Badge>
+                  </CardContent>
+                </Card>
+
+                {/* Activity Chart */}
+                <Card className="md:col-span-2">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <TrendingUp className="w-5 h-5 text-primary" />
+                      Actividad Mensual
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-48">
+                      <ResponsiveContainer
+                        width="100%"
+                        height="100%"
+                      >
+                        <BarChart data={userData.activityData}>
+                          <CartesianGrid
+                            strokeDasharray="3 3"
+                            className="stroke-border"
+                          />
+                          <XAxis
+                            dataKey="month"
+                            tick={{ fill: "currentColor" }}
+                            className="text-muted-foreground"
+                          />
+                          <YAxis
+                            tick={{ fill: "currentColor" }}
+                            className="text-muted-foreground"
+                          />
+                          <Tooltip
+                            contentStyle={{
+                              backgroundColor:
+                                "hsl(var(--background))",
+                              border:
+                                "1px solid hsl(var(--border))",
+                              borderRadius: "0.5rem",
+                            }}
+                          />
+                          <Bar
+                            dataKey="ratings"
+                            fill="#14b8a6"
+                            name="Calificaciones"
+                          />
+                          <Bar
+                            dataKey="reports"
+                            fill="#f97316"
+                            name="Reportes"
+                          />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Content Tabs */}
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid w-full grid-cols-3 mb-6">
+              <TabsTrigger value="overview">
+                Resumen
+              </TabsTrigger>
+              <TabsTrigger value="contributions">
+                Mis Contribuciones
+              </TabsTrigger>
+              <TabsTrigger value="achievements">
+                Logros
+              </TabsTrigger>
+            </TabsList>
+
+            {/* Overview Tab */}
+            <TabsContent value="overview" className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Recent Activity */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Actividad Reciente</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ScrollArea className="h-[400px] pr-4">
+                      <div className="space-y-4">
+                        {userData.recentContributions
+                          .slice(0, 5)
+                          .map((contrib) => (
+                            <div
+                              key={contrib.id}
+                              className="flex items-start gap-3 p-3 rounded-lg bg-muted/50"
+                            >
+                              <div
+                                className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                                  contrib.type === "rating"
+                                    ? "bg-primary/20"
+                                    : "bg-orange-100 dark:bg-orange-900/20"
+                                }`}
+                              >
+                                {contrib.type === "rating" ? (
+                                  <Star className="w-5 h-5 text-primary" />
+                                ) : (
+                                  <AlertTriangle className="w-5 h-5 text-orange-600" />
+                                )}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <p className="text-foreground truncate">
+                                    {contrib.street}
+                                  </p>
+                                  <Badge
+                                    variant="outline"
+                                    className="text-xs"
+                                  >
+                                    {contrib.district}
+                                  </Badge>
+                                </div>
+                                {contrib.type === "rating" ? (
+                                  <div className="flex items-center gap-2">
+                                    <Badge className="bg-green-100 text-green-700 border-green-200">
+                                      {contrib.score}
+                                    </Badge>
+                                    <span className="text-xs text-muted-foreground">
+                                      {contrib.likes} útiles
+                                    </span>
+                                  </div>
+                                ) : (
+                                  <Badge
+                                    variant={
+                                      contrib.status ===
+                                      "resolved"
+                                        ? "default"
+                                        : "secondary"
+                                    }
+                                    className="text-xs"
+                                  >
+                                    {contrib.incidentType}
+                                  </Badge>
+                                )}
+                                <p className="text-xs text-muted-foreground mt-1">
+                                  {contrib.date}
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    </ScrollArea>
+                  </CardContent>
+                </Card>
+
+                {/* Top Achievements Preview */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center justify-between">
+                      <span>Logros Destacados</span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() =>
+                          setActiveTab("achievements")
+                        }
+                      >
+                        Ver todos
+                      </Button>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 gap-3">
+                      {userData.achievements
+                        .filter((a) => a.unlocked)
+                        .slice(0, 4)
+                        .map((achievement, index) => (
+                          <AchievementBadge
+                            key={index}
+                            {...achievement}
+                          />
+                        ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            {/* Contributions Tab */}
+            <TabsContent value="contributions">
+              <Card>
+                <CardHeader>
+                  <CardTitle>
+                    Todas Mis Contribuciones
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ScrollArea className="h-[600px] pr-4">
+                    <div className="space-y-4">
+                      {userData.recentContributions.map(
+                        (contrib) => (
+                          <div
+                            key={contrib.id}
+                            className="p-4 rounded-lg border border-border hover:border-primary/50 transition-colors"
+                          >
+                            <div className="flex items-start gap-4">
+                              <div
+                                className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                                  contrib.type === "rating"
+                                    ? "bg-primary/20"
+                                    : "bg-orange-100 dark:bg-orange-900/20"
+                                }`}
+                              >
+                                {contrib.type === "rating" ? (
+                                  <Star className="w-6 h-6 text-primary" />
+                                ) : (
+                                  <AlertTriangle className="w-6 h-6 text-orange-600" />
+                                )}
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <MapPin className="w-4 h-4 text-muted-foreground" />
+                                  <h4 className="text-foreground">
+                                    {contrib.street}
+                                  </h4>
+                                  <Badge variant="outline">
+                                    {contrib.district}
+                                  </Badge>
+                                </div>
+                                {contrib.type === "rating" ? (
+                                  <div className="space-y-2">
+                                    <div className="flex items-center gap-3">
+                                      <Badge className="bg-green-100 text-green-700 border-green-200">
+                                        Calificación:{" "}
+                                        {contrib.score}
+                                      </Badge>
+                                      <div className="flex items-center gap-1 text-muted-foreground">
+                                        <ThumbsUp className="w-4 h-4" />
+                                        <span>
+                                          {contrib.likes} votos
+                                          útiles
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="space-y-2">
+                                    <Badge variant="secondary">
+                                      {contrib.incidentType}
+                                    </Badge>
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-sm text-muted-foreground">
+                                        Estado:
+                                      </span>
+                                      <Badge
+                                        variant={
+                                          contrib.status ===
+                                          "resolved"
+                                            ? "default"
+                                            : "secondary"
+                                        }
+                                      >
+                                        {contrib.status ===
+                                        "resolved"
+                                          ? "Resuelto"
+                                          : "Pendiente"}
+                                      </Badge>
+                                    </div>
+                                  </div>
+                                )}
+                                <div className="flex items-center gap-2 mt-2 text-muted-foreground">
+                                  <Calendar className="w-4 h-4" />
+                                  <span>{contrib.date}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  </ScrollArea>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Achievements Tab */}
+            <TabsContent value="achievements">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Trophy className="w-6 h-6 text-primary" />
+                      <span>Logros e Insignias</span>
+                    </div>
+                    <Badge
+                      variant="secondary"
+                      className="text-base"
+                    >
+                      {unlockedAchievements}/
+                      {userData.achievements.length}
+                    </Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {userData.achievements.map(
+                      (achievement, index) => (
+                        <AchievementBadge
+                          key={index}
+                          {...achievement}
+                        />
+                      ),
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
+    </div>
+  );
+}
