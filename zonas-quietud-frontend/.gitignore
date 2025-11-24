@@ -25,6 +25,7 @@ dev-dist
 *.sln
 *.sw?
 
+.env
 .env.*
 .env.*.local
 !.env.example

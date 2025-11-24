@@ -1,3 +1,46 @@
 spring:
   application:
     name: zonas-quietud-backend
+
+  output:
+    ansi:
+      enabled: always
+
+  docker:
+    compose:
+      enabled: false
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        "[format_sql]": true
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+app:
+  jwt:
+    private-key-path: ${JWT_PRIVATE_KEY_PATH}
+    public-key-path: ${JWT_PUBLIC_KEY_PATH}
+    access-token-expiration: ${JWT_ACCESS_EXPIRATION}
+    refresh-token-expiration: ${JWT_REFRESH_EXPIRATION}
+
+  upload:
+    dir: uploads/images
+    base-url: http://localhost:8080/uploads/images
+
+springdoc:
+  api-docs:
+    path: /api-docs
+
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+    disableSwaggerDefaultUrl: true
