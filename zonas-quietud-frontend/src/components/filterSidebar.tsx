@@ -45,14 +45,11 @@ export function FilterSidebar({ isOpen, onClose }: FilterSidebarProps) {
   return (
     <>
       {/* Overlay */}
-      <div
-        className="fixed inset-0 bg-black/30 z-40 lg:hidden"
-        onClick={onClose}
-      />
+
 
       {/* Sidebar */}
       <div
-        className={`fixed lg:static top-0 left-0 bottom-0 w-80 bg-white dark:bg-gray-950 border-r border-border z-50 transition-transform duration-300 ${
+        className={`w-80 bg-white dark:bg-gray-950 border-r border-border transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
