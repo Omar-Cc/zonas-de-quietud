@@ -4,24 +4,33 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.zonanquietud.backend.features.auth.controller.dto.AuthResponse;
 import com.zonanquietud.backend.features.auth.controller.dto.RegisterRequest;
+import com.zonanquietud.backend.features.auth.controller.dto.TokenResponse;
 import com.zonanquietud.backend.features.auth.controller.dto.UserResponse;
 import com.zonanquietud.backend.features.auth.domain.event.UserRegisteredEvent;
-import com.zonanquietud.backend.features.auth.domain.exception.EmailAlreadyInUseException;
+import com.zonanquietud.backend.features.auth.domain.model.AuthTokenDetails;
 import com.zonanquietud.backend.features.auth.domain.model.Usuario;
 import com.zonanquietud.backend.features.auth.domain.port.IdentityProvider;
 import com.zonanquietud.backend.features.auth.domain.repository.UserRepository;
 import com.zonanquietud.backend.features.auth.domain.valueobject.UserEmail;
+import com.zonanquietud.backend.features.auth.infrastructure.config.JwtProperties;
 import com.zonanquietud.backend.features.auth.infrastructure.mapper.AuthMapper;
+import com.zonanquietud.backend.features.auth.infrastructure.security.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
- * RegisterUserUseCase - Handles user registration
+ * RegisterUserUseCase - Handles user registration with upsert logic
  * Application layer - orchestrates domain logic
+ * 
+ * This use case implements idempotent registration:
+ * - If user exists: updates their data and emailVerified status
+ * - If user is new: creates them with emailVerified status from Firebase
  */
 @Service
 @RequiredArgsConstructor
@@ -32,44 +41,81 @@ public class RegisterUserUseCase {
   private final UserRepository userRepository;
   private final AuthMapper mapper;
   private final ApplicationEventPublisher eventPublisher;
+  private final JwtTokenProvider jwtTokenProvider;
+  private final JwtProperties jwtProperties;
 
   @Transactional
-  public UserResponse execute(RegisterRequest request) {
-    log.info("Attempting to register new user");
+  public AuthResponse execute(RegisterRequest request) {
+    log.info("Attempting to register user");
 
-    // 1. Verify Firebase token and get email
-    String firebaseUid = identityProvider.verifyToken(request.firebaseToken());
-    UserEmail email = identityProvider.getEmailFromToken(request.firebaseToken());
+    // 1. Verify Firebase token and get authentication details
+    AuthTokenDetails details = identityProvider.verify(request.firebaseToken());
+    UserEmail email = new UserEmail(details.email());
 
-    log.info("Firebase token verified for registration: {}", email.getValue());
+    log.info("Firebase token verified for registration: {}, emailVerified: {}",
+        details.email(), details.emailVerified());
 
-    // 2. Check if email already exists
-    if (userRepository.existsByEmail(email)) {
-      log.warn("Registration failed: email already in use: {}", email.getValue());
-      throw EmailAlreadyInUseException.forEmail(email.getValue());
+    // 2. Find existing user by email
+    Optional<Usuario> existingUser = userRepository.findByEmail(email);
+
+    Usuario usuario;
+    boolean isNewUser = existingUser.isEmpty();
+
+    if (existingUser.isPresent()) {
+      // UPSERT: Update existing user
+      log.info("User already exists with email: {}, updating data", email.getValue());
+      usuario = existingUser.get();
+
+      // Update Firebase UID (in case of provider change)
+      usuario.setFirebaseUid(details.uid());
+
+      // Update personal data
+      usuario.setFirstName(request.firstName());
+      usuario.setLastName(request.lastName());
+      usuario.setPhone(request.phone());
+      usuario.setBirthDate(request.birthDate());
+      usuario.setGender(request.gender());
+
+      // CRITICAL: Sync email verification status from Firebase
+      usuario.setVerified(details.emailVerified());
+
+    } else {
+      // CREATE: New user
+      log.info("Creating new user with email: {}", email.getValue());
+      usuario = Usuario.builder()
+          .email(email)
+          .firebaseUid(details.uid())
+          .firstName(request.firstName())
+          .lastName(request.lastName())
+          .phone(request.phone())
+          .birthDate(request.birthDate())
+          .gender(request.gender())
+          .isVerified(details.emailVerified()) // Set from Firebase
+          .isActive(true)
+          .build();
     }
 
-    // 3. Create new user
-    Usuario usuario = Usuario.builder()
-        .email(email)
-        .firebaseUid(firebaseUid)
-        .firstName(request.firstName())
-        .lastName(request.lastName())
-        .phone(request.phone())
-        .birthDate(request.birthDate())
-        .gender(request.gender())
-        .build();
-
-    // 4. Save user
+    // 3. Save user (create or update)
     usuario = userRepository.save(usuario);
 
-    log.info("User registered successfully: {}", usuario.getId());
+    String accessToken = jwtTokenProvider.generateAccessToken(usuario);
+    String refreshToken = jwtTokenProvider.generateRefreshToken(usuario);
 
-    // 5. Publish domain event
-    eventPublisher.publishEvent(
-        new UserRegisteredEvent(usuario.getId(), email, LocalDateTime.now()));
+    log.info("User {} successfully: {}, emailVerified: {}",
+        isNewUser ? "registered" : "updated", usuario.getId(), usuario.isVerified());
 
-    // 6. Return user response
-    return mapper.toUserResponse(usuario);
+    // 4. Publish domain event (only for new users)
+    if (isNewUser) {
+      eventPublisher.publishEvent(
+          new UserRegisteredEvent(usuario.getId(), email, LocalDateTime.now()));
+    }
+
+    UserResponse userResponse = mapper.toUserResponse(usuario);
+    TokenResponse tokenResponse = TokenResponse.of(
+        accessToken,
+        refreshToken,
+        jwtProperties.accessTokenExpiration());
+    // 5. Return user response
+    return new AuthResponse(userResponse, tokenResponse);
   }
 }

@@ -13,4 +13,6 @@ public interface UserRepository {
     Usuario save(Usuario usuario);
 
     boolean existsByEmail(UserEmail email);
+
+    Optional<Usuario> findById(java.util.UUID id);
 }

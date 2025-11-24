@@ -1,6 +1,7 @@
 package com.zonanquietud.backend.features.auth.infrastructure.persistence;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
@@ -59,5 +60,11 @@ public class UserRepositoryImpl implements UserRepository {
   @Override
   public boolean existsByEmail(UserEmail email) {
     return jpaRepository.existsByEmail(email.getValue());
+  }
+
+  @Override
+  public Optional<Usuario> findById(UUID id) {
+    return jpaRepository.findById(id)
+        .map(mapper::toDomain);
   }
 }

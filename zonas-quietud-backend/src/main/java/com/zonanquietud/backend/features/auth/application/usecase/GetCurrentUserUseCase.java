@@ -14,10 +14,6 @@ import com.zonanquietud.backend.features.auth.infrastructure.security.JwtTokenPr
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * GetCurrentUserUseCase - Retrieves current authenticated user
- * Application layer - orchestrates domain logic
- */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -31,14 +27,11 @@ public class GetCurrentUserUseCase {
     try {
       log.info("Getting current user from token");
 
-      // 1. Validate and extract user ID from token
       jwtTokenProvider.validateToken(token);
       UUID userId = jwtTokenProvider.getUserIdFromToken(token);
 
       log.debug("Extracted user ID from token: {}", userId);
-
-      // 2. Find user by ID
-      Usuario usuario = userRepository.findByFirebaseUid(userId.toString())
+      Usuario usuario = userRepository.findById(userId)
           .orElseThrow(() -> {
             log.error("User not found for ID: {}", userId);
             return UserNotFoundException.byId(userId.toString());
@@ -46,7 +39,6 @@ public class GetCurrentUserUseCase {
 
       log.info("Current user retrieved successfully: {}", usuario.getId());
 
-      // 3. Map to response
       return mapper.toUserResponse(usuario);
 
     } catch (Exception e) {

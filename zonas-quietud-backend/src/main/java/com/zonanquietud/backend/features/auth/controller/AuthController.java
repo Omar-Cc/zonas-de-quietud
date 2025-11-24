@@ -15,6 +15,7 @@ import com.zonanquietud.backend.features.auth.application.usecase.LoginUserUseCa
 import com.zonanquietud.backend.features.auth.application.usecase.LogoutUserUseCase;
 import com.zonanquietud.backend.features.auth.application.usecase.RefreshTokenUseCase;
 import com.zonanquietud.backend.features.auth.application.usecase.RegisterUserUseCase;
+import com.zonanquietud.backend.features.auth.controller.dto.AuthResponse;
 import com.zonanquietud.backend.features.auth.controller.dto.LoginRequest;
 import com.zonanquietud.backend.features.auth.controller.dto.RefreshTokenRequest;
 import com.zonanquietud.backend.features.auth.controller.dto.RegisterRequest;
@@ -52,19 +53,20 @@ public class AuthController {
   private final GetCurrentUserUseCase getCurrentUserUseCase;
 
   @PostMapping("/login")
-  @Operation(summary = "User login", description = "Authenticate user with Firebase token and return JWT tokens")
+  @Operation(summary = "User login", description = "Authenticate user with Firebase token and return user data with JWT tokens")
   @ApiResponses(value = {
-      @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Login successful", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class, subTypes = {TokenResponse.class}))),
+      @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Login successful", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class, subTypes = {
+          AuthResponse.class }))),
       @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Invalid request"),
       @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Invalid credentials")
   })
-  public ResponseEntity<ApiResponse<TokenResponse>> login(@Valid @RequestBody LoginRequest request) {
+  public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody LoginRequest request) {
     log.info("Solicitud de inicio de sesión recibida");
-    TokenResponse tokens = loginUserUseCase.execute(request);
-    log.info("Inicio de sesión exitoso");
+    AuthResponse authResponse = loginUserUseCase.execute(request);
+    log.info("Inicio de sesión exitoso para usuario: {}", authResponse.user().email());
 
     return ResponseEntity.ok(
-        ApiResponse.exito(tokens, "Inicio de sesión exitoso"));
+        ApiResponse.exito(authResponse, "Inicio de sesión exitoso"));
   }
 
   @PostMapping("/register")
@@ -74,13 +76,13 @@ public class AuthController {
       @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Invalid request or email already in use"),
       @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Invalid Firebase token")
   })
-  public ResponseEntity<ApiResponse<UserResponse>> register(@Valid @RequestBody RegisterRequest request) {
+  public ResponseEntity<ApiResponse<AuthResponse>> register(@Valid @RequestBody RegisterRequest request) {
     log.info("Solicitud de registro recibida");
-    UserResponse user = registerUserUseCase.execute(request);
-    log.info("Usuario registrado exitosamente: {}", user.id());
+    AuthResponse authResponse = registerUserUseCase.execute(request);
+    log.info("Usuario registrado exitosamente: {}", authResponse.user().email());
 
     return ResponseEntity.status(HttpStatus.CREATED).body(
-        ApiResponse.creado(user, "Usuario registrado exitosamente"));
+        ApiResponse.creado(authResponse, "Usuario registrado exitosamente"));
   }
 
   @PostMapping("/refresh")
