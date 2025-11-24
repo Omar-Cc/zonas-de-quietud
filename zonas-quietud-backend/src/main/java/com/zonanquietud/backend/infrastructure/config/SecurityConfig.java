@@ -19,10 +19,6 @@ import com.zonanquietud.backend.features.auth.infrastructure.security.JwtAuthent
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * SecurityConfig - Spring Security configuration
- * Infrastructure layer - configures security for the application
- */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -37,16 +33,18 @@ public class SecurityConfig {
     log.info("Configuring security filter chain");
 
     http
-        // Disable CSRF (not needed for stateless JWT authentication)
         .csrf(AbstractHttpConfigurer::disable)
 
-        // Configure authorization
         .authorizeHttpRequests(auth -> auth
             // Public endpoints
+            .requestMatchers("/api/v1/auth/**").permitAll()
+            .requestMatchers("/api/v1/maps/**").permitAll()
+            .requestMatchers("/api/v1/upload/**").authenticated()
+            .requestMatchers("/uploads/images/**").permitAll() // Serve uploaded images
+            .requestMatchers("/api/v1/ratings/**").authenticated()
+            .requestMatchers("/api/v1/incidents/**").authenticated()
+            .requestMatchers("/api/v1/auth/me").authenticated()
             .requestMatchers(
-                "/api/v1/auth/login",
-                "/api/v1/auth/register",
-                "/api/v1/auth/refresh",
                 "/api-docs/**",
                 "/swagger-ui/**",
                 "/swagger-ui.html",
