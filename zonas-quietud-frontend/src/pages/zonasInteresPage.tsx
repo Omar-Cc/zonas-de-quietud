@@ -4,7 +4,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 // MapVisualization exists in the project; import kept for future use if needed
-import { MapVisualization } from "@/components/mapVisualization"
+import { MapVisualization } from "@/features/map/components/mapVisualization"
 import { cn } from "@/lib/utils"
 
 type Zone = {

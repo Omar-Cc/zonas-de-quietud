@@ -81,9 +81,9 @@ export default function RecursosPage() {
 	const [selected, setSelected] = useState<string>(OPTIONS[0].id);
 
 	const current = OPTIONS.find((o) => o.id === selected) ?? OPTIONS[0];
-
+/* 
 	<Navbar isAuthenticated={true} userName="María García" notificationCount={3} />
-
+ */
 	return (
 		<div className="min-h-screen bg-gray-50 py-8 px-6">
 			<div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
