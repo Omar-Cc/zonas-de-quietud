@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080'; // Fallback or env var
+const API_URL = import.meta.env.VITE_API_URL
 
 export const API_ROUTES = {
   AUTH: {
@@ -8,4 +8,10 @@ export const API_ROUTES = {
     LOGOUT: `${API_URL}/api/v1/auth/logout`,
     ME: `${API_URL}/api/v1/auth/me`,
   },
-};
+  MAP: {
+    ELEMENTS: `${API_URL}/api/v1/maps/elements`,
+  },
+  INCIDENTS: {
+    SUBMIT: `${API_URL}/api/v1/incidents`,
+  },
+}
