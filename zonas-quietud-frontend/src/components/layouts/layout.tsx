@@ -1,19 +1,15 @@
-import { Outlet } from "@tanstack/react-router"
-import { Navbar } from "./navbar/navbar"
-import { Footer } from "./footer"
+import type { ReactNode } from 'react'
+import { Navbar } from './navbar/navbar'
+import { Footer } from './footer'
 
-function Layout() {
-
+export default function Layout({
+  children,
+}: Readonly<{ children: ReactNode }>) {
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Navbar />
-
-      <main>
-        <Outlet />
-      </main>
+      <main className="flex-1">{children}</main>
       <Footer />
-    </>
+    </div>
   )
 }
-
-export default Layout

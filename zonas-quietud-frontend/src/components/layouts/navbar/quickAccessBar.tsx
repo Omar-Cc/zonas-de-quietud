@@ -45,7 +45,7 @@ export function QuickAccessBar({ onCategoryClick }: QuickAccessBarProps = {}) {
   ];
 
   return (
-    <div className="bg-white border-b border-border mb-50">
+    <div className="bg-white border-b border-border">
       <div className="max-w-[1400px] mx-auto px-4 py-3">
         <div className="flex items-center justify-between gap-4 overflow-x-auto scrollbar-hide">
           {/* Left - Categories title */}
