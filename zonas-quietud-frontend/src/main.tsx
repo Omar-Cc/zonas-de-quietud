@@ -1,9 +1,11 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { routeTree } from './routeTree.gen'
+import { queryClient } from '@/api/queryClient'
 import '@/index.css'
-import { AuthProvider } from '@/features/auth/context/AuthContext'
 
 const router = createRouter({ routeTree })
 
@@ -18,9 +20,10 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <StrictMode>
-      <AuthProvider>
+      <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
-      </AuthProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </StrictMode>
   )
 }
