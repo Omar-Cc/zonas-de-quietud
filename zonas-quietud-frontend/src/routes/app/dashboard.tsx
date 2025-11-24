@@ -1,6 +1,6 @@
 import UserDashboard from '@/pages/miDashboardPage'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/app/miDashboard')({
+export const Route = createFileRoute('/app/dashboard')({
   component: UserDashboard,
 })
