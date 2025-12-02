@@ -21,12 +21,12 @@ RUN mvn clean package -DskipTests
 # -----------------------------------------------------------------------------
 # ETAPA 2: Ejecución (Runtime) - Imagen ligera JRE
 # -----------------------------------------------------------------------------
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:21-jre-jammy
 
 WORKDIR /app
 
-# Instalar 'base64' (usualmente viene en Alpine, pero aseguramos utilidades básicas)
-RUN apk add --no-cache coreutils
+# Instalar utilidades básicas y herramientas de red para diagnóstico
+RUN apk add --no-cache coreutils curl busybox-extras iputils
 
 COPY --from=build /app/target/*.jar app.jar
 RUN mkdir -p uploads/images
