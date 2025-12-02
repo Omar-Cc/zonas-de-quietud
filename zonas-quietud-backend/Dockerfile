@@ -25,16 +25,20 @@ FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-# Copiamos el .jar generado en la etapa anterior
-# El nombre 'app.jar' facilita el ENTRYPOINT
-COPY --from=build /app/target/*.jar app.jar
+# Instalar 'base64' (usualmente viene en Alpine, pero aseguramos utilidades básicas)
+RUN apk add --no-cache coreutils
 
-# ⚠️ CRÍTICO: Creamos la carpeta para subida de imágenes
-# Esto evita errores si Java intenta guardar algo y la carpeta no existe
+COPY --from=build /app/target/*.jar app.jar
 RUN mkdir -p uploads/images
 
-# Exponemos el puerto 8080 (El estándar de Spring Boot)
+# --- NUEVO: Copiamos el script y le damos permisos ---
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
+
 EXPOSE 8080
 
+# --- NUEVO: Usamos el script como punto de entrada ---
+ENTRYPOINT ["./entrypoint.sh"]
+
 # Comando de arranque
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "app.jar"]
