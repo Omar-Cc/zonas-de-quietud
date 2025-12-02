@@ -45,7 +45,7 @@ export const useAuthMutation = () => {
     onSuccess: (result) => {
       switch (result.action) {
         case 'SUCCESS':
-          setBackendCredentials(result.user, result.token)
+          setBackendCredentials(result.user, result.token, result.refreshToken)
           toast.success('¡Bienvenido de vuelta!')
           navigate({ to: '/app/dashboard' })
           break
@@ -90,7 +90,7 @@ export const useAuthMutation = () => {
     onSuccess: (result) => {
       switch (result.action) {
         case 'SUCCESS':
-          setBackendCredentials(result.user, result.token)
+          setBackendCredentials(result.user, result.token, result.refreshToken)
           toast.success('¡Bienvenido de vuelta!')
           navigate({ to: '/app/dashboard' })
           break
@@ -151,7 +151,8 @@ export const useAuthMutation = () => {
     },
     onSuccess: (data) => {
       const accessToken = data.tokens?.accessToken
-      setBackendCredentials(data.user, accessToken)
+      const refreshToken = data.tokens?.refreshToken
+      setBackendCredentials(data.user, accessToken, refreshToken)
       toast.success('¡Perfil completado exitosamente!')
       navigate({ to: '/app/dashboard' })
     },

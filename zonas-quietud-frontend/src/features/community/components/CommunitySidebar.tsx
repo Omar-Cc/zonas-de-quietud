@@ -27,7 +27,7 @@ export function CommunitySidebar({
               return (
                 <li key={it.id}>
                   <Link
-                    to="/app/comunidad"
+                    to="/comunidad"
                     search={{ tab: it.label }}
                     className={`flex items-center gap-3 px-4 py-3 text-sm ${active ? 'bg-teal-50 text-teal-700' : 'text-gray-800 hover:bg-gray-50'}`}
                     onClick={() => onSelect(it.id)}

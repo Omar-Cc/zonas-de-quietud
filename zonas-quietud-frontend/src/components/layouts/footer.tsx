@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { useState } from 'react'
+import { Link } from '@tanstack/react-router'
 import {
   MapPin,
   Twitter,
@@ -9,86 +9,103 @@ import {
   Mail,
   Phone,
   Heart,
-  ChevronDown,
-  ChevronUp,
   Send,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+} from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Separator } from '@/components/ui/separator'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
+} from '@/components/ui/accordion'
 
 export function Footer() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('')
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert("¡Gracias por suscribirte! " + email);
-    setEmail("");
-  };
+    e.preventDefault()
+    alert('¡Gracias por suscribirte! ' + email)
+    setEmail('')
+  }
 
   const socialLinks = [
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Facebook, href: "#", label: "Facebook" },
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-  ];
+    { icon: Twitter, href: '#', label: 'Twitter' },
+    { icon: Facebook, href: '#', label: 'Facebook' },
+    { icon: Instagram, href: '#', label: 'Instagram' },
+    { icon: Linkedin, href: '#', label: 'LinkedIn' },
+  ]
 
   const navegacion = [
-    { label: "Explorar Mapa", href: "#" },
-    { label: "Cómo Funciona", href: "#" },
-    { label: "Planes y Precios", href: "#" },
-    { label: "Distritos de Lima", href: "#" },
-    { label: "Estadísticas Públicas", href: "#" },
-    { label: "Blog", href: "#" },
-    { label: "Comunidad", href: "#" },
-  ];
+    { label: 'Explorar Mapa', href: '/mapa' },
+    { label: 'Cómo Funciona', href: '/recursos?tab=Cómo%20Funciona' },
+    { label: 'Planes y Precios', href: '/planes' },
+    { label: 'Distritos de Lima', href: '#' },
+    { label: 'Estadísticas Públicas', href: '/recursos?tab=Estadísticas' },
+    { label: 'Blog', href: '/comunidad?tab=Blog' },
+    { label: 'Comunidad', href: '/comunidad' },
+  ]
 
   const recursos = [
-    { label: "Centro de Ayuda", href: "app/recursos" },
-    { label: "Preguntas Frecuentes (FAQ)", href: "#" },
-    { label: "Guía de Calificación", href: "#" },
-    { label: "Términos y Condiciones", href: "#" },
-    { label: "Política de Privacidad", href: "#" },
-    { label: "Política de Cookies", href: "#" },
-    { label: "Código de Conducta", href: "#" },
-    { label: "API para Desarrolladores", href: "#" },
-  ];
+    { label: 'Centro de Ayuda', href: '/recursos?tab=Centro%20de%20Ayuda' },
+    { label: 'Preguntas Frecuentes (FAQ)', href: '/recursos?tab=FAQ' },
+    {
+      label: 'Guía de Calificación',
+      href: '/recursos?tab=Guía%20de%20Calificación',
+    },
+    {
+      label: 'Términos y Condiciones',
+      href: '/recursos?tab=Términos%20y%20Condiciones',
+    },
+    {
+      label: 'Política de Privacidad',
+      href: '/recursos?tab=Política%20de%20Privacidad',
+    },
+    {
+      label: 'Política de Cookies',
+      href: '/recursos?tab=Política%20de%20Cookies',
+    },
+    {
+      label: 'Código de Conducta',
+      href: '/recursos?tab=Código%20de%20Conducta',
+    },
+    {
+      label: 'API para Desarrolladores',
+      href: '/recursos?tab=API%20para%20Desarrolladores',
+    },
+  ]
 
   const contacto = [
-    { label: "Contáctanos", href: "#" },
-    { label: "Reportar Problema Técnico", href: "#" },
-    { label: "Para Empresas", href: "#" },
-    { label: "Trabaja con Nosotros", href: "#" },
-    { label: "Prensa y Medios", href: "#" },
-  ];
+    { label: 'Contáctanos', href: '/contacto?reason=general' },
+    { label: 'Reportar Problema Técnico', href: '/contacto?reason=technical' },
+    { label: 'Para Empresas', href: '/contacto?reason=business' },
+    { label: 'Trabaja con Nosotros', href: '/contacto?reason=jobs' },
+    { label: 'Prensa y Medios', href: '/contacto?reason=press' },
+  ]
 
   return (
-    <footer className="relative bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 border-t border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="border-border relative border-t bg-linear-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Main Footer Content */}
         <div className="py-12 lg:py-16">
           {/* Desktop Layout - 4 Columns */}
-          <div className="hidden lg:grid lg:grid-cols-4 gap-12">
+          <div className="hidden gap-12 lg:grid lg:grid-cols-4">
             {/* Column 1: About */}
             <div className="space-y-6">
               <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <MapPin className="w-6 h-6 text-primary" />
+                <div className="mb-3 flex items-center gap-2">
+                  <MapPin className="text-primary h-6 w-6" />
                   <span className="text-foreground">Zonas de Quietud</span>
                 </div>
                 <p className="text-muted-foreground mb-4">
-                  Una plataforma colaborativa para evaluar la calidad de vida urbana en Lima
+                  Una plataforma colaborativa para evaluar la calidad de vida
+                  urbana en Lima
                 </p>
                 <p className="text-muted-foreground">
-                  Ayudamos a los ciudadanos a tomar decisiones informadas sobre dónde vivir,
-                  trabajar y transitar, mediante calificaciones comunitarias y datos ambientales
-                  en tiempo real.
+                  Ayudamos a los ciudadanos a tomar decisiones informadas sobre
+                  dónde vivir, trabajar y transitar, mediante calificaciones
+                  comunitarias y datos ambientales en tiempo real.
                 </p>
               </div>
 
@@ -99,9 +116,9 @@ export function Footer() {
                     key={social.label}
                     href={social.href}
                     aria-label={social.label}
-                    className="w-10 h-10 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors flex items-center justify-center"
+                    className="bg-muted hover:bg-primary hover:text-primary-foreground flex h-10 w-10 items-center justify-center rounded-full transition-colors"
                   >
-                    <social.icon className="w-5 h-5" />
+                    <social.icon className="h-5 w-5" />
                   </a>
                 ))}
               </div>
@@ -130,7 +147,7 @@ export function Footer() {
               <ul className="space-y-3">
                 {recursos.map((item) => (
                   <li key={item.label}>
-                    {item.href.startsWith("/") ? (
+                    {item.href.startsWith('/') ? (
                       <Link
                         to={item.href}
                         className="text-muted-foreground hover:text-foreground transition-colors"
@@ -169,16 +186,16 @@ export function Footer() {
               <div className="mt-6 space-y-3">
                 <a
                   href="mailto:contacto@zonasquietud.pe"
-                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors"
                 >
-                  <Mail className="w-4 h-4" />
+                  <Mail className="h-4 w-4" />
                   <span>contacto@zonasquietud.pe</span>
                 </a>
                 <a
                   href="https://wa.me/51999999999"
-                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors"
                 >
-                  <Phone className="w-4 h-4" />
+                  <Phone className="h-4 w-4" />
                   <span>+51 999 999 999</span>
                 </a>
               </div>
@@ -196,7 +213,7 @@ export function Footer() {
                     className="flex-1"
                   />
                   <Button type="submit" size="icon">
-                    <Send className="w-4 h-4" />
+                    <Send className="h-4 w-4" />
                   </Button>
                 </form>
               </div>
@@ -204,21 +221,22 @@ export function Footer() {
           </div>
 
           {/* Tablet Layout - 2 Columns */}
-          <div className="hidden md:grid md:grid-cols-2 lg:hidden gap-8">
+          <div className="hidden gap-8 md:grid md:grid-cols-2 lg:hidden">
             {/* Column 1: About */}
             <div className="space-y-6">
               <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <MapPin className="w-6 h-6 text-primary" />
+                <div className="mb-3 flex items-center gap-2">
+                  <MapPin className="text-primary h-6 w-6" />
                   <span className="text-foreground">Zonas de Quietud</span>
                 </div>
                 <p className="text-muted-foreground mb-4">
-                  Una plataforma colaborativa para evaluar la calidad de vida urbana en Lima
+                  Una plataforma colaborativa para evaluar la calidad de vida
+                  urbana en Lima
                 </p>
                 <p className="text-muted-foreground">
-                  Ayudamos a los ciudadanos a tomar decisiones informadas sobre dónde vivir,
-                  trabajar y transitar, mediante calificaciones comunitarias y datos ambientales
-                  en tiempo real.
+                  Ayudamos a los ciudadanos a tomar decisiones informadas sobre
+                  dónde vivir, trabajar y transitar, mediante calificaciones
+                  comunitarias y datos ambientales en tiempo real.
                 </p>
               </div>
 
@@ -229,9 +247,9 @@ export function Footer() {
                     key={social.label}
                     href={social.href}
                     aria-label={social.label}
-                    className="w-10 h-10 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors flex items-center justify-center"
+                    className="bg-muted hover:bg-primary hover:text-primary-foreground flex h-10 w-10 items-center justify-center rounded-full transition-colors"
                   >
-                    <social.icon className="w-5 h-5" />
+                    <social.icon className="h-5 w-5" />
                   </a>
                 ))}
               </div>
@@ -249,7 +267,7 @@ export function Footer() {
                     className="flex-1"
                   />
                   <Button type="submit" size="icon">
-                    <Send className="w-4 h-4" />
+                    <Send className="h-4 w-4" />
                   </Button>
                 </form>
               </div>
@@ -272,11 +290,11 @@ export function Footer() {
                   ))}
                 </ul>
 
-                <h3 className="text-foreground mb-4 mt-6">Recursos</h3>
+                <h3 className="text-foreground mt-6 mb-4">Recursos</h3>
                 <ul className="space-y-3">
                   {recursos.slice(0, 4).map((item) => (
                     <li key={item.label}>
-                      {item.href.startsWith("/") ? (
+                      {item.href.startsWith('/') ? (
                         <Link
                           to={item.href}
                           className="text-muted-foreground hover:text-foreground transition-colors"
@@ -314,16 +332,16 @@ export function Footer() {
                 <div className="mt-6 space-y-3">
                   <a
                     href="mailto:contacto@zonasquietud.pe"
-                    className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors"
                   >
-                    <Mail className="w-4 h-4" />
+                    <Mail className="h-4 w-4" />
                     <span>contacto@zonasquietud.pe</span>
                   </a>
                   <a
                     href="https://wa.me/51999999999"
-                    className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors"
                   >
-                    <Phone className="w-4 h-4" />
+                    <Phone className="h-4 w-4" />
                     <span>+51 999 999 999</span>
                   </a>
                 </div>
@@ -332,32 +350,33 @@ export function Footer() {
           </div>
 
           {/* Mobile Layout - Accordions */}
-          <div className="md:hidden space-y-6">
+          <div className="space-y-6 md:hidden">
             {/* About Section - Always Expanded */}
             <div className="space-y-4">
-              <div className="flex items-center gap-2 mb-3">
-                <MapPin className="w-6 h-6 text-primary" />
+              <div className="mb-3 flex items-center gap-2">
+                <MapPin className="text-primary h-6 w-6" />
                 <span className="text-foreground">Zonas de Quietud</span>
               </div>
               <p className="text-muted-foreground">
-                Una plataforma colaborativa para evaluar la calidad de vida urbana en Lima
+                Una plataforma colaborativa para evaluar la calidad de vida
+                urbana en Lima
               </p>
               <p className="text-muted-foreground">
-                Ayudamos a los ciudadanos a tomar decisiones informadas sobre dónde vivir,
-                trabajar y transitar, mediante calificaciones comunitarias y datos ambientales en
-                tiempo real.
+                Ayudamos a los ciudadanos a tomar decisiones informadas sobre
+                dónde vivir, trabajar y transitar, mediante calificaciones
+                comunitarias y datos ambientales en tiempo real.
               </p>
 
               {/* Social Media - Larger on Mobile */}
-              <div className="flex gap-3 justify-center py-4">
+              <div className="flex justify-center gap-3 py-4">
                 {socialLinks.map((social) => (
                   <a
                     key={social.label}
                     href={social.href}
                     aria-label={social.label}
-                    className="w-12 h-12 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors flex items-center justify-center"
+                    className="bg-muted hover:bg-primary hover:text-primary-foreground flex h-12 w-12 items-center justify-center rounded-full transition-colors"
                   >
-                    <social.icon className="w-6 h-6" />
+                    <social.icon className="h-6 w-6" />
                   </a>
                 ))}
               </div>
@@ -375,7 +394,7 @@ export function Footer() {
                       <li key={item.label}>
                         <a
                           href={item.href}
-                          className="text-muted-foreground hover:text-foreground transition-colors block"
+                          className="text-muted-foreground hover:text-foreground block transition-colors"
                         >
                           {item.label}
                         </a>
@@ -393,17 +412,17 @@ export function Footer() {
                   <ul className="space-y-3">
                     {recursos.map((item) => (
                       <li key={item.label}>
-                        {item.href.startsWith("/") ? (
+                        {item.href.startsWith('/') ? (
                           <Link
                             to={item.href}
-                            className="text-muted-foreground hover:text-foreground transition-colors block"
+                            className="text-muted-foreground hover:text-foreground block transition-colors"
                           >
                             {item.label}
                           </Link>
                         ) : (
                           <a
                             href={item.href}
-                            className="text-muted-foreground hover:text-foreground transition-colors block"
+                            className="text-muted-foreground hover:text-foreground block transition-colors"
                           >
                             {item.label}
                           </a>
@@ -424,7 +443,7 @@ export function Footer() {
                       <li key={item.label}>
                         <a
                           href={item.href}
-                          className="text-muted-foreground hover:text-foreground transition-colors block"
+                          className="text-muted-foreground hover:text-foreground block transition-colors"
                         >
                           {item.label}
                         </a>
@@ -435,16 +454,16 @@ export function Footer() {
                   <div className="mt-6 space-y-3">
                     <a
                       href="mailto:contacto@zonasquietud.pe"
-                      className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                      className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors"
                     >
-                      <Mail className="w-4 h-4" />
+                      <Mail className="h-4 w-4" />
                       <span>contacto@zonasquietud.pe</span>
                     </a>
                     <a
                       href="https://wa.me/51999999999"
-                      className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                      className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors"
                     >
-                      <Phone className="w-4 h-4" />
+                      <Phone className="h-4 w-4" />
                       <span>+51 999 999 999</span>
                     </a>
                   </div>
@@ -465,7 +484,7 @@ export function Footer() {
                   className="flex-1"
                 />
                 <Button type="submit" size="icon">
-                  <Send className="w-4 h-4" />
+                  <Send className="h-4 w-4" />
                 </Button>
               </form>
             </div>
@@ -476,27 +495,28 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="py-6">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col items-center justify-between gap-4 lg:flex-row">
             {/* Left - Copyright */}
             <div className="text-muted-foreground text-center lg:text-left">
-              © 2025 Zonas de Quietud - Lima, Perú. Todos los derechos reservados.
+              © 2025 Zonas de Quietud - Lima, Perú. Todos los derechos
+              reservados.
             </div>
 
             {/* Center - Made with Love */}
-            <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="text-muted-foreground flex items-center gap-2">
               <span>Hecho con</span>
-              <Heart className="w-4 h-4 text-red-500 fill-red-500" />
+              <Heart className="h-4 w-4 fill-red-500 text-red-500" />
               <span>para mejorar nuestra ciudad</span>
             </div>
 
             {/* Right - Language Selector */}
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
-                <button className="text-foreground hover:text-primary transition-colors px-2 py-1 rounded">
+                <button className="text-foreground hover:text-primary rounded px-2 py-1 transition-colors">
                   ES
                 </button>
                 <span className="text-muted-foreground">|</span>
-                <button className="text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded">
+                <button className="text-muted-foreground hover:text-foreground rounded px-2 py-1 transition-colors">
                   EN
                 </button>
               </div>
@@ -505,5 +525,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  );
+  )
 }

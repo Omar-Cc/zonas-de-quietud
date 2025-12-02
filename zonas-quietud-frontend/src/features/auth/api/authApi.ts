@@ -1,20 +1,20 @@
 import { apiClient } from '@/api/apiClient'
+import { API_PATHS } from '@/config/apiRoutes'
 import type {
   ApiResponse,
   UserData,
   LoginBackendResult,
   RegisterBackendRequest,
   AuthResponse,
+  TokenData,
 } from '../types'
-
-const API_BASE = '/api/v1/auth'
 
 export const loginWithBackend = async (
   firebaseToken: string
 ): Promise<LoginBackendResult> => {
   try {
     const response = await apiClient.post<ApiResponse<AuthResponse>>(
-      `${API_BASE}/login`,
+      API_PATHS.AUTH.LOGIN,
       { firebaseToken },
       {
         headers: {
@@ -32,6 +32,7 @@ export const loginWithBackend = async (
         action: 'SUCCESS',
         user: datos.user,
         token: datos.tokens.accessToken,
+        refreshToken: datos.tokens.refreshToken,
       }
     }
 
@@ -48,7 +49,7 @@ export const registerWithBackend = async (
   data: RegisterBackendRequest
 ): Promise<AuthResponse> => {
   const response = await apiClient.post<ApiResponse<AuthResponse>>(
-    `${API_BASE}/register`,
+    API_PATHS.AUTH.REGISTER,
     data
   )
 
@@ -67,7 +68,7 @@ export const getCurrentUser = async (
   backendToken: string
 ): Promise<UserData> => {
   const response = await apiClient.get<ApiResponse<UserData>>(
-    `${API_BASE}/me`,
+    API_PATHS.AUTH.ME,
     {
       headers: {
         Authorization: `Bearer ${backendToken}`,
@@ -88,8 +89,27 @@ export const getCurrentUser = async (
 
 export const logoutBackend = async (): Promise<void> => {
   try {
-    await apiClient.post(`${API_BASE}/logout`)
+    await apiClient.post(API_PATHS.AUTH.LOGOUT)
   } catch (error) {
     console.warn('Error during backend logout:', error)
   }
+}
+
+export const refreshToken = async (
+  refreshToken: string
+): Promise<TokenData> => {
+  const response = await apiClient.post<ApiResponse<TokenData>>(
+    API_PATHS.AUTH.REFRESH,
+    { refreshToken }
+  )
+
+  const esExitoso =
+    response.data.exitoso === true ||
+    (response.status >= 200 && response.status < 300 && !!response.data.datos)
+
+  if (!esExitoso || !response.data.datos) {
+    throw new Error(response.data.mensaje || 'Error al refrescar el token')
+  }
+
+  return response.data.datos
 }

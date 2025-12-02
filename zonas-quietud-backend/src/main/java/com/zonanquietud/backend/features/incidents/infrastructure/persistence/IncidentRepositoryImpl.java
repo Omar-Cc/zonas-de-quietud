@@ -15,8 +15,8 @@ import com.zonanquietud.backend.features.incidents.infrastructure.persistence.re
 import lombok.RequiredArgsConstructor;
 
 /**
- * IncidentRepositoryImpl - Implementation of domain repository
- * Infrastructure layer - Adapter between domain and JPA
+ * IncidentRepositoryImpl - Implementación del repositorio de dominio
+ * Capa de infraestructura - Adaptador entre dominio y JPA
  */
 @Repository
 @RequiredArgsConstructor
@@ -27,7 +27,7 @@ public class IncidentRepositoryImpl implements IncidentRepository {
 
   @Override
   public Incident save(Incident incident) {
-    incident.validate(); // Domain validation
+    incident.validate();
 
     var entity = mapper.toEntity(incident);
     var savedEntity = jpaRepository.save(entity);

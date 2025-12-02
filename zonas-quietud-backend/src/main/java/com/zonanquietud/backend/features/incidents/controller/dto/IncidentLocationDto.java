@@ -2,10 +2,7 @@ package com.zonanquietud.backend.features.incidents.controller.dto;
 
 import jakarta.validation.constraints.NotNull;
 
-/**
- * IncidentLocationDto - DTO for incident location with accuracy
- * Controller layer
- */
+/** IncidentLocationDto - DTO para ubicación de incidente con precisión */
 public record IncidentLocationDto(
     @NotNull(message = "latitude is required") Double latitude,
 

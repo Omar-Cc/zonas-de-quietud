@@ -1,9 +1,6 @@
 package com.zonanquietud.backend.features.incidents.domain.model;
 
-/**
- * IncidentSeverity - Severity levels for incidents
- * Domain layer
- */
+/** IncidentSeverity - Niveles de severidad para incidentes */
 public enum IncidentSeverity {
   LOW,
   MEDIUM,

@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react'
-import { useSearch } from '@tanstack/react-router'
-import { Link } from '@tanstack/react-router'
+import { Link, useSearch } from '@tanstack/react-router'
 import { CommunitySidebar } from './CommunitySidebar'
 import { CommunityContent } from './CommunityContent'
 import { COMMUNITY_ITEMS } from '../data/communityItems'
 
 export function CommunityHub() {
-  const search = useSearch({ from: '/app/comunidad' })
+  const search = useSearch({ from: '/comunidad' })
   const [selected, setSelected] = useState(COMMUNITY_ITEMS[0].id)
 
-  // Sync with URL search params
   useEffect(() => {
     if (search.tab) {
       const match = COMMUNITY_ITEMS.find(
@@ -57,7 +55,7 @@ export function CommunityHub() {
                 Sé parte de la comunidad: comparte, opina y propone iniciativas.
               </p>
               <Link
-                to="/app/comunidad"
+                to="/comunidad"
                 search={{ tab: 'Eventos' }}
                 className="mt-3 inline-block rounded-md bg-emerald-600 px-3 py-2 text-sm text-white"
               >

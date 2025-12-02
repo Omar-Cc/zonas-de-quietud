@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import {
   Search,
   MapPin,
@@ -41,13 +41,12 @@ interface NavbarProps {
 }
 
 import { useAuthStore } from '@/store/authStore'
-import { useNavigate } from '@tanstack/react-router'
 
 export function Navbar({
   showTopBar = true,
   showQuickAccess = true,
   onNavigate,
-}: NavbarProps) {
+}: Readonly<NavbarProps>) {
   const { backendUser, firebaseUser, status, logout } = useAuthStore()
   const navigate = useNavigate()
   const [searchValue, setSearchValue] = useState('')
@@ -91,6 +90,7 @@ export function Navbar({
         <MainNavbar
           isAuthenticated={status === 'authenticated'}
           userName={backendUser?.firstName || 'Usuario'}
+          userEmail={backendUser?.email || 'usuario@email.com'}
           userAvatar={firebaseUser?.photoURL || undefined}
           notificationCount={0}
           onMenuClick={() => setMobileMenuOpen(true)}
@@ -182,7 +182,7 @@ export function Navbar({
                 <Info className="mr-2 h-4 w-4" />
                 Cómo Funciona
               </Button>
-              <Link to="/app/planes" onClick={() => setMobileMenuOpen(false)}>
+              <Link to="/planes" onClick={() => setMobileMenuOpen(false)}>
                 <Button variant="ghost" className="w-full justify-start">
                   Planes
                 </Button>

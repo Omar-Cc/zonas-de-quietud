@@ -8,8 +8,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * WebConfig - Configuration for serving static files
- * Infrastructure layer
+ * WebConfig - Configuración para servir archivos estáticos
+ * Capa de infraestructura
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -19,7 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    // Serve uploaded images as static resources
+
     String uploadPath = Paths.get(uploadDir).toAbsolutePath().toUri().toString();
 
     registry.addResourceHandler("/uploads/images/**")

@@ -22,10 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * MapController - REST API for map elements
- * Controller layer - HTTP endpoints
- */
+/** MapController - API REST para elementos del mapa */
 @RestController
 @RequestMapping("/api/v1/maps")
 @RequiredArgsConstructor
@@ -37,16 +34,16 @@ public class MapController {
   private final MapElementRepository repository;
 
   /**
-   * Get map elements filtered by viewport (REQUIRED)
+   * Obtener elementos del mapa filtrados por viewport (REQUERIDO)
    * 
-   * All viewport parameters are REQUIRED to prevent full database queries.
-   * This ensures efficient spatial filtering and prevents system overload.
+   * Todos los parámetros de viewport son REQUERIDOS para prevenir consultas completas a la base de datos.
+   * Esto asegura filtrado espacial eficiente y previene sobrecarga del sistema.
    * 
-   * @param minLat Minimum latitude (REQUIRED)
-   * @param minLng Minimum longitude (REQUIRED)
-   * @param maxLat Maximum latitude (REQUIRED)
-   * @param maxLng Maximum longitude (REQUIRED)
-   * @return List of map elements with coordinates in [lat, lng] format
+   * @param minLat Latitud mínima (REQUERIDO)
+   * @param minLng Longitud mínima (REQUERIDO)
+   * @param maxLat Latitud máxima (REQUERIDO)
+   * @param maxLng Longitud máxima (REQUERIDO)
+   * @return Lista de elementos del mapa con coordenadas en formato [lat, lng]
    */
   @GetMapping("/elements")
   @Operation(summary = "Get map elements by viewport", description = "Retrieve map elements filtered by viewport bounds (ALL PARAMETERS REQUIRED). "
@@ -71,9 +68,7 @@ public class MapController {
     return ResponseEntity.ok(ApiResponse.exito(elements, message));
   }
 
-  /**
-   * Get single map element by ID
-   */
+  /** Obtener un elemento del mapa por ID */
   @GetMapping("/elements/{id}")
   @Operation(summary = "Get map element by ID", description = "Retrieve a single map element by its UUID")
   public ResponseEntity<ApiResponse<MapElementResponse>> getElementById(
@@ -82,8 +77,7 @@ public class MapController {
 
     return repository.findById(id)
         .map(element -> {
-          // Convert to response (simplified, should use use case)
-          List<List<Double>> coords = List.of(); // TODO: Extract coordinates
+          List<List<Double>> coords = List.of();
           MapElementResponse response = new MapElementResponse(
               element.getId(),
               element.getName(),
@@ -95,9 +89,7 @@ public class MapController {
         .orElse(ResponseEntity.notFound().build());
   }
 
-  /**
-   * Health check endpoint to verify data loading
-   */
+  /** Endpoint de health check para verificar carga de datos */
   @GetMapping("/health")
   @Operation(summary = "Map service health check", description = "Returns the count of loaded map elements")
   public ResponseEntity<ApiResponse<Long>> health() {

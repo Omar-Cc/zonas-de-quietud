@@ -9,10 +9,7 @@ import com.zonanquietud.backend.features.incidents.domain.model.IncidentStatus;
 import com.zonanquietud.backend.features.incidents.domain.model.IncidentType;
 import com.zonanquietud.backend.features.incidents.domain.model.IncidentUrgency;
 
-/**
- * IncidentResponse - DTO for incident responses
- * Controller layer
- */
+/** IncidentResponse - DTO para respuestas de incidentes */
 public record IncidentResponse(
     UUID id,
     UUID reporterId,

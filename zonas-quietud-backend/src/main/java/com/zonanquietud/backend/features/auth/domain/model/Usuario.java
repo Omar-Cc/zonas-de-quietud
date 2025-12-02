@@ -10,8 +10,8 @@ import com.zonanquietud.backend.features.auth.domain.enums.Membership;
 import com.zonanquietud.backend.features.auth.domain.valueobject.UserEmail;
 
 /**
- * Usuario - Domain Model (Aggregate Root)
- * Pure Java implementation without external dependencies
+ * Usuario - Modelo de Dominio (Raíz de Agregado)
+ * Implementación Java pura sin dependencias externas
  */
 public class Usuario {
   private UUID id;
@@ -36,11 +36,9 @@ public class Usuario {
 
   private int loginCount;
 
-  // Private constructor for builder pattern
   private Usuario() {
   }
 
-  // Constructor with validation
   public Usuario(UUID id, UserEmail email, String firebaseUid, String firstName, String lastName) {
     if (email == null) {
       throw new IllegalArgumentException("Email no puede ser nulo");
@@ -67,12 +65,11 @@ public class Usuario {
     this.createdAt = LocalDateTime.now();
   }
 
-  // Factory method to create new user
+  /** Método de fábrica para crear un nuevo usuario */
   public static Usuario createNew(UserEmail email, String firebaseUid, String firstName, String lastName) {
     return new Usuario(UUID.randomUUID(), email, firebaseUid, firstName, lastName);
   }
 
-  // Business logic methods
   public void updateLastLogin() {
     this.lastLoginAt = LocalDateTime.now();
     this.loginCount++;
@@ -121,7 +118,6 @@ public class Usuario {
     return membership == Membership.PREMIUM;
   }
 
-  // Getters
   public UUID getId() {
     return id;
   }
@@ -182,7 +178,6 @@ public class Usuario {
     return loginCount;
   }
 
-  // Setters (for infrastructure layer mapping)
   public void setId(UUID id) {
     this.id = id;
   }
@@ -271,7 +266,6 @@ public class Usuario {
         '}';
   }
 
-  // Builder pattern (pure Java)
   public static Builder builder() {
     return new Builder();
   }
@@ -359,7 +353,7 @@ public class Usuario {
     }
 
     public Usuario build() {
-      // Validate required fields
+
       if (usuario.email == null) {
         throw new IllegalStateException("Email es requerido");
       }
@@ -373,7 +367,6 @@ public class Usuario {
         throw new IllegalStateException("Apellido es requerido");
       }
 
-      // Set defaults if not provided
       if (usuario.id == null) {
         usuario.id = UUID.randomUUID();
       }

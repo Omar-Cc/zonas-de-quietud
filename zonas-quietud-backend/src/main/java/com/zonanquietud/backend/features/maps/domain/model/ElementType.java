@@ -7,6 +7,6 @@ package com.zonanquietud.backend.features.maps.domain.model;
  * ZONE: Elementos poligonales (parques, plazas, áreas verdes)
  */
 public enum ElementType {
-  STREET, // LineString geometry
-  ZONE // Polygon geometry
+  STREET,
+  ZONE
 }

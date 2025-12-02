@@ -4,16 +4,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 /**
- * UploadImageRequest - DTO for image upload
- * Accepts base64 encoded image data
+ * UploadImageRequest - DTO para subida de imagen
+ * Acepta datos de imagen codificados en base64
  */
 public record UploadImageRequest(
     @NotBlank(message = "Image data is required") String imageData,
 
     @Pattern(regexp = "image/(jpeg|jpg|png|webp)", message = "Only JPEG, PNG, and WebP images are supported") String mimeType) {
-  /**
-   * Extract base64 data without data URI prefix
-   */
+  /** Extraer datos base64 sin prefijo data URI */
   public String extractBase64Data() {
     if (imageData.contains(",")) {
       return imageData.split(",")[1];
@@ -21,12 +19,10 @@ public record UploadImageRequest(
     return imageData;
   }
 
-  /**
-   * Determine file extension from mime type
-   */
+  /** Determinar extensión de archivo desde tipo MIME */
   public String getFileExtension() {
     if (mimeType == null) {
-      return "jpg"; // default
+      return "jpg";
     }
     return switch (mimeType) {
       case "image/jpeg", "image/jpg" -> "jpg";

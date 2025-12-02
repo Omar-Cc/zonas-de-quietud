@@ -12,9 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * IncidentEventListener - Listens to incident events and applies penalties to
- * map scores
- * Maps module - Event handler
+ * IncidentEventListener - Escucha eventos de incidentes y aplica penalizaciones a puntajes del mapa
+ * Módulo de mapas - Manejador de eventos
  */
 @Component
 @RequiredArgsConstructor
@@ -24,8 +23,8 @@ public class IncidentEventListener {
   private final MapElementRepository repository;
 
   /**
-   * Handle incident reported event
-   * Applies a penalty to the map element score based on severity
+   * Manejar evento de incidente reportado
+   * Aplica una penalización al puntaje del elemento del mapa basado en la severidad
    */
   @EventListener
   @Transactional
@@ -45,9 +44,7 @@ public class IncidentEventListener {
             () -> log.warn("MapElement not found: {}", event.mapElementId()));
   }
 
-  /**
-   * Calculate penalty based on incident severity
-   */
+  /** Calcular penalización basada en la severidad del incidente */
   private double calculatePenalty(IncidentSeverity severity) {
     return switch (severity) {
       case LOW -> 0.5;

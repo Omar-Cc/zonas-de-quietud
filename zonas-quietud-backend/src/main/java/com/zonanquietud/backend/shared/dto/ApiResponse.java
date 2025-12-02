@@ -35,11 +35,7 @@ public record ApiResponse<T>(
     String metodo,
     Long reintentoEnSegundos) {
 
-  // ==================== FACTORY METHODS - ÉXITO ====================
-
-  /**
-   * Respuesta exitosa con datos simples
-   */
+  /** Respuesta exitosa con datos simples */
   public static <T> ApiResponse<T> exito(T datos, String mensaje) {
     return new ApiResponse<>(
         UUID.randomUUID().toString(),
@@ -104,11 +100,7 @@ public record ApiResponse<T>(
         null);
   }
 
-  // ==================== FACTORY METHODS - ERROR ====================
-
-  /**
-   * Respuesta de error simple
-   */
+  /** Respuesta de error simple */
   public static <T> ApiResponse<T> error(
       HttpStatus status,
       String mensaje,
@@ -220,11 +212,6 @@ public record ApiResponse<T>(
         reintentoEnSegundos);
   }
 
-  // ==================== INNER CLASSES ====================
-
-  /**
-   * Metadatos de paginación
-   */
   public record MetadatosPaginacion(
       long paginaActual,
       long elementosPorPagina,

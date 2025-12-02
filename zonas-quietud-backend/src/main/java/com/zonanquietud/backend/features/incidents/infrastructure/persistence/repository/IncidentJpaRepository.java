@@ -7,19 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.zonanquietud.backend.features.incidents.infrastructure.persistence.jpa.IncidentJpaEntity;
 
-/**
- * IncidentJpaRepository - Spring Data JPA repository for incidents
- * Infrastructure layer
- */
+/** IncidentJpaRepository - Repositorio Spring Data JPA para incidentes */
 public interface IncidentJpaRepository extends JpaRepository<IncidentJpaEntity, UUID> {
 
-  /**
-   * Find all incidents for a specific map element
-   */
+  /** Buscar todos los incidentes de un elemento del mapa específico */
   List<IncidentJpaEntity> findByMapElementId(UUID mapElementId);
 
-  /**
-   * Find all incidents by a specific reporter
-   */
+  /** Buscar todos los incidentes de un reportero específico */
   List<IncidentJpaEntity> findByReporterId(UUID reporterId);
 }

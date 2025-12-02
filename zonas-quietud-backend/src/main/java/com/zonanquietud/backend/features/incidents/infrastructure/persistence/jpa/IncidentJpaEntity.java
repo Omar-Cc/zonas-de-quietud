@@ -29,8 +29,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * IncidentJpaEntity - JPA entity for incidents with PostGIS support
- * Infrastructure layer
+ * IncidentJpaEntity - Entidad JPA para incidentes con soporte PostGIS
+ * Capa de infraestructura
  */
 @Entity
 @Table(name = "incidents")
@@ -71,13 +71,11 @@ public class IncidentJpaEntity {
   @Column(name = "notify_authorities")
   private Boolean notifyAuthorities;
 
-  // Evidence photos in separate table
   @ElementCollection
   @CollectionTable(name = "incident_photos", joinColumns = @JoinColumn(name = "incident_id"))
   @Column(name = "photo_url")
   private List<String> evidencePhotos;
 
-  // Location as PostGIS Point
   @Column(name = "location", columnDefinition = "GEOMETRY(Point, 4326)", nullable = false)
   private Point location;
 

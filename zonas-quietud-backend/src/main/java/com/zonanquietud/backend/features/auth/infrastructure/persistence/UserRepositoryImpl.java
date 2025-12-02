@@ -15,8 +15,8 @@ import com.zonanquietud.backend.features.auth.infrastructure.persistence.reposit
 import lombok.RequiredArgsConstructor;
 
 /**
- * UserRepositoryImpl - Implementation of UserRepository port
- * Infrastructure layer - implements domain repository interface
+ * UserRepositoryImpl - Implementación del puerto UserRepository
+ * Capa de infraestructura - implementa interfaz de repositorio de dominio
  */
 @Repository
 @RequiredArgsConstructor
@@ -41,16 +41,13 @@ public class UserRepositoryImpl implements UserRepository {
   public Usuario save(Usuario usuario) {
     UserJpaEntity entity;
 
-    // Check if this is an update (entity exists in DB) or a new entity
     if (usuario.getId() != null && jpaRepository.existsById(usuario.getId())) {
-      // Update existing - fetch from DB and update fields
       entity = jpaRepository.findById(usuario.getId())
           .orElseThrow(() -> new IllegalStateException("Entity should exist"));
       mapper.updateEntity(entity, usuario);
     } else {
-      // Create new - set ID to null to let JPA generate it
       entity = mapper.toEntity(usuario);
-      entity.setId(null); // Force JPA to treat as new entity
+      entity.setId(null);
     }
 
     UserJpaEntity savedEntity = jpaRepository.save(entity);

@@ -2,8 +2,8 @@ package com.zonanquietud.backend.features.auth.domain.model;
 
 /**
  * AuthTokenDetails - Value Object
- * Encapsulates authentication details extracted from Firebase ID tokens
- * This prevents Firebase SDK objects from leaking into the domain layer
+ * Encapsula detalles de autenticación extraídos de tokens ID de Firebase
+ * Esto previene que objetos del SDK de Firebase se filtren a la capa de dominio
  */
 public record AuthTokenDetails(
     String uid,

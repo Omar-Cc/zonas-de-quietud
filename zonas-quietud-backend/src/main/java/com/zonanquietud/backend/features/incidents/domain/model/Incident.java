@@ -11,8 +11,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * Incident - Domain model for incident reports
- * Domain layer
+ * Incident - Modelo de dominio para reportes de incidentes
+ * Capa de dominio
  */
 @Getter
 @Builder
@@ -35,9 +35,7 @@ public class Incident {
   private Instant createdAt;
   private Instant updatedAt;
 
-  /**
-   * Validate incident data
-   */
+  /** Validar datos del incidente */
   public void validate() {
     if (reporterId == null) {
       throw new IllegalArgumentException("reporterId cannot be null");

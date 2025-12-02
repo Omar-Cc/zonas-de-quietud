@@ -5,16 +5,11 @@ import org.springframework.stereotype.Component;
 import com.zonanquietud.backend.features.ratings.domain.model.Rating;
 import com.zonanquietud.backend.features.ratings.infrastructure.persistence.jpa.RatingJpaEntity;
 
-/**
- * RatingMapper - Bidirectional mapper between domain and JPA entities
- * Infrastructure layer
- */
+/** RatingMapper - Mapeador bidireccional entre dominio y entidades JPA */
 @Component
 public class RatingMapper {
 
-  /**
-   * Convert domain model to JPA entity
-   */
+  /** Convertir modelo de dominio a entidad JPA */
   public RatingJpaEntity toEntity(Rating rating) {
     if (rating == null) {
       return null;
@@ -39,9 +34,7 @@ public class RatingMapper {
         .build();
   }
 
-  /**
-   * Convert JPA entity to domain model
-   */
+  /** Convertir entidad JPA a modelo de dominio */
   public Rating toDomain(RatingJpaEntity entity) {
     if (entity == null) {
       return null;

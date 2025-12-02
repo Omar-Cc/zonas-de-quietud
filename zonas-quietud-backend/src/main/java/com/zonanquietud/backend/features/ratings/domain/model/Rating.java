@@ -11,8 +11,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * Rating - Domain model for street/zone ratings
- * Domain layer
+ * Rating - Modelo de dominio para calificaciones de calles/zonas
+ * Capa de dominio
  */
 @Getter
 @Builder
@@ -26,25 +26,20 @@ public class Rating {
   private String comments;
   private String ratingType;
 
-  // Detailed ratings (0-10 scale)
   private Double security;
   private Double airQuality;
   private Double noise;
   private Double accessibility;
   private Double tranquility;
 
-  // Photos
   private List<String> photos;
 
-  // Location (exact point where rating was submitted)
   private Point location;
 
   private Instant createdAt;
   private Instant updatedAt;
 
-  /**
-   * Validate rating data
-   */
+  /** Validar datos de calificación */
   public void validate() {
     if (userId == null) {
       throw new IllegalArgumentException("userId cannot be null");

@@ -35,4 +35,5 @@ serviceAccountKey.json
 keys/
 
 .env
+.env.*
 !.env.example

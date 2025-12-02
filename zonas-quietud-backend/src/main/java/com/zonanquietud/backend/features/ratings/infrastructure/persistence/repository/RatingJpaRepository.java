@@ -9,25 +9,16 @@ import org.springframework.data.repository.query.Param;
 
 import com.zonanquietud.backend.features.ratings.infrastructure.persistence.jpa.RatingJpaEntity;
 
-/**
- * RatingJpaRepository - Spring Data JPA repository for ratings
- * Infrastructure layer
- */
+/** RatingJpaRepository - Repositorio Spring Data JPA para calificaciones */
 public interface RatingJpaRepository extends JpaRepository<RatingJpaEntity, UUID> {
 
-  /**
-   * Find all ratings for a specific map element
-   */
+  /** Buscar todas las calificaciones de un elemento del mapa específico */
   List<RatingJpaEntity> findByMapElementId(UUID mapElementId);
 
-  /**
-   * Find all ratings by a specific user
-   */
+  /** Buscar todas las calificaciones de un usuario específico */
   List<RatingJpaEntity> findByUserId(UUID userId);
 
-  /**
-   * Calculate average overall score for a map element
-   */
+  /** Calcular puntaje promedio general para un elemento del mapa */
   @Query("SELECT AVG(r.overallScore) FROM RatingJpaEntity r WHERE r.mapElementId = :mapElementId")
   Double calculateAverageScore(@Param("mapElementId") UUID mapElementId);
 }

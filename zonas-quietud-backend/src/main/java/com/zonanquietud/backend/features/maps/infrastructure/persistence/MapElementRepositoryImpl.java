@@ -16,8 +16,8 @@ import com.zonanquietud.backend.features.maps.infrastructure.persistence.reposit
 import lombok.RequiredArgsConstructor;
 
 /**
- * MapElementRepositoryImpl - Implementation of domain repository
- * Infrastructure layer - Adapter between domain and JPA
+ * MapElementRepositoryImpl - Implementación del repositorio de dominio
+ * Capa de infraestructura - Adaptador entre dominio y JPA
  */
 @Repository
 @RequiredArgsConstructor
@@ -41,7 +41,7 @@ public class MapElementRepositoryImpl implements MapElementRepository {
 
   @Override
   public MapElement save(MapElement element) {
-    element.validate(); // Domain validation
+    element.validate();
 
     var entity = mapper.toEntity(element);
     var savedEntity = jpaRepository.save(entity);
@@ -50,7 +50,6 @@ public class MapElementRepositoryImpl implements MapElementRepository {
 
   @Override
   public List<MapElement> saveAll(List<MapElement> elements) {
-    // Validate all elements first
     elements.forEach(MapElement::validate);
 
     var entities = elements.stream()

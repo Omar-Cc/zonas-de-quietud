@@ -41,7 +41,6 @@ export function StreetDetailView() {
           <div className="space-y-6 lg:col-span-2">
             <StreetMetrics
               categories={streetData.categories}
-              externalMetrics={streetData.externalMetrics}
             />
             <StreetTrends trendData={streetData.trendData} />
             <StreetReviews

@@ -1,12 +1,11 @@
 import { apiClient } from '@/api/apiClient'
-import { API_ROUTES } from '@/config/apiRoutes'
+import { API_PATHS } from '@/config/apiRoutes'
 import type { SubmitIncidentPayload, IncidentResponse } from '../types/types'
 import { INCIDENT_TYPE_MAP, SEVERITY_MAP, URGENCY_MAP } from '../types/types'
 
 export async function submitIncident(
   payload: SubmitIncidentPayload
 ): Promise<IncidentResponse> {
-  // Transform payload to match backend schema
   const transformedPayload = {
     ...payload,
     incidentType:
@@ -16,7 +15,7 @@ export async function submitIncident(
   }
 
   const response = await apiClient.post<IncidentResponse>(
-    API_ROUTES.INCIDENTS.SUBMIT,
+    API_PATHS.INCIDENTS.SUBMIT,
     transformedPayload
   )
 

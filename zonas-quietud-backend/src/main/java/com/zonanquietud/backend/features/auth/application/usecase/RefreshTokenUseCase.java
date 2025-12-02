@@ -15,8 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.UUID;
 
 /**
- * RefreshTokenUseCase - Handles token refresh
- * Application layer - orchestrates domain logic
+ * RefreshTokenUseCase - Maneja la actualización de tokens
+ * Capa de aplicación - orquesta lógica de dominio
  */
 @Service
 @RequiredArgsConstructor
@@ -30,14 +30,11 @@ public class RefreshTokenUseCase {
   public TokenResponse execute(String refreshToken) {
     log.info("Attempting to refresh access token");
 
-    // 1. Validate refresh token
     jwtTokenProvider.validateToken(refreshToken);
 
-    // 2. Extract user ID from refresh token
     UUID userId = jwtTokenProvider.getUserIdFromToken(refreshToken);
 
-    // 3. Find user
-    Usuario usuario = userRepository.findByFirebaseUid(userId.toString())
+    Usuario usuario = userRepository.findById(userId)
         .orElseThrow(() -> {
           log.error("User not found for token refresh: {}", userId);
           return UserNotFoundException.byId(userId.toString());
@@ -45,13 +42,11 @@ public class RefreshTokenUseCase {
 
     log.info("Generating new access token for user: {}", usuario.getId());
 
-    // 4. Generate new access token (keep same refresh token)
     String newAccessToken = jwtTokenProvider.generateAccessToken(usuario);
 
-    // 5. Return new token response
     return TokenResponse.of(
         newAccessToken,
-        refreshToken, // Keep the same refresh token
+        refreshToken,
         jwtProperties.accessTokenExpiration());
   }
 }

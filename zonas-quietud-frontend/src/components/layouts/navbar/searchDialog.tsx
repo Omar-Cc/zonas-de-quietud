@@ -104,7 +104,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             <Button
               size="sm"
               variant="ghost"
-              className="absolute top-1/2 right-2 -translate-y-1/2"
+              className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer"
               onClick={handleGeolocation}
             >
               <Navigation className="mr-1 h-4 w-4" />
@@ -130,11 +130,11 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                   .map((suggestion, index) => (
                     <button
                       key={index}
-                      className="hover:bg-accent flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors"
+                      className="hover:bg-accent flex w-full cursor-pointer items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors"
                       onClick={() => handleSelectSuggestion(suggestion.name)}
                     >
                       <div
-                        className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full"
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
                         style={{ backgroundColor: 'rgba(8, 160, 156, 0.1)' }}
                       >
                         {suggestion.type === 'calle' && (
@@ -184,7 +184,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                   {recentSearches.map((search, index) => (
                     <button
                       key={index}
-                      className="hover:bg-accent flex w-full items-center gap-3 rounded-lg px-4 py-2 text-left transition-colors"
+                      className="hover:bg-accent flex w-full cursor-pointer items-center gap-3 rounded-lg px-4 py-2 text-left transition-colors"
                       onClick={() => handleSelectSuggestion(search)}
                     >
                       <Search className="text-muted-foreground h-4 w-4" />
@@ -203,7 +203,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
                   {popularDistricts.map((district, index) => (
                     <button
                       key={index}
-                      className="hover:bg-accent flex items-center justify-between rounded-lg border px-4 py-3 text-left transition-colors"
+                      className="hover:bg-accent flex cursor-pointer items-center justify-between rounded-lg border px-4 py-3 text-left transition-colors"
                       style={{ borderColor: '#CED4DA' }}
                       onClick={() => handleSelectSuggestion(district.name)}
                     >

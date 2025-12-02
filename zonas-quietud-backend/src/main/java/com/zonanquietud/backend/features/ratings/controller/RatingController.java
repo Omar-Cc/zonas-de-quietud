@@ -18,10 +18,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * RatingController - REST API for ratings
- * Controller layer - HTTP endpoints
- */
+/** RatingController - API REST para calificaciones */
 @RestController
 @RequestMapping("/api/v1/ratings")
 @RequiredArgsConstructor
@@ -31,9 +28,7 @@ public class RatingController {
 
   private final RateStreetUseCase rateStreetUseCase;
 
-  /**
-   * Submit a rating for a street or zone
-   */
+  /** Enviar una calificación para una calle o zona */
   @PostMapping
   @Operation(summary = "Submit rating", description = "Submit a rating for a street or zone with detailed scores and optional photos")
   public ResponseEntity<ApiResponse<RatingResponse>> rateStreet(

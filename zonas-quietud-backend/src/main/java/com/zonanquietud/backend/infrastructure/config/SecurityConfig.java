@@ -36,11 +36,10 @@ public class SecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
 
         .authorizeHttpRequests(auth -> auth
-            // Public endpoints
             .requestMatchers("/api/v1/auth/**").permitAll()
             .requestMatchers("/api/v1/maps/**").permitAll()
             .requestMatchers("/api/v1/upload/**").authenticated()
-            .requestMatchers("/uploads/images/**").permitAll() // Serve uploaded images
+            .requestMatchers("/uploads/images/**").permitAll()
             .requestMatchers("/api/v1/ratings/**").authenticated()
             .requestMatchers("/api/v1/incidents/**").authenticated()
             .requestMatchers("/api/v1/auth/me").authenticated()
@@ -51,14 +50,11 @@ public class SecurityConfig {
                 "/v3/api-docs/**")
             .permitAll()
 
-            // All other endpoints require authentication
             .anyRequest().authenticated())
 
-        // Stateless session management (JWT doesn't need sessions)
         .sessionManagement(session -> session
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-        // Add JWT filter before UsernamePasswordAuthenticationFilter
         .addFilterBefore(
             jwtAuthenticationFilter,
             UsernamePasswordAuthenticationFilter.class);

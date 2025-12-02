@@ -34,8 +34,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * AuthController - REST endpoints for authentication
- * Controller layer - handles HTTP requests/responses
+ * AuthController - Endpoints REST para autenticación
+ * Capa de controlador - maneja solicitudes/respuestas HTTP
  * Todas las respuestas usan ApiResponse para consistencia
  */
 @RestController
@@ -134,9 +134,7 @@ public class AuthController {
         ApiResponse.exito(user, "Usuario obtenido exitosamente"));
   }
 
-  /**
-   * Extracts JWT token from Authorization header
-   */
+  /** Extrae el token JWT del encabezado Authorization */
   private String extractToken(String authHeader) {
     if (authHeader != null && authHeader.startsWith("Bearer ")) {
       return authHeader.substring(7);

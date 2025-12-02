@@ -4,11 +4,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration;
 
 /**
- * AuthPropertiesConfig - Enables configuration properties for auth feature
+ * AuthPropertiesConfig - Habilita propiedades de configuración para el feature
+ * de autenticación
  */
 @Configuration
 @EnableConfigurationProperties({
-    JwtProperties.class
+        JwtProperties.class
 })
 public class AuthPropertiesConfig {
 }

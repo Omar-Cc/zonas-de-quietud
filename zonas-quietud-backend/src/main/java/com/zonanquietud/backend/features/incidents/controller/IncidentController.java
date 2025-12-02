@@ -19,8 +19,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * IncidentController - REST API for incidents
- * Controller layer - HTTP endpoints
+ * IncidentController - API REST para incidentes
+ * Capa de controlador - Endpoints HTTP
  */
 @RestController
 @RequestMapping("/api/v1/incidents")
@@ -31,9 +31,7 @@ public class IncidentController {
 
   private final ReportIncidentUseCase reportIncidentUseCase;
 
-  /**
-   * Report a new incident
-   */
+  /** Reportar un nuevo incidente */
   @PostMapping
   @Operation(summary = "Report incident", description = "Report a new incident with location, severity, and optional evidence photos")
   public ResponseEntity<ApiResponse<IncidentResponse>> reportIncident(

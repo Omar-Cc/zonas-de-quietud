@@ -6,15 +6,13 @@ import com.zonanquietud.backend.features.maps.domain.model.MapElement;
 import com.zonanquietud.backend.features.maps.infrastructure.persistence.jpa.MapElementJpaEntity;
 
 /**
- * MapElementMapper - Bidirectional mapper between domain and JPA entities
- * Infrastructure layer - Handles conversion between layers
+ * MapElementMapper - Mapeador bidireccional entre dominio y entidades JPA
+ * Capa de infraestructura - Maneja conversión entre capas
  */
 @Component
 public class MapElementMapper {
 
-  /**
-   * Convert JPA entity to domain model
-   */
+  /** Convertir entidad JPA a modelo de dominio */
   public MapElement toDomain(MapElementJpaEntity entity) {
     if (entity == null) {
       return null;
@@ -29,9 +27,7 @@ public class MapElementMapper {
         .build();
   }
 
-  /**
-   * Convert domain model to JPA entity
-   */
+  /** Convertir modelo de dominio a entidad JPA */
   public MapElementJpaEntity toEntity(MapElement domain) {
     if (domain == null) {
       return null;
@@ -47,8 +43,8 @@ public class MapElementMapper {
   }
 
   /**
-   * Update existing entity with domain model data
-   * Preserves ID and timestamps
+   * Actualizar entidad existente con datos del modelo de dominio
+   * Preserva ID y timestamps
    */
   public void updateEntity(MapElementJpaEntity entity, MapElement domain) {
     if (entity == null || domain == null) {

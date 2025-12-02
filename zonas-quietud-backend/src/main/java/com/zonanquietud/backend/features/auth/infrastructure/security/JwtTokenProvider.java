@@ -33,8 +33,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * JwtTokenProvider - Handles JWT token generation and validation using RSA keys
- * Infrastructure layer - can use external libraries (JJWT)
+ * JwtTokenProvider - Maneja generación y validación de tokens JWT usando claves
+ * RSA
+ * Capa de infraestructura - puede usar librerías externas (JJWT)
  */
 @Component
 @RequiredArgsConstructor
@@ -59,9 +60,7 @@ public class JwtTokenProvider {
     }
   }
 
-  /**
-   * Generates an access token for the given user
-   */
+  /** Genera un token de acceso para el usuario dado */
   public String generateAccessToken(Usuario usuario) {
     try {
       log.debug("Generating access token for user: {}", usuario.getId());
@@ -88,9 +87,7 @@ public class JwtTokenProvider {
     }
   }
 
-  /**
-   * Generates a refresh token for the given user
-   */
+  /** Genera un token de actualización para el usuario dado */
   public String generateRefreshToken(Usuario usuario) {
     try {
       log.debug("Generating refresh token for user: {}", usuario.getId());
@@ -115,9 +112,7 @@ public class JwtTokenProvider {
     }
   }
 
-  /**
-   * Validates a JWT token
-   */
+  /** Valida un token JWT */
   public boolean validateToken(String token) {
     try {
       log.trace("Validating JWT token");
@@ -151,9 +146,7 @@ public class JwtTokenProvider {
     }
   }
 
-  /**
-   * Extracts user ID from JWT token
-   */
+  /** Extrae el ID de usuario del token JWT */
   public UUID getUserIdFromToken(String token) {
     try {
       log.trace("Extracting user ID from token");
@@ -174,9 +167,7 @@ public class JwtTokenProvider {
     }
   }
 
-  /**
-   * Extracts expiration date from JWT token
-   */
+  /** Extrae la fecha de expiración del token JWT */
   public Date getExpirationFromToken(String token) {
     try {
       log.trace("Extracting expiration from token");
@@ -195,9 +186,7 @@ public class JwtTokenProvider {
     }
   }
 
-  /**
-   * Checks if token is expired
-   */
+  /** Verifica si el token está expirado */
   public boolean isTokenExpired(String token) {
     try {
       Date expiration = getExpirationFromToken(token);
@@ -208,9 +197,7 @@ public class JwtTokenProvider {
     }
   }
 
-  /**
-   * Loads private key from file
-   */
+  /** Carga clave privada desde archivo */
   private PrivateKey loadPrivateKey(String path) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
     try {
       log.debug("Loading private key from: {}", path);
@@ -237,9 +224,7 @@ public class JwtTokenProvider {
     }
   }
 
-  /**
-   * Loads public key from file
-   */
+  /** Carga clave pública desde archivo */
   private PublicKey loadPublicKey(String path) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
     try {
       log.debug("Loading public key from: {}", path);

@@ -8,20 +8,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 /**
- * JacksonGeometryConfiguration - Configure Jackson for JTS geometry
- * serialization
- * Infrastructure layer - Global configuration
+ * JacksonGeometryConfiguration - Configurar Jackson para serialización de geometría JTS
+ * Capa de infraestructura - Configuración global
  * 
- * Registers JtsModule to handle org.locationtech.jts.geom.Geometry
- * serialization/deserialization
- * and JavaTimeModule for Java 8 date/time types
+ * Registra JtsModule para manejar serialización/deserialización de org.locationtech.jts.geom.Geometry
+ * y JavaTimeModule para tipos de fecha/hora de Java 8
  */
 @Configuration
 public class JacksonGeometryConfiguration {
 
   /**
-   * Register JTS module for geometry handling
-   * This allows Jackson to serialize/deserialize JTS geometries to/from GeoJSON
+   * Registrar módulo JTS para manejo de geometría
+   * Esto permite a Jackson serializar/deserializar geometrías JTS hacia/desde GeoJSON
    */
   @Bean
   public JtsModule jtsModule() {
@@ -29,8 +27,8 @@ public class JacksonGeometryConfiguration {
   }
 
   /**
-   * Configure ObjectMapper with JTS and JavaTime support
-   * This is automatically picked up by Spring Boot
+   * Configurar ObjectMapper con soporte JTS y JavaTime
+   * Esto es automáticamente detectado por Spring Boot
    */
   @Bean
   public ObjectMapper objectMapper() {

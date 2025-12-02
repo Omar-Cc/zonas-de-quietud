@@ -25,12 +25,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
- * RegisterUserUseCase - Handles user registration with upsert logic
- * Application layer - orchestrates domain logic
- * 
- * This use case implements idempotent registration:
- * - If user exists: updates their data and emailVerified status
- * - If user is new: creates them with emailVerified status from Firebase
+ * RegisterUserUseCase - Maneja el registro de usuarios con lógica upsert
+ * Capa de aplicación - orquesta lógica de dominio
  */
 @Service
 @RequiredArgsConstructor
@@ -48,39 +44,32 @@ public class RegisterUserUseCase {
   public AuthResponse execute(RegisterRequest request) {
     log.info("Attempting to register user");
 
-    // 1. Verify Firebase token and get authentication details
     AuthTokenDetails details = identityProvider.verify(request.firebaseToken());
     UserEmail email = new UserEmail(details.email());
 
     log.info("Firebase token verified for registration: {}, emailVerified: {}",
         details.email(), details.emailVerified());
 
-    // 2. Find existing user by email
     Optional<Usuario> existingUser = userRepository.findByEmail(email);
 
     Usuario usuario;
     boolean isNewUser = existingUser.isEmpty();
 
     if (existingUser.isPresent()) {
-      // UPSERT: Update existing user
       log.info("User already exists with email: {}, updating data", email.getValue());
       usuario = existingUser.get();
 
-      // Update Firebase UID (in case of provider change)
       usuario.setFirebaseUid(details.uid());
 
-      // Update personal data
       usuario.setFirstName(request.firstName());
       usuario.setLastName(request.lastName());
       usuario.setPhone(request.phone());
       usuario.setBirthDate(request.birthDate());
       usuario.setGender(request.gender());
 
-      // CRITICAL: Sync email verification status from Firebase
       usuario.setVerified(details.emailVerified());
 
     } else {
-      // CREATE: New user
       log.info("Creating new user with email: {}", email.getValue());
       usuario = Usuario.builder()
           .email(email)
@@ -90,12 +79,11 @@ public class RegisterUserUseCase {
           .phone(request.phone())
           .birthDate(request.birthDate())
           .gender(request.gender())
-          .isVerified(details.emailVerified()) // Set from Firebase
+          .isVerified(details.emailVerified())
           .isActive(true)
           .build();
     }
 
-    // 3. Save user (create or update)
     usuario = userRepository.save(usuario);
 
     String accessToken = jwtTokenProvider.generateAccessToken(usuario);
@@ -104,7 +92,6 @@ public class RegisterUserUseCase {
     log.info("User {} successfully: {}, emailVerified: {}",
         isNewUser ? "registered" : "updated", usuario.getId(), usuario.isVerified());
 
-    // 4. Publish domain event (only for new users)
     if (isNewUser) {
       eventPublisher.publishEvent(
           new UserRegisteredEvent(usuario.getId(), email, LocalDateTime.now()));
@@ -115,7 +102,6 @@ public class RegisterUserUseCase {
         accessToken,
         refreshToken,
         jwtProperties.accessTokenExpiration());
-    // 5. Return user response
     return new AuthResponse(userResponse, tokenResponse);
   }
 }

@@ -7,7 +7,7 @@ const communitySearchSchema = z.object({
   tab: z.string().optional(),
 })
 
-export const Route = createFileRoute('/app/comunidad')({
+export const Route = createFileRoute('/comunidad')({
   validateSearch: communitySearchSchema,
   component: CommunityHub,
 })

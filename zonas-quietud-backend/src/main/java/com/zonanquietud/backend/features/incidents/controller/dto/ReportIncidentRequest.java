@@ -11,8 +11,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * ReportIncidentRequest - DTO for incident reporting
- * Controller layer - Matches frontend payload
+ * ReportIncidentRequest - DTO para reporte de incidentes
+ * Capa de controlador - Coincide con payload del frontend
  */
 public record ReportIncidentRequest(
     @NotNull(message = "streetId is required") UUID streetId,

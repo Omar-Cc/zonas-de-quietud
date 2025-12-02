@@ -22,9 +22,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * GetMapElementsUseCase - Retrieve map elements with REQUIRED viewport
- * filtering
- * Application layer - Business logic
+ * GetMapElementsUseCase - Recuperar elementos del mapa con filtrado de viewport REQUERIDO
+ * Capa de aplicación - Lógica de negocio
  */
 @Service
 @RequiredArgsConstructor
@@ -34,26 +33,23 @@ public class GetMapElementsUseCase {
   private final MapElementRepository repository;
   private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
-  // Safety limit: Maximum viewport span in degrees (~55km at equator per 0.5
-  // degrees)
-  // Prevents queries covering entire countries/continents
+  // Límite de seguridad: Rango máximo de viewport en grados (~55km en el ecuador por 0.5 grados)
+  // Previene consultas que cubran países/continentes enteros
   private static final double MAX_VIEWPORT_LAT_SPAN = 0.5;
 
   /**
-   * Get map elements filtered by viewport (REQUIRED)
+   * Obtener elementos del mapa filtrados por viewport (REQUERIDO)
    * 
-   * @param viewport Required viewport bounds for spatial filtering
-   * @return List of map elements within the viewport
-   * @throws IllegalArgumentException if viewport is invalid or too large
+   * @param viewport Bounds de viewport requeridos para filtrado espacial
+   * @return Lista de elementos del mapa dentro del viewport
+   * @throws IllegalArgumentException si el viewport es inválido o demasiado grande
    */
   public List<MapElementResponse> execute(ViewportRequest viewport) {
-    // Validate viewport forms a valid bounding box
     if (!viewport.isValid()) {
       throw new IllegalArgumentException(
           "Invalid viewport: minLat must be < maxLat and minLng must be < maxLng");
     }
 
-    // Safety check: prevent overly large viewport queries
     double latSpan = viewport.getLatSpan();
     if (latSpan > MAX_VIEWPORT_LAT_SPAN) {
       log.warn("Viewport too large: latSpan={} exceeds max={}", latSpan, MAX_VIEWPORT_LAT_SPAN);
@@ -75,25 +71,21 @@ public class GetMapElementsUseCase {
         .collect(Collectors.toList());
   }
 
-  /**
-   * Create a polygon from viewport bounds
-   */
+  /** Crear un polígono desde los límites del viewport */
   private Polygon createViewportPolygon(ViewportRequest viewport) {
-    // Create rectangle polygon from bounds
-    // Note: JTS uses (x, y) = (lng, lat) order
     Coordinate[] coords = new Coordinate[5];
     coords[0] = new Coordinate(viewport.minLng(), viewport.minLat());
     coords[1] = new Coordinate(viewport.maxLng(), viewport.minLat());
     coords[2] = new Coordinate(viewport.maxLng(), viewport.maxLat());
     coords[3] = new Coordinate(viewport.minLng(), viewport.maxLat());
-    coords[4] = new Coordinate(viewport.minLng(), viewport.minLat()); // Close the ring
+    coords[4] = new Coordinate(viewport.minLng(), viewport.minLat());
 
     return geometryFactory.createPolygon(coords);
   }
 
   /**
-   * Convert domain model to response DTO
-   * IMPORTANT: Converts JTS coordinates (lng, lat) to frontend format [lat, lng]
+   * Convertir modelo de dominio a DTO de respuesta
+   * IMPORTANTE: Convierte coordenadas JTS (lng, lat) a formato frontend [lat, lng]
    */
   private MapElementResponse toResponse(MapElement element) {
     List<List<Double>> coordinates = extractCoordinates(element.getGeometry());
@@ -107,8 +99,8 @@ public class GetMapElementsUseCase {
   }
 
   /**
-   * Extract coordinates from geometry
-   * Converts from JTS (lng, lat) to frontend [lat, lng] format
+   * Extraer coordenadas de geometría
+   * Convierte de JTS (lng, lat) a formato frontend [lat, lng]
    */
   private List<List<Double>> extractCoordinates(Geometry geometry) {
     
@@ -128,13 +120,11 @@ public class GetMapElementsUseCase {
 
   private List<List<Double>> extractLineStringCoordinates(LineString lineString) {
     return java.util.Arrays.stream(lineString.getCoordinates())
-        .map(coord -> List.of(coord.y, coord.x)) // [lat, lng] for frontend
+        .map(coord -> List.of(coord.y, coord.x))
         .collect(Collectors.toList());
   }
 
   private List<List<Double>> extractMultiLineStringCoordinates(MultiLineString multiLineString) {
-    // For MultiLineString, we'll flatten all coordinates
-    // Frontend can handle this as a single path or split by detecting gaps
     List<List<Double>> allCoords = new java.util.ArrayList<>();
     for (int i = 0; i < multiLineString.getNumGeometries(); i++) {
       LineString line = (LineString) multiLineString.getGeometryN(i);
@@ -144,13 +134,10 @@ public class GetMapElementsUseCase {
   }
 
   private List<List<Double>> extractPolygonCoordinates(Polygon polygon) {
-    // Return exterior ring coordinates
     return extractLineStringCoordinates(polygon.getExteriorRing());
   }
 
   private List<List<Double>> extractMultiPolygonCoordinates(MultiPolygon multiPolygon) {
-    // For MultiPolygon, return coordinates of the first (largest) polygon
-    // Frontend can request individual polygons if needed
     if (multiPolygon.getNumGeometries() > 0) {
       Polygon firstPolygon = (Polygon) multiPolygon.getGeometryN(0);
       return extractPolygonCoordinates(firstPolygon);

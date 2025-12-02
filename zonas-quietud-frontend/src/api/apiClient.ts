@@ -1,7 +1,9 @@
 import axios from 'axios'
 import { auth } from '@/config/firebase'
+import { useAuthStore } from '@/store/authStore'
+import { env } from '@/config/env'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL
+const API_BASE_URL = env.apiUrl
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -9,8 +11,6 @@ export const apiClient = axios.create({
     'Content-Type': 'application/json',
   },
 })
-
-import { useAuthStore } from '@/store/authStore'
 
 // Request interceptor para agregar el token de Firebase o Backend
 apiClient.interceptors.request.use(

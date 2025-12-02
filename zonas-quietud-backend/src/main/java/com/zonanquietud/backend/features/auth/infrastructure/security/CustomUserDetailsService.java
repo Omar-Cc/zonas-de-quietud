@@ -34,7 +34,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     try {
       log.debug("Cargando usuario por UUID: {}", userId);
 
-      // Convertir String a UUID
       UUID uuid;
       try {
         uuid = UUID.fromString(userId);
@@ -43,14 +42,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         throw new UsernameNotFoundException("ID de usuario inválido: " + userId);
       }
 
-      // Buscar usuario por UUID interno (Primary Key)
       Usuario usuario = userRepository.findById(uuid)
           .orElseThrow(() -> {
             log.warn("Usuario no encontrado con UUID: {}", uuid);
             return new UsernameNotFoundException("Usuario no encontrado: " + uuid);
           });
 
-      // Verificar si el usuario está activo
       if (!usuario.isActive()) {
         log.warn("El usuario está inactivo: {}", uuid);
         throw new UsernameNotFoundException("El usuario está inactivo: " + uuid);
@@ -58,11 +55,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
       log.debug("Usuario cargado exitosamente: {}", usuario.getId());
 
-      // Retornar UserDetails de Spring Security
       return User.builder()
           .username(usuario.getId().toString())
-          .password("") // No se necesita contraseña para autenticación JWT
-          .authorities(Collections.emptyList()) // Agregar roles/autoridades si es necesario
+          .password("")
+          .authorities(Collections.emptyList())
           .accountExpired(false)
           .accountLocked(false)
           .credentialsExpired(false)

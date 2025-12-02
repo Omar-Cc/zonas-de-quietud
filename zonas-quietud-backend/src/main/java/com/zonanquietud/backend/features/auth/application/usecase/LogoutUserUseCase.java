@@ -8,12 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * LogoutUserUseCase - Handles user logout
- * Application layer - orchestrates domain logic
- * 
- * Note: With JWT, logout is typically handled client-side by removing the
- * token.
- * This use case can be extended to implement token blacklisting if needed.
+ * LogoutUserUseCase - Maneja el cierre de sesión del usuario
+ * Capa de aplicación - orquesta lógica de dominio
  */
 @Service
 @RequiredArgsConstructor
@@ -26,11 +22,9 @@ public class LogoutUserUseCase {
     try {
       log.info("Processing logout request");
 
-      // Validate token before logout
       jwtTokenProvider.validateToken(token);
 
-      // TODO: Implement token blacklisting if needed
-      // For now, logout is handled client-side by removing the token
+      // TODO: Implementar lista negra de tokens
 
       log.info("Logout processed successfully");
     } catch (Exception e) {

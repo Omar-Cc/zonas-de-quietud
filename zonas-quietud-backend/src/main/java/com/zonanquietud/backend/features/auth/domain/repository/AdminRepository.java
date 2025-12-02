@@ -7,8 +7,8 @@ import com.zonanquietud.backend.features.auth.domain.model.Administrador;
 import com.zonanquietud.backend.features.auth.domain.valueobject.UserEmail;
 
 /**
- * AdminRepository - Port (Interface)
- * Defines operations for Administrator persistence
+ * AdminRepository - Puerto (Interfaz)
+ * Define operaciones para persistencia de Administrador
  */
 public interface AdminRepository {
 

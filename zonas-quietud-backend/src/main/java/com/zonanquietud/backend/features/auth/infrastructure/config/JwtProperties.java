@@ -3,8 +3,8 @@ package com.zonanquietud.backend.features.auth.infrastructure.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * JwtProperties - Configuration properties for JWT
- * Moved to feature package to avoid module violations
+ * JwtProperties - Propiedades de configuración para JWT
+ * Movido al paquete de feature para evitar violaciones de módulo
  */
 @ConfigurationProperties(prefix = "app.jwt")
 public record JwtProperties(

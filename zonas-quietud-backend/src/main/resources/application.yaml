@@ -12,17 +12,22 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: validate #update
+    show-sql: false #true
     properties:
       hibernate:
-        "[format_sql]": true
+        "[format_sql]": false #true
 
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
+
+  sql:
+    init:
+      mode: never #always
+      platform: postgresql
 
 app:
   jwt:
@@ -31,15 +36,20 @@ app:
     access-token-expiration: ${JWT_ACCESS_EXPIRATION}
     refresh-token-expiration: ${JWT_REFRESH_EXPIRATION}
 
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS}
+
   upload:
     dir: uploads/images
-    base-url: http://localhost:8080/uploads/images
+    base-url: ${APP_BASE_URL}/uploads/images
 
 springdoc:
   api-docs:
+    enabled: ${SPRINGDOC_ENABLED}
     path: /api-docs
 
   swagger-ui:
+    enabled: ${SPRINGDOC_ENABLED}
     path: /swagger-ui.html
     operationsSorter: method
     tagsSorter: alpha

@@ -6,6 +6,7 @@ import {
   GoogleAuthProvider,
 } from 'firebase/auth'
 import { auth } from '@/config/firebase'
+import { env } from '@/config/env'
 
 const googleProvider = new GoogleAuthProvider()
 
@@ -36,7 +37,7 @@ export const useFirebaseAuth = () => {
     )
 
     const actionCodeSettings = {
-      url: 'http://localhost:5173/confirm-email',
+      url: `${env.appUrl}/confirm-email`,
       handleCodeInApp: true,
     }
 
@@ -63,7 +64,7 @@ export const useFirebaseAuth = () => {
     }
 
     const actionCodeSettings = {
-      url: 'http://localhost:5173/confirm-email',
+      url: `${env.appUrl}/confirm-email`,
       handleCodeInApp: true,
     }
 
