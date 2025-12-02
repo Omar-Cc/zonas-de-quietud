@@ -12,44 +12,6 @@ export const streetData = {
     { name: 'Accesibilidad', value: 9.0, change: +0.1 },
     { name: 'Tranquilidad', value: 7.2, change: -0.1 },
   ],
-  externalMetrics: [
-    {
-      label: 'Índice de Criminalidad',
-      value: 'Bajo',
-      status: 'positive' as const,
-      score: 8.5,
-    },
-    {
-      label: 'Calidad del Aire (PM2.5)',
-      value: '32 µg/m³',
-      status: 'neutral' as const,
-      score: 6.5,
-    },
-    {
-      label: 'Nivel de Ruido Promedio',
-      value: '65 dB',
-      status: 'negative' as const,
-      score: 5.0,
-    },
-    {
-      label: 'Acceso a Transporte',
-      value: 'Excelente',
-      status: 'positive' as const,
-      score: 9.0,
-    },
-    {
-      label: 'Proximidad a Parques',
-      value: '5 parques',
-      status: 'positive' as const,
-      score: 8.0,
-    },
-    {
-      label: 'Iluminación Nocturna',
-      value: 'Buena',
-      status: 'positive' as const,
-      score: 7.5,
-    },
-  ],
   reviews: [
     {
       id: 1,
@@ -86,12 +48,12 @@ export const streetData = {
     },
   ],
   trendData: [
-    { month: 'Ene', score: 7.8 },
-    { month: 'Feb', score: 8.0 },
-    { month: 'Mar', score: 8.2 },
-    { month: 'Abr', score: 8.1 },
-    { month: 'May', score: 8.3 },
-    { month: 'Jun', score: 8.5 },
+    { month: 'Jun', score: 7.8 },
+    { month: 'Jul', score: 8.0 },
+    { month: 'Aug', score: 8.2 },
+    { month: 'Sep', score: 8.1 },
+    { month: 'Oct', score: 8.3 },
+    { month: 'Nov', score: 8.5 },
   ],
 }
 

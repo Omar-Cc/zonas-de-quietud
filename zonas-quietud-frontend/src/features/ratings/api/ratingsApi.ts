@@ -1,12 +1,11 @@
 import { apiClient } from '@/api/apiClient'
+import { API_PATHS } from '@/config/apiRoutes'
 import type { RatingPayload, RatingResponse } from '../types/types'
-
-const BASE_URL = '/api/v1/ratings'
 
 export async function submitRating(
   payload: RatingPayload
 ): Promise<RatingResponse> {
-  const response = await apiClient.post<any>(BASE_URL, payload)
+  const response = await apiClient.post<any>(API_PATHS.RATINGS.SUBMIT, payload)
 
   // Handle standard ApiResponse wrapper if present
   if (response.data && response.data.datos) {

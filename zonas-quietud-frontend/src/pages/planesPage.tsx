@@ -1,6 +1,4 @@
 import { Check, HelpCircle, X } from 'lucide-react'
-import { Navbar } from '../components/layouts/navbar/navbar'
-import { Footer } from '../components/layouts/footer'
 import { PricingCard } from '../components/pricingCard'
 import { Button } from '../components/ui/button'
 import { Badge } from '../components/ui/badge'
@@ -364,9 +362,9 @@ export default function Pricing() {
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left">
+                <AccordionTrigger className="cursor-pointer text-left">
                   <div className="flex items-center gap-2">
-                    <HelpCircle className="text-primary h-5 w-5 flex-shrink-0" />
+                    <HelpCircle className="text-primary h-5 w-5 shrink-0" />
                     <span>{faq.question}</span>
                   </div>
                 </AccordionTrigger>
@@ -379,7 +377,7 @@ export default function Pricing() {
         </div>
 
         {/* Final CTA */}
-        <Card className="from-primary border-0 bg-gradient-to-r to-teal-600 text-white">
+        <Card className="from-primary border-0 bg-linear-to-r to-teal-600 text-white">
           <CardContent className="py-16 text-center">
             <h2 className="mb-4 text-3xl md:text-4xl">¿Listo para comenzar?</h2>
             <p className="mx-auto mb-8 max-w-2xl text-xl text-white/90">
@@ -390,14 +388,14 @@ export default function Pricing() {
               <Button
                 size="lg"
                 variant="secondary"
-                className="text-primary bg-white hover:bg-white/90"
+                className="text-primary cursor-pointer bg-white hover:bg-white/90"
               >
                 Comenzar Gratis
               </Button>
               <Button
                 size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white/10"
+                variant="ghost"
+                className="cursor-pointer border-2 border-white text-white hover:border-black/60 hover:bg-white/10"
               >
                 Contactar Ventas
               </Button>

@@ -1,0 +1,202 @@
+{
+  "ratingPayload": {
+    "description": "Payload para enviar una evaluación de calle/zona",
+    "endpoint": "POST /api/v1/ratings",
+    "example": {
+      "streetId": "550e8400-e29b-41d4-a716-446655440000",
+      "streetName": "Av. Arequipa",
+      "district": "Miraflores",
+      "userId": "user-uuid-here",
+      "ratings": {
+        "security": 7.0,
+        "airQuality": 6.0,
+        "noise": 5.0,
+        "accessibility": 8.0,
+        "tranquility": 7.0
+      },
+      "overallScore": 6.6,
+      "comments": "Calle muy transitada durante el día, buena iluminación nocturna. El ruido vehicular es moderado.",
+      "photos": [
+        {
+          "url": "https://storage.example.com/ratings/photo1.jpg",
+          "uploadedAt": "2025-11-24T06:14:32Z"
+        },
+        {
+          "url": "https://storage.example.com/ratings/photo2.jpg",
+          "uploadedAt": "2025-11-24T06:14:35Z"
+        }
+      ],
+      "ratingType": "stars",
+      "location": {
+        "latitude": -12.1203,
+        "longitude": -77.0304
+      }
+    },
+    "notes": [
+      "streetId se obtendría del elemento del mapa clickeado",
+      "userId vendría del contexto de autenticación",
+      "ratings contiene los 5 criterios evaluados (0-10)",
+      "overallScore es el promedio calculado",
+      "photos es un array de URLs después de subir las imágenes",
+      "ratingType indica si usó 'stars' o 'sliders'",
+      "location es opcional, captura la ubicación del usuario al momento de evaluar"
+    ]
+  },
+  "incidentPayload": {
+    "description": "Payload para reportar un incidente urgente",
+    "endpoint": "POST /api/v1/incidents",
+    "example": {
+      "streetId": "550e8400-e29b-41d4-a716-446655440000",
+      "streetName": "Av. Arequipa",
+      "district": "Miraflores",
+      "userId": "user-uuid-here",
+      "incidentType": "robbery",
+      "incidentTypeLabel": "Robo o Asalto",
+      "severity": "high",
+      "urgency": "high",
+      "description": "Se reportó un asalto a mano armada en la esquina con Av. Benavides alrededor de las 8:30 PM. Dos personas en motocicleta.",
+      "evidencePhotos": [
+        {
+          "url": "https://storage.example.com/incidents/evidence1.jpg",
+          "uploadedAt": "2025-11-24T01:30:45Z"
+        },
+        {
+          "url": "https://storage.example.com/incidents/evidence2.jpg",
+          "uploadedAt": "2025-11-24T01:30:48Z"
+        }
+      ],
+      "isAnonymous": false,
+      "timestamp": "2025-11-24T01:30:32Z",
+      "location": {
+        "latitude": -12.1203,
+        "longitude": -77.0304,
+        "accuracy": 10
+      },
+      "status": "pending",
+      "notifyAuthorities": true
+    },
+    "notes": [
+      "incidentType es el valor del enum (robbery, vandalism, etc.)",
+      "incidentTypeLabel es la etiqueta legible",
+      "severity se deriva del tipo de incidente (high, medium, low)",
+      "urgency es seleccionado por el usuario",
+      "evidencePhotos son las fotos de evidencia subidas",
+      "isAnonymous indica si el reporte es anónimo",
+      "status inicial es 'pending', luego puede ser 'verified', 'resolved', 'dismissed'",
+      "notifyAuthorities indica si se debe alertar a autoridades (basado en severity/urgency)",
+      "location es crítica para incidentes, debe ser lo más precisa posible"
+    ]
+  },
+  "incidentTypes": {
+    "description": "Tipos de incidentes disponibles con su severidad asociada",
+    "types": [
+      {
+        "value": "robbery",
+        "label": "Robo o Asalto",
+        "severity": "high",
+        "notifyAuthorities": true
+      },
+      {
+        "value": "vandalism",
+        "label": "Vandalismo",
+        "severity": "medium",
+        "notifyAuthorities": false
+      },
+      {
+        "value": "suspicious",
+        "label": "Actividad Sospechosa",
+        "severity": "medium",
+        "notifyAuthorities": false
+      },
+      {
+        "value": "accident",
+        "label": "Accidente de Tránsito",
+        "severity": "high",
+        "notifyAuthorities": true
+      },
+      {
+        "value": "noise",
+        "label": "Ruido Extremo Puntual",
+        "severity": "low",
+        "notifyAuthorities": false
+      },
+      {
+        "value": "infrastructure",
+        "label": "Infraestructura Dañada",
+        "severity": "medium",
+        "notifyAuthorities": false
+      },
+      {
+        "value": "lighting",
+        "label": "Falta de Iluminación",
+        "severity": "low",
+        "notifyAuthorities": false
+      },
+      {
+        "value": "pollution",
+        "label": "Contaminación Severa",
+        "severity": "medium",
+        "notifyAuthorities": false
+      },
+      {
+        "value": "other",
+        "label": "Otro Problema",
+        "severity": "low",
+        "notifyAuthorities": false
+      }
+    ]
+  },
+  "photoUploadFlow": {
+    "description": "Flujo recomendado para subir fotos",
+    "steps": [
+      "1. Usuario selecciona fotos en el formulario",
+      "2. Al hacer submit, primero se suben las fotos a un servicio de storage (S3, Cloudinary, etc.)",
+      "3. Se obtienen las URLs de las fotos subidas",
+      "4. Se envía el payload principal con las URLs de las fotos",
+      "5. Backend valida y guarda la evaluación/incidente con referencias a las fotos"
+    ],
+    "alternativeFlow": [
+      "1. Usuario selecciona fotos",
+      "2. Se envía el payload con las fotos como base64 o FormData",
+      "3. Backend procesa y sube las fotos",
+      "4. Backend guarda la evaluación/incidente"
+    ],
+    "recommendation": "Usar el primer flujo (upload previo) para mejor UX y separación de responsabilidades"
+  },
+  "responseExamples": {
+    "ratingSuccess": {
+      "success": true,
+      "data": {
+        "ratingId": "rating-uuid-here",
+        "streetId": "550e8400-e29b-41d4-a716-446655440000",
+        "overallScore": 6.6,
+        "createdAt": "2025-11-24T06:14:32Z",
+        "message": "¡Gracias por tu evaluación! Contribuiste al mapa de calor."
+      }
+    },
+    "incidentSuccess": {
+      "success": true,
+      "data": {
+        "incidentId": "incident-uuid-here",
+        "streetId": "550e8400-e29b-41d4-a716-446655440000",
+        "status": "pending",
+        "createdAt": "2025-11-24T01:30:32Z",
+        "alertsSent": 15,
+        "message": "¡Reporte enviado! Alertaremos a la comunidad y autoridades."
+      }
+    },
+    "error": {
+      "success": false,
+      "error": {
+        "code": "VALIDATION_ERROR",
+        "message": "Datos inválidos",
+        "details": [
+          {
+            "field": "ratings.security",
+            "message": "El valor debe estar entre 0 y 10"
+          }
+        ]
+      }
+    }
+  }
+}

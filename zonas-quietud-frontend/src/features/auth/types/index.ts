@@ -2,13 +2,20 @@
 export interface UserData {
   id: string
   email: string
+  firebaseUid: string
   firstName: string
   lastName: string
+  avatarUrl?: string | null
   phone?: string
-  birthDate?: string
+  birthDate?: number[] // [year, month, day]
   gender?: 'MALE' | 'FEMALE' | 'OTHER' | 'PREFER_NOT_TO_SAY'
-  photoURL?: string
+  membership?: 'FREE' | 'PREMIUM' | 'ENTERPRISE'
   isVerified?: boolean
+  isActive?: boolean
+  createdAt?: number[] // [year, month, day, hour, minute, second, nano]
+  lastLoginAt?: number[] // [year, month, day, hour, minute, second, nano]
+  loginCount?: number
+  photoURL?: string // Legacy field, use avatarUrl instead
 }
 
 // Estructura de los tokens que manda Spring Boot
@@ -33,7 +40,7 @@ export interface ApiResponse<T> {
 
 // Auth API Responses
 export type LoginBackendResult =
-  | { action: 'SUCCESS'; user: UserData; token: string }
+  | { action: 'SUCCESS'; user: UserData; token: string; refreshToken?: string }
   | { action: 'NEED_ONBOARDING' }
 
 export interface RegisterBackendRequest {

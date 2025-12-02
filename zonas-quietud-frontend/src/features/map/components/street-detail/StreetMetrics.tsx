@@ -27,21 +27,12 @@ interface Category {
   change: number
 }
 
-interface ExternalMetric {
-  label: string
-  value: string
-  status: 'positive' | 'neutral' | 'negative'
-  score: number
-}
-
 interface StreetMetricsProps {
   categories: Category[]
-  externalMetrics: ExternalMetric[]
 }
 
 export function StreetMetrics({
   categories,
-  externalMetrics,
 }: Readonly<StreetMetricsProps>) {
   const radarData = categories.map((cat) => ({
     subject: cat.name,
@@ -127,25 +118,6 @@ export function StreetMetrics({
               </div>
             </TabsContent>
           </Tabs>
-        </CardContent>
-      </Card>
-
-      {/* External Metrics */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Métricas Externas</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {externalMetrics.map((metric, index) => (
-            <div
-              key={index}
-              className={`rounded-lg border p-3 ${getStatusColor(metric.status)}`}
-            >
-              <p className="mb-1 text-sm">{metric.label}</p>
-              <p className="font-medium">{metric.value}</p>
-              <Progress value={metric.score * 10} className="mt-2 h-1" />
-            </div>
-          ))}
         </CardContent>
       </Card>
     </div>

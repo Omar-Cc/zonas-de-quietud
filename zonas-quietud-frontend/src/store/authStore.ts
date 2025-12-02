@@ -10,11 +10,16 @@ interface AuthState {
   firebaseUser: FirebaseUser | null
   backendUser: UserData | null
   backendToken: string | null
+  refreshToken: string | null
   status: AuthStatus
   isEmailVerified: boolean
 
   syncFirebaseUser: (user: FirebaseUser | null) => void
-  setBackendCredentials: (user: UserData, token: string) => void
+  setBackendCredentials: (
+    user: UserData,
+    token: string,
+    refreshToken?: string
+  ) => void
   logout: () => Promise<void>
   setLoading: () => void
 }
@@ -23,6 +28,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   firebaseUser: null,
   backendUser: null,
   backendToken: localStorage.getItem('authToken'),
+  refreshToken: localStorage.getItem('refreshToken'),
   status: 'idle',
   isEmailVerified: false,
 
@@ -52,11 +58,15 @@ export const useAuthStore = create<AuthState>((set) => ({
     })
   },
 
-  setBackendCredentials: (user, token) => {
+  setBackendCredentials: (user, token, refreshToken) => {
     localStorage.setItem('authToken', token)
+    if (refreshToken) {
+      localStorage.setItem('refreshToken', refreshToken)
+    }
     set({
       backendUser: user,
       backendToken: token,
+      refreshToken: refreshToken || null,
       status: 'authenticated',
     })
   },
@@ -65,10 +75,12 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       await signOut(auth)
       localStorage.removeItem('authToken')
+      localStorage.removeItem('refreshToken')
       set({
         firebaseUser: null,
         backendUser: null,
         backendToken: null,
+        refreshToken: null,
         status: 'unauthenticated',
         isEmailVerified: false,
       })

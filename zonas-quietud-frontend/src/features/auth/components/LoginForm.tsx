@@ -31,10 +31,10 @@ export function LoginForm() {
     loginWithEmailMutation.isPending || loginWithGoogleMutation.isPending
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[var(--fondo)] p-4">
-      <Card className="w-full max-w-md border-[var(--border)] shadow-lg">
+    <div className="flex min-h-screen items-center justify-center bg-(--fondo) p-4">
+      <Card className="border-border w-full max-w-md shadow-lg">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl font-bold text-[var(--principal)]">
+          <CardTitle className="text-2xl font-bold text-(--principal)">
             Iniciar Sesión
           </CardTitle>
           <CardDescription>
@@ -109,7 +109,7 @@ export function LoginForm() {
             {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full bg-[var(--principal)] text-white hover:bg-[var(--verde2)]"
+              className="w-full cursor-pointer bg-(--principal) text-white hover:bg-(--verde2)"
               disabled={isLoading}
             >
               {loginWithEmailMutation.isPending && (
@@ -122,10 +122,10 @@ export function LoginForm() {
           {/* Divider */}
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-[var(--border)]" />
+              <span className="border-border w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="text-muted-foreground bg-[var(--fondo)] px-2">
+              <span className="text-muted-foreground bg-(--fondo) px-2">
                 O continuar con
               </span>
             </div>
@@ -143,7 +143,7 @@ export function LoginForm() {
             ¿No tienes una cuenta?{' '}
             <Link
               to="/register"
-              className="text-[var(--principal)] underline hover:text-[var(--verde2)]"
+              className="text-(--principal) underline hover:text-(--verde2)"
             >
               Regístrate
             </Link>

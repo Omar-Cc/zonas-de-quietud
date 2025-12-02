@@ -8,13 +8,11 @@ import {
   MapPin,
   Trophy,
   Target,
-  Zap,
   Heart,
   Shield,
   Crown,
   Flame,
   Users,
-  MessageSquare,
   ThumbsUp,
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
@@ -25,11 +23,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs'
 import { ScrollArea } from '../components/ui/scroll-area'
 import { Separator } from '../components/ui/separator'
 import { Button } from '../components/ui/button'
-import { Navbar } from '../components/layouts/navbar/navbar'
 import { AchievementBadge } from '../components/achievementBadge'
 import {
-  LineChart,
-  Line,
   BarChart,
   Bar,
   XAxis,
@@ -38,11 +33,59 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts'
+import { useUser } from '@/features/auth/hooks/useUser'
 
-const userData = {
-  name: 'María García',
-  avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Maria',
-  joinDate: 'Marzo 2025',
+const formatJoinDate = (dateArray?: number[]): string => {
+  if (!dateArray || dateArray.length < 3) return 'Fecha desconocida'
+  const [year, month] = dateArray
+  const months = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
+  ]
+  return `${months[month - 1]} ${year}`
+}
+
+const getAvatarUrl = (user: any): string => {
+  if (user?.avatarUrl) return user.avatarUrl
+  if (user?.photoURL) return user.photoURL
+  const seed = user?.email || user?.firstName || 'user'
+  return `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(seed)}`
+}
+
+const getUserInitials = (user: any): string => {
+  const firstName = user?.firstName || ''
+  const lastName = user?.lastName || ''
+  return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase() || 'U'
+}
+
+const getMembershipBadge = (membership?: string) => {
+  switch (membership) {
+    case 'PREMIUM':
+      return {
+        label: 'Premium',
+        className: 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-white',
+      }
+    case 'ENTERPRISE':
+      return {
+        label: 'Enterprise',
+        className: 'bg-gradient-to-r from-purple-500 to-purple-700 text-white',
+      }
+    default:
+      return { label: 'Free', className: 'bg-gray-200 text-gray-700' }
+  }
+}
+
+const staticData = {
   level: 12,
   xp: 3450,
   nextLevelXp: 4000,
@@ -166,11 +209,36 @@ const userData = {
 
 export default function UserDashboard() {
   const [activeTab, setActiveTab] = useState('overview')
+  const { data: user, isLoading } = useUser()
+
+  const userData = {
+    name: user ? `${user.firstName} ${user.lastName}` : 'Usuario',
+    email: user?.email || '',
+    avatar: getAvatarUrl(user),
+    initials: getUserInitials(user),
+    joinDate: formatJoinDate(user?.createdAt),
+    membership: getMembershipBadge(user?.membership),
+    loginCount: user?.loginCount || 0,
+    isVerified: user?.isVerified || false,
+    ...staticData,
+  }
 
   const levelProgress = (userData.xp / userData.nextLevelXp) * 100
   const unlockedAchievements = userData.achievements.filter(
     (a) => a.unlocked
   ).length
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="text-muted-foreground">
+            Cargando datos del usuario...
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -179,13 +247,20 @@ export default function UserDashboard() {
         <div className="mb-8">
           <div className="flex flex-col gap-6 lg:flex-row">
             {/* Profile Card */}
-            <Card className="lg:w-80">
+            <Card className="relative lg:w-80">
+              <div className="absolute top-3 right-3">
+                <Badge
+                  className={`${userData.membership.className} rounded-full px-2 py-1 text-xs sm:text-sm`}
+                >
+                  {userData.membership.label}
+                </Badge>
+              </div>
               <CardContent className="pt-6">
                 <div className="flex flex-col items-center text-center">
                   <div className="relative mb-4">
                     <Avatar className="border-primary h-24 w-24 border-4">
                       <AvatarImage src={userData.avatar} alt={userData.name} />
-                      <AvatarFallback>{userData.name.charAt(0)}</AvatarFallback>
+                      <AvatarFallback>{userData.initials}</AvatarFallback>
                     </Avatar>
                     <div className="bg-primary absolute -right-2 -bottom-2 flex h-10 w-10 items-center justify-center rounded-full border-4 border-white dark:border-gray-950">
                       <span className="text-primary-foreground">
@@ -194,7 +269,7 @@ export default function UserDashboard() {
                     </div>
                   </div>
                   <h2 className="text-foreground mb-1">{userData.name}</h2>
-                  <p className="text-muted-foreground mb-4">
+                  <p className="text-muted-foreground mt-2 text-xs">
                     Miembro desde {userData.joinDate}
                   </p>
 
@@ -258,7 +333,7 @@ export default function UserDashboard() {
 
             {/* Stats Cards */}
             <div className="grid flex-1 grid-cols-1 gap-6 md:grid-cols-2">
-              <Card className="from-primary/5 to-primary/10 border-primary/20 bg-gradient-to-br">
+              <Card className="from-primary/5 to-primary/10 border-primary/20 bg-linear-to-br">
                 <CardContent className="pt-6">
                   <div className="mb-4 flex items-center justify-between">
                     <div className="bg-primary/20 flex h-12 w-12 items-center justify-center rounded-lg">
@@ -281,7 +356,7 @@ export default function UserDashboard() {
                 </CardContent>
               </Card>
 
-              <Card className="border-orange-200 bg-gradient-to-br from-orange-50 to-orange-100 dark:border-orange-800 dark:from-orange-950/20 dark:to-orange-900/20">
+              <Card className="border-orange-200 bg-linear-to-br from-orange-50 to-orange-100 dark:border-orange-800 dark:from-orange-950/20 dark:to-orange-900/20">
                 <CardContent className="pt-6">
                   <div className="mb-4 flex items-center justify-between">
                     <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-200 dark:bg-orange-900/40">
@@ -378,7 +453,7 @@ export default function UserDashboard() {
                             className="bg-muted/50 flex items-start gap-3 rounded-lg p-3"
                           >
                             <div
-                              className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg ${
+                              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
                                 contrib.type === 'rating'
                                   ? 'bg-primary/20'
                                   : 'bg-orange-100 dark:bg-orange-900/20'
@@ -475,7 +550,7 @@ export default function UserDashboard() {
                       >
                         <div className="flex items-start gap-4">
                           <div
-                            className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg ${
+                            className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg ${
                               contrib.type === 'rating'
                                 ? 'bg-primary/20'
                                 : 'bg-orange-100 dark:bg-orange-900/20'

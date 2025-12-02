@@ -8,6 +8,7 @@ import { auth } from '@/config/firebase'
 import { useAuthStore } from '@/store/authStore'
 import Layout from '@/components/layouts/layout'
 import { useUser } from '@/features/auth/hooks/useUser'
+import { env } from '@/config/env'
 
 function AuthListener() {
   const syncFirebaseUser = useAuthStore((state) => state.syncFirebaseUser)
@@ -78,9 +79,7 @@ function RootLayout() {
       )}
 
       <Toaster />
-      {import.meta.env.DEV && (
-        <TanStackRouterDevtools position="bottom-right" />
-      )}
+      {env.isDevelopment && <TanStackRouterDevtools position="bottom-right" />}
     </>
   )
 }

@@ -43,6 +43,7 @@ import { ContributionDialog } from '@/features/map/components/ContributionDialog
 interface MainNavbarProps {
   isAuthenticated?: boolean
   userName?: string
+  userEmail?: string
   userAvatar?: string
   notificationCount?: number
   onMenuClick?: () => void
@@ -53,12 +54,13 @@ interface MainNavbarProps {
 export function MainNavbar({
   isAuthenticated = false,
   userName = 'Usuario',
+  userEmail = 'usuario@email.com',
   userAvatar,
   notificationCount = 0,
   onMenuClick,
   onSearchClick,
   onLogout,
-}: MainNavbarProps) {
+}: Readonly<MainNavbarProps>) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [contributionDialogOpen, setContributionDialogOpen] = useState(false)
   const [contributionDefaultTab, setContributionDefaultTab] = useState<
@@ -99,9 +101,7 @@ export function MainNavbar({
       }`}
     >
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between gap-4 px-4">
-        {/* LEFT SECTION */}
         <div className="flex items-center gap-6">
-          {/* Mobile Menu Toggle */}
           <Button
             variant="ghost"
             size="icon"
@@ -125,11 +125,17 @@ export function MainNavbar({
           {/* Desktop Navigation Links */}
           <div className="hidden items-center gap-1 lg:flex">
             <Link to="/">
-              <Button variant="ghost">Inicio</Button>
+              <Button variant="ghost" className="cursor-pointer">
+                Inicio
+              </Button>
             </Link>
 
             <Link to="/mapa">
-              <Button variant="ghost" style={{ color: '#08A09C' }}>
+              <Button
+                variant="ghost"
+                className="cursor-pointer"
+                style={{ color: '#08A09C' }}
+              >
                 <Map className="mr-2 h-4 w-4" />
                 Explorar Mapa
               </Button>
@@ -138,7 +144,7 @@ export function MainNavbar({
             {/* Recursos Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost">
+                <Button variant="ghost" className="cursor-pointer">
                   Recursos
                   <ChevronDown className="ml-1 h-4 w-4" />
                 </Button>
@@ -148,10 +154,13 @@ export function MainNavbar({
                 <DropdownMenuSeparator />
                 {recursosItems.map((item) => {
                   const Icon = item.icon
-                  const to = `/app/recursos?tab=${encodeURIComponent(item.label)}`
+                  const to = `/recursos?tab=${encodeURIComponent(item.label)}`
                   return (
                     <DropdownMenuItem key={item.label} asChild>
-                      <Link to={to} className="flex items-center gap-2">
+                      <Link
+                        to={to}
+                        className="flex cursor-pointer items-center gap-2"
+                      >
                         <Icon
                           className="mr-2 h-4 w-4"
                           style={{ color: '#08A09C' }}
@@ -167,7 +176,7 @@ export function MainNavbar({
             {/* Comunidad Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost">
+                <Button variant="ghost" className="cursor-pointer">
                   Comunidad
                   <ChevronDown className="ml-1 h-4 w-4" />
                 </Button>
@@ -177,10 +186,13 @@ export function MainNavbar({
                 <DropdownMenuSeparator />
                 {comunidadItems.map((item) => {
                   const Icon = item.icon
-                  const to = `/app/comunidad?tab=${encodeURIComponent(item.label)}`
+                  const to = `/comunidad?tab=${encodeURIComponent(item.label)}`
                   return (
                     <DropdownMenuItem key={item.label} asChild>
-                      <Link to={to} className="flex items-center gap-2">
+                      <Link
+                        to={to}
+                        className="flex cursor-pointer items-center gap-2"
+                      >
                         <Icon
                           className="mr-2 h-4 w-4"
                           style={{ color: '#007BFF' }}
@@ -193,8 +205,10 @@ export function MainNavbar({
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Link to="/app/planes">
-              <Button variant="ghost">Planes</Button>
+            <Link to="/planes">
+              <Button variant="ghost" className="cursor-pointer">
+                Planes
+              </Button>
             </Link>
           </div>
         </div>
@@ -202,7 +216,7 @@ export function MainNavbar({
           {/* Search Button (Desktop) */}
           <Button
             variant="ghost"
-            className="hidden items-center gap-2 lg:flex"
+            className="hidden cursor-pointer items-center gap-2 lg:flex"
             onClick={onSearchClick}
           >
             <Search className="h-4 w-4" style={{ color: '#08A09C' }} />
@@ -222,7 +236,7 @@ export function MainNavbar({
                   <DropdownMenuTrigger asChild>
                     <Button
                       style={{ backgroundColor: '#08A09C', color: '#FFFFFF' }}
-                      className="hover:opacity-90"
+                      className="cursor-pointer hover:opacity-90"
                     >
                       <Plus className="mr-2 h-4 w-4" />
                       Contribuir
@@ -296,7 +310,7 @@ export function MainNavbar({
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="relative h-9 w-9 rounded-full"
+                    className="relative h-9 w-9 cursor-pointer rounded-full"
                   >
                     <Avatar className="h-9 w-9">
                       <AvatarImage src={userAvatar} alt={userName} />
@@ -308,14 +322,14 @@ export function MainNavbar({
                   <DropdownMenuLabel>
                     <div className="flex flex-col space-y-1">
                       <p>{userName}</p>
-                      <p className="text-muted-foreground">usuario@email.com</p>
+                      <p className="text-muted-foreground">{userEmail}</p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link
                       to="/app/dashboard"
-                      className="flex items-center gap-4"
+                      className="flex cursor-pointer items-center gap-4"
                     >
                       <LayoutDashboard className="mr-2 h-4 w-4" />
                       Mi Dashboard
@@ -324,7 +338,7 @@ export function MainNavbar({
                   <DropdownMenuItem asChild>
                     <Link
                       to="/app/calificaciones"
-                      className="flex items-center gap-4"
+                      className="flex cursor-pointer items-center gap-4"
                     >
                       <Star className="mr-2 h-4 w-4" />
                       Mis Calificaciones
@@ -333,7 +347,7 @@ export function MainNavbar({
                   <DropdownMenuItem asChild>
                     <Link
                       to="/app/zonas-interes"
-                      className="flex items-center gap-4"
+                      className="flex cursor-pointer items-center gap-4"
                     >
                       <Heart className="mr-2 h-4 w-4" />
                       Mis Zonas de Interés
@@ -342,7 +356,7 @@ export function MainNavbar({
                   <DropdownMenuItem asChild>
                     <Link
                       to="/app/reportes"
-                      className="flex items-center gap-4"
+                      className="flex cursor-pointer items-center gap-4"
                     >
                       <FileText className="mr-2 h-4 w-4" />
                       Mis Reportes
@@ -352,14 +366,17 @@ export function MainNavbar({
                   <DropdownMenuItem asChild>
                     <Link
                       to="/app/configuracion"
-                      className="flex items-center gap-4"
+                      className="flex cursor-pointer items-center gap-4"
                     >
                       <Settings className="mr-2 h-4 w-4" />
                       Configuración
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/app/ayuda" className="flex items-center gap-4">
+                    <Link
+                      to="/app/ayuda"
+                      className="flex cursor-pointer items-center gap-4"
+                    >
                       <HelpCircle className="mr-2 h-4 w-4" />
                       Ayuda
                     </Link>
@@ -379,12 +396,15 @@ export function MainNavbar({
             <div className="flex items-center gap-2">
               {/* Not Authenticated */}
               <Link to="/login">
-                <Button variant="outline" className="hidden md:flex">
+                <Button
+                  variant="outline"
+                  className="hidden cursor-pointer md:flex"
+                >
                   Iniciar Sesión
                 </Button>
               </Link>
               <Link to="/register">
-                <Button>Registrarse</Button>
+                <Button className="cursor-pointer">Registrarse</Button>
               </Link>
             </div>
           )}

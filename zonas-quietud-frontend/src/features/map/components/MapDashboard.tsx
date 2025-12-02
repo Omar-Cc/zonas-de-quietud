@@ -39,9 +39,33 @@ export function MapDashboard() {
   const handleZoomOut = () => mapInstance?.zoomOut()
   const handleCenterMap = () => mapInstance?.setView([-12.1111, -77.0316], 14)
 
+  // Transform MapItem to Street structure for StreetPopup
+  const transformToStreet = (item: any) => {
+    // Check if it's already in the correct format
+    if (item.overallScore !== undefined) {
+      return item
+    }
+
+    // Transform MapItem to Street structure
+    // Since MapItem only has a single score, we use it for all metrics
+    return {
+      id: item.id,
+      name: item.name,
+      district: 'Miraflores', // Placeholder - ideally from API
+      overallScore: item.score,
+      security: item.score * 0.9,
+      noise: item.score * 0.95,
+      airQuality: item.score * 0.85,
+      reviews: 42, // Placeholder
+      color:
+        item.score >= 7 ? '#10b981' : item.score >= 5 ? '#eab308' : '#ef4444',
+    }
+  }
+
   const handleStreetClick = (street: any, event: any) => {
-    // Ya no necesitamos calcular posición para el popup, es fijo.
-    setSelectedStreet(street)
+    // Transform the street data to match StreetPopup expectations
+    const transformedStreet = transformToStreet(street)
+    setSelectedStreet(transformedStreet)
   }
 
   return (

@@ -18,7 +18,7 @@ export function SocialAuthButton({
       variant="outline"
       onClick={onClick}
       disabled={disabled}
-      className="relative w-full"
+      className="relative w-full cursor-pointer"
     >
       {isLoading ? (
         <Loader2 className="mr-2 h-4 w-4 animate-spin" />

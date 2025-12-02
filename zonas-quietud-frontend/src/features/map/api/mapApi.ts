@@ -1,4 +1,5 @@
 import { apiClient } from '@/api/apiClient'
+import { API_PATHS } from '@/config/apiRoutes'
 import type {
   ViewportBounds,
   MapElementsResponse,
@@ -38,7 +39,7 @@ export async function fetchMapElements(
   bounds: ViewportBounds
 ): Promise<MapItem[]> {
   const response = await apiClient.get<MapElementsResponse>(
-    '/api/v1/maps/elements',
+    API_PATHS.MAP.ELEMENTS,
     {
       params: {
         minLat: bounds.minLat,
