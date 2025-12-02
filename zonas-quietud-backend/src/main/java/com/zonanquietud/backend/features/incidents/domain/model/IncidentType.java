@@ -3,8 +3,8 @@ package com.zonanquietud.backend.features.incidents.domain.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * IncidentType - Types of incidents that can be reported
- * Domain layer - Aligned with frontend values
+ * IncidentType - Tipos de incidentes que pueden ser reportados
+ * Capa de dominio - Alineado con valores del frontend
  */
 public enum IncidentType {
   @JsonProperty("ROBBERY")

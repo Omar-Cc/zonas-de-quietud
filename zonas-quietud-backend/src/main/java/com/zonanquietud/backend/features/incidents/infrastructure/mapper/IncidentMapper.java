@@ -6,15 +6,13 @@ import com.zonanquietud.backend.features.incidents.domain.model.Incident;
 import com.zonanquietud.backend.features.incidents.infrastructure.persistence.jpa.IncidentJpaEntity;
 
 /**
- * IncidentMapper - Bidirectional mapper between domain and JPA entities
- * Infrastructure layer
+ * IncidentMapper - Mapeador bidireccional entre dominio y entidades JPA
+ * Capa de infraestructura
  */
 @Component
 public class IncidentMapper {
 
-  /**
-   * Convert domain model to JPA entity
-   */
+  /** Convertir modelo de dominio a entidad JPA */
   public IncidentJpaEntity toEntity(Incident incident) {
     if (incident == null) {
       return null;
@@ -39,9 +37,7 @@ public class IncidentMapper {
         .build();
   }
 
-  /**
-   * Convert JPA entity to domain model
-   */
+  /** Convertir entidad JPA a modelo de dominio */
   public Incident toDomain(IncidentJpaEntity entity) {
     if (entity == null) {
       return null;

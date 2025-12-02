@@ -24,10 +24,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * GeoJsonLoaderService - Loads GeoJSON data into database on startup
- * Infrastructure layer - Data initialization
+ * GeoJsonLoaderService - Carga datos GeoJSON en la base de datos al iniciar
+ * Capa de infraestructura - Inicialización de datos
  * 
- * Reads urban-elements.geojson and populates map_elements table if empty
+ * Lee urban-elements.geojson y puebla la tabla map_elements si está vacía
  */
 @Service
 @RequiredArgsConstructor
@@ -42,7 +42,7 @@ public class GeoJsonLoaderService implements CommandLineRunner {
   @Override
   public void run(String... args) {
     try {
-      // Only load if database is empty (idempotent)
+
       if (repository.count() > 0) {
         log.info("Map elements already loaded. Skipping GeoJSON import.");
         return;
@@ -96,7 +96,7 @@ public class GeoJsonLoaderService implements CommandLineRunner {
   }
 
   private MapElement parseFeature(JsonNode feature) throws IOException {
-    // Extract properties
+
     JsonNode properties = feature.get("properties");
     String name = extractName(properties);
 
@@ -105,7 +105,6 @@ public class GeoJsonLoaderService implements CommandLineRunner {
       return null;
     }
 
-    // Extract and parse geometry
     JsonNode geometryNode = feature.get("geometry");
     String geometryType = geometryNode.get("type").asText();
 
@@ -120,7 +119,6 @@ public class GeoJsonLoaderService implements CommandLineRunner {
       return null;
     }
 
-    // Try different name fields common in OSM/Overpass data
     if (properties.has("name")) {
       return properties.get("name").asText();
     }
@@ -135,23 +133,20 @@ public class GeoJsonLoaderService implements CommandLineRunner {
   }
 
   private Geometry parseGeometry(JsonNode geometryNode) throws IOException {
-    // Use ObjectMapper to convert JsonNode to Geometry
-    // This works because JtsModule is registered in JacksonGeometryConfiguration
+
     return objectMapper.treeToValue(geometryNode, Geometry.class);
   }
 
   private ElementType determineElementType(Geometry geometry, String geometryType) {
-    // Handle LineString and MultiLineString as STREET
+
     if (geometry instanceof LineString || geometry instanceof MultiLineString) {
       return ElementType.STREET;
     }
 
-    // Handle Polygon and MultiPolygon as ZONE
     if (geometry instanceof Polygon || geometry instanceof MultiPolygon) {
       return ElementType.ZONE;
     }
 
-    // Default to ZONE for other geometry types (Point, etc.)
     log.warn("Unexpected geometry type: {}. Defaulting to ZONE.", geometryType);
     return ElementType.ZONE;
   }

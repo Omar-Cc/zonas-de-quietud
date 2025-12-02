@@ -8,8 +8,8 @@ import com.zonanquietud.backend.features.auth.domain.enums.AdminRole;
 import com.zonanquietud.backend.features.auth.domain.valueobject.UserEmail;
 
 /**
- * Administrador - Domain Model (Aggregate Root)
- * Pure Java implementation without external dependencies
+ * Administrador - Modelo de Dominio (Raíz de Agregado)
+ * Implementación Java pura sin dependencias externas
  */
 public class Administrador {
   private UUID id;
@@ -24,11 +24,9 @@ public class Administrador {
   private LocalDateTime createdAt;
   private LocalDateTime lastLoginAt;
 
-  // Private constructor for builder pattern
   private Administrador() {
   }
 
-  // Constructor with validation
   public Administrador(UUID id, String username, UserEmail email, String firebaseUid,
       String firstName, String lastName, AdminRole role) {
     if (username == null || username.trim().isEmpty()) {
@@ -58,13 +56,12 @@ public class Administrador {
     this.createdAt = LocalDateTime.now();
   }
 
-  // Factory method to create new admin
+  /** Método de fábrica para crear un nuevo administrador */
   public static Administrador createNew(String username, UserEmail email, String firebaseUid,
       String firstName, String lastName, AdminRole role) {
     return new Administrador(UUID.randomUUID(), username, email, firebaseUid, firstName, lastName, role);
   }
 
-  // Business logic methods
   public void updateLastLogin() {
     this.lastLoginAt = LocalDateTime.now();
   }
@@ -108,7 +105,6 @@ public class Administrador {
     return role == AdminRole.SUPER_ADMIN;
   }
 
-  // Getters
   public UUID getId() {
     return id;
   }
@@ -153,7 +149,6 @@ public class Administrador {
     return lastLoginAt;
   }
 
-  // Setters (for infrastructure layer mapping)
   public void setId(UUID id) {
     this.id = id;
   }
@@ -224,7 +219,6 @@ public class Administrador {
         '}';
   }
 
-  // Builder pattern (pure Java)
   public static Builder builder() {
     return new Builder();
   }
@@ -292,7 +286,7 @@ public class Administrador {
     }
 
     public Administrador build() {
-      // Validate required fields
+
       if (admin.username == null || admin.username.trim().isEmpty()) {
         throw new IllegalStateException("Username es requerido");
       }
@@ -309,7 +303,6 @@ public class Administrador {
         throw new IllegalStateException("Role es requerido");
       }
 
-      // Set defaults if not provided
       if (admin.id == null) {
         admin.id = UUID.randomUUID();
       }

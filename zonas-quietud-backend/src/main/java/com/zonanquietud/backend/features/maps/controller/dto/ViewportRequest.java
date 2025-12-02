@@ -5,11 +5,11 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * ViewportRequest - DTO for mandatory viewport filtering
- * Controller layer - Required parameters for spatial queries
+ * ViewportRequest - DTO para filtrado de viewport obligatorio
+ * Capa de controlador - Parámetros requeridos para consultas espaciales
  * 
- * All parameters are REQUIRED to prevent full database queries.
- * Defines a bounding box for map viewport filtering.
+ * Todos los parámetros son REQUERIDOS para prevenir consultas completas a la base de datos.
+ * Define una caja delimitadora para filtrado de viewport del mapa.
  */
 public record ViewportRequest(
     @NotNull(message = "minLat is required") @Min(value = -90, message = "Minimum latitude must be >= -90") @Max(value = 90, message = "Minimum latitude must be <= 90") Double minLat,
@@ -20,32 +20,28 @@ public record ViewportRequest(
 
     @NotNull(message = "maxLng is required") @Min(value = -180, message = "Maximum longitude must be >= -180") @Max(value = 180, message = "Maximum longitude must be <= 180") Double maxLng) {
   /**
-   * Validate that the viewport forms a valid bounding box
+   * Validar que el viewport forma una caja delimitadora válida
    * 
-   * @return true if viewport is valid
+   * @return true si el viewport es válido
    */
   public boolean isValid() {
     return minLat < maxLat && minLng < maxLng;
   }
 
   /**
-   * Calculate the area of the viewport in degrees squared
-   * Used for safety checks to prevent overly large queries
+   * Calcular el área del viewport en grados cuadrados
+   * Usado para verificaciones de seguridad para prevenir consultas demasiado grandes
    */
   public double getArea() {
     return (maxLat - minLat) * (maxLng - minLng);
   }
 
-  /**
-   * Get the latitudinal span of the viewport
-   */
+  /** Obtener el rango latitudinal del viewport */
   public double getLatSpan() {
     return maxLat - minLat;
   }
 
-  /**
-   * Get the longitudinal span of the viewport
-   */
+  /** Obtener el rango longitudinal del viewport */
   public double getLngSpan() {
     return maxLng - minLng;
   }

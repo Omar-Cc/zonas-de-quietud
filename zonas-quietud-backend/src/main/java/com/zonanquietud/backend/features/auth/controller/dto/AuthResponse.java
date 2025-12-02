@@ -1,13 +1,12 @@
 package com.zonanquietud.backend.features.auth.controller.dto;
 
 /**
- * AuthResponse - Combined authentication response
- * Contains both user information and JWT tokens
- * Used in login and register endpoints to provide complete auth data to
- * frontend
+ * AuthResponse - Respuesta de autenticación combinada
+ * Contiene tanto información del usuario como tokens JWT
+ * Usado en endpoints de login y registro para proveer datos completos de
+ * autenticación al frontend
  */
 public record AuthResponse(
-    UserResponse user, // User data (name, email, emailVerified, etc.)
-    TokenResponse tokens // JWT tokens (access, refresh, expiration)
-) {
+        UserResponse user,
+        TokenResponse tokens) {
 }

@@ -4,10 +4,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * RatingResponse - DTO for rating responses
- * Controller layer
- */
+/** RatingResponse - DTO para respuestas de calificaciones */
 public record RatingResponse(
     UUID id,
     UUID userId,

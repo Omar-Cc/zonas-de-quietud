@@ -11,8 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * RatingEventListener - Listens to rating events and updates map scores
- * Maps module - Event handler
+ * RatingEventListener - Escucha eventos de calificación y actualiza puntajes del mapa
+ * Módulo de mapas - Manejador de eventos
  */
 @Component
 @RequiredArgsConstructor
@@ -22,8 +22,8 @@ public class RatingEventListener {
   private final MapElementRepository repository;
 
   /**
-   * Handle street rated event
-   * Updates the map element score with the new average rating
+   * Manejar evento de calle calificada
+   * Actualiza el puntaje del elemento del mapa con el nuevo promedio de calificación
    */
   @EventListener
   @Transactional

@@ -22,8 +22,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * ReportIncidentUseCase - Report a new incident
- * Application layer - Business logic
+ * ReportIncidentUseCase - Reportar un nuevo incidente
+ * Capa de aplicación - Lógica de negocio
  */
 @Service
 @RequiredArgsConstructor
@@ -34,19 +34,15 @@ public class ReportIncidentUseCase {
 	private final ApplicationEventPublisher eventPublisher;
 	private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
-	/**
-	 * Execute incident reporting
-	 */
+	/** Ejecutar reporte de incidente */
 	public IncidentResponse execute(ReportIncidentRequest request) {
 		log.info("Reporting incident for element {} by user {}: type={}, severity={}",
 				request.streetId(), request.userId(), request.incidentType(), request.severity());
 
-		// Convert lat/lng to PostGIS Point
 		Point location = geometryFactory.createPoint(
 				new Coordinate(request.location().longitude(),
 						request.location().latitude()));
 
-		// Create domain model
 		Incident incident = Incident.builder()
 				.id(UUID.randomUUID())
 				.reporterId(request.userId())
@@ -63,12 +59,10 @@ public class ReportIncidentUseCase {
 				.status(IncidentStatus.PENDING)
 				.build();
 
-		// Save incident
 		Incident saved = repository.save(incident);
 
 		log.info("Incident saved with ID {}. Status: {}", saved.getId(), saved.getStatus());
 
-		// Publish event to update map
 		eventPublisher.publishEvent(new IncidentReportedEvent(
 				saved.getId(),
 				request.streetId(),
@@ -79,11 +73,9 @@ public class ReportIncidentUseCase {
 		return toResponse(saved);
 	}
 
-	/**
-	 * Convert domain model to response DTO
-	 */
+	/** Convertir modelo de dominio a DTO de respuesta */
 	private IncidentResponse toResponse(Incident incident) {
-		// Convert Point back to lat/lng
+
 		IncidentLocationDto location = new IncidentLocationDto(
 				incident.getLocation().getY(), // latitude
 				incident.getLocation().getX(), // longitude

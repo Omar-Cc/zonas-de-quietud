@@ -29,7 +29,7 @@ public class FirebaseConfig {
 
   @Bean
   public com.google.firebase.auth.FirebaseAuth firebaseAuth() throws IOException {
-    firebaseApp(); // Ensure FirebaseApp is initialized
+    firebaseApp();
     return com.google.firebase.auth.FirebaseAuth.getInstance();
   }
 }

@@ -19,8 +19,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * UploadController - REST API for file uploads
- * Controller layer - HTTP endpoints
+ * UploadController - API REST para subida de archivos
+ * Capa de controlador - endpoints HTTP
  */
 @RestController
 @RequestMapping("/api/v1/upload")
@@ -32,8 +32,8 @@ public class UploadController {
   private final ImageStorageService imageStorageService;
 
   /**
-   * Upload image from base64 data
-   * Returns public URL to use in ratings/incidents
+   * Subir imagen desde datos base64
+   * Retorna URL pública para usar en calificaciones/incidentes
    */
   @PostMapping("/image")
   @Operation(summary = "Upload image", description = "Upload an image from base64 data. Returns a public URL to use in ratings or incident reports. Max size: 5MB.")
@@ -42,20 +42,16 @@ public class UploadController {
     log.info("POST /api/v1/upload/image - mimeType: {}", request.mimeType());
 
     try {
-      // Extract base64 data (remove data URI prefix if present)
+
       String base64Data = request.extractBase64Data();
 
-      // Validate image size
       imageStorageService.validateImageSize(base64Data);
 
-      // Save image and get URL
       String fileExtension = request.getFileExtension();
       String url = imageStorageService.saveImage(base64Data, fileExtension);
 
-      // Get file size
       long size = imageStorageService.getFileSize(base64Data);
 
-      // Extract filename from URL
       String filename = url.substring(url.lastIndexOf('/') + 1);
 
       UploadImageResponse response = new UploadImageResponse(url, filename, size);

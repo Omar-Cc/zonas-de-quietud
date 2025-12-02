@@ -7,13 +7,13 @@ import com.zonanquietud.backend.features.incidents.domain.model.IncidentSeverity
 import com.zonanquietud.backend.features.incidents.domain.model.IncidentType;
 
 /**
- * IncidentReportedEvent - Event published when an incident is reported
- * Application layer - Domain event
+ * IncidentReportedEvent - Evento publicado cuando se reporta un incidente
+ * Capa de aplicación - Evento de dominio
  */
 public record IncidentReportedEvent(
-    UUID incidentId,
-    UUID mapElementId,
-    IncidentSeverity severity,
-    IncidentType type,
-    Instant reportedAt) {
+        UUID incidentId,
+        UUID mapElementId,
+        IncidentSeverity severity,
+        IncidentType type,
+        Instant reportedAt) {
 }

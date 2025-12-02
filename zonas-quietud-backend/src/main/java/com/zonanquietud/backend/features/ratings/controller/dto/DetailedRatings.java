@@ -3,10 +3,7 @@ package com.zonanquietud.backend.features.ratings.controller.dto;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 
-/**
- * DetailedRatings - Nested DTO for detailed rating scores
- * Controller layer
- */
+/** DetailedRatings - DTO anidado para puntajes de calificación detallados */
 public record DetailedRatings(
     @Min(value = 0, message = "security must be >= 0") @Max(value = 10, message = "security must be <= 10") Double security,
 

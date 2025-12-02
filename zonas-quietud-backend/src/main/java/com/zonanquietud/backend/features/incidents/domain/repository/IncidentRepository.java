@@ -7,33 +7,23 @@ import java.util.UUID;
 import com.zonanquietud.backend.features.incidents.domain.model.Incident;
 
 /**
- * IncidentRepository - Domain repository for incidents
- * Domain layer
+ * IncidentRepository - Repositorio de dominio para incidentes
+ * Capa de dominio
  */
 public interface IncidentRepository {
 
-  /**
-   * Save an incident
-   */
+  /** Guardar un incidente */
   Incident save(Incident incident);
 
-  /**
-   * Find incident by ID
-   */
+  /** Buscar incidente por ID */
   Optional<Incident> findById(UUID id);
 
-  /**
-   * Find all incidents for a map element
-   */
+  /** Buscar todos los incidentes de un elemento del mapa */
   List<Incident> findByMapElementId(UUID mapElementId);
 
-  /**
-   * Find all incidents by a reporter
-   */
+  /** Buscar todos los incidentes de un reportero */
   List<Incident> findByReporterId(UUID reporterId);
 
-  /**
-   * Count total incidents
-   */
+  /** Contar total de incidentes */
   long count();
 }

@@ -74,15 +74,10 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
   }
 
-  /**
-   * Maneja NoResourceFoundException (recursos estáticos no encontrados)
-   * No logueamos esto como error porque es normal (ej: Swagger buscando recursos)
-   */
   @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
   public ResponseEntity<ApiResponse<Void>> handleNoResourceFoundException(
       org.springframework.web.servlet.resource.NoResourceFoundException ex,
       WebRequest request) {
-    // No logueamos - es normal que Swagger busque recursos que no existen
     ApiResponse<Void> response = ApiResponse.error(
         HttpStatus.NOT_FOUND,
         "Recurso no encontrado",

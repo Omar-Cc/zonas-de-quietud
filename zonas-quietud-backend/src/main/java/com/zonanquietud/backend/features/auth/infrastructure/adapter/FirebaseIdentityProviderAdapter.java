@@ -13,9 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * FirebaseIdentityProviderAdapter - Implements IdentityProvider using Firebase
+ * FirebaseIdentityProviderAdapter - Implementa IdentityProvider usando Firebase
  * Auth
- * Infrastructure layer - adapts Firebase to domain port
+ * Capa de infraestructura - adapta Firebase al puerto de dominio
  */
 @Component
 @RequiredArgsConstructor

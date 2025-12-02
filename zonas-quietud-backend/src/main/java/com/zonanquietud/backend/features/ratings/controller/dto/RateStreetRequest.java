@@ -9,8 +9,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * RateStreetRequest - DTO for rating submission
- * Controller layer - Matches frontend payload
+ * RateStreetRequest - DTO para envío de calificación
+ * Capa de controlador - Coincide con payload del frontend
  */
 public record RateStreetRequest(
     @NotNull(message = "streetId is required") UUID streetId,

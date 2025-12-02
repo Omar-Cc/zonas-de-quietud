@@ -10,17 +10,13 @@ import com.zonanquietud.backend.features.auth.infrastructure.persistence.jpa.Adm
 import com.zonanquietud.backend.features.auth.infrastructure.persistence.jpa.UserJpaEntity;
 
 /**
- * AuthMapper - Maps between domain models, JPA entities, and DTOs
- * Infrastructure layer - can use Spring annotations
+ * AuthMapper - Mapea entre modelos de dominio, entidades JPA y DTOs
+ * Capa de infraestructura - puede usar anotaciones de Spring
  */
 @Component
 public class AuthMapper {
 
-  // ========== Usuario Mappings ==========
-
-  /**
-   * Maps JPA entity to domain model
-   */
+  /** Mapea entidad JPA a modelo de dominio */
   public Usuario toDomain(UserJpaEntity entity) {
     if (entity == null) {
       return null;
@@ -45,9 +41,7 @@ public class AuthMapper {
         .build();
   }
 
-  /**
-   * Maps domain model to JPA entity
-   */
+  /** Mapea modelo de dominio a entidad JPA */
   public UserJpaEntity toEntity(Usuario domain) {
     if (domain == null) {
       return null;
@@ -72,9 +66,7 @@ public class AuthMapper {
         .build();
   }
 
-  /**
-   * Maps domain model to UserResponse DTO
-   */
+  /** Mapea modelo de dominio a DTO UserResponse */
   public UserResponse toUserResponse(Usuario domain) {
     if (domain == null) {
       return null;
@@ -98,11 +90,7 @@ public class AuthMapper {
         domain.getLoginCount());
   }
 
-  // ========== Administrador Mappings ==========
-
-  /**
-   * Maps JPA entity to domain model
-   */
+  /** Mapea entidad JPA a modelo de dominio */
   public Administrador toDomain(AdministratorJpaEntity entity) {
     if (entity == null) {
       return null;
@@ -123,9 +111,7 @@ public class AuthMapper {
         .build();
   }
 
-  /**
-   * Maps domain model to JPA entity
-   */
+  /** Mapea modelo de dominio a entidad JPA */
   public AdministratorJpaEntity toEntity(Administrador domain) {
     if (domain == null) {
       return null;
@@ -147,8 +133,8 @@ public class AuthMapper {
   }
 
   /**
-   * Updates existing JPA entity from domain model
-   * Useful for update operations
+   * Actualiza entidad JPA existente desde modelo de dominio
+   * Útil para operaciones de actualización
    */
   public void updateEntity(UserJpaEntity entity, Usuario domain) {
     if (entity == null || domain == null) {

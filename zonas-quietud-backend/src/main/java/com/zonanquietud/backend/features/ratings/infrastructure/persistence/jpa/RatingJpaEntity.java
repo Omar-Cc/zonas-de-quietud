@@ -22,8 +22,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * RatingJpaEntity - JPA entity for ratings with PostGIS support
- * Infrastructure layer
+ * RatingJpaEntity - Entidad JPA para calificaciones con soporte PostGIS
+ * Capa de infraestructura
  */
 @Entity
 @Table(name = "ratings")
@@ -52,7 +52,6 @@ public class RatingJpaEntity {
   @Column(name = "rating_type")
   private String ratingType;
 
-  // Detailed ratings
   @Column(name = "security")
   private Double security;
 
@@ -68,13 +67,11 @@ public class RatingJpaEntity {
   @Column(name = "tranquility")
   private Double tranquility;
 
-  // Photos stored in separate table
   @ElementCollection
   @CollectionTable(name = "rating_photos", joinColumns = @JoinColumn(name = "rating_id"))
   @Column(name = "photo_url")
   private List<String> photos;
 
-  // Location as PostGIS Point
   @Column(name = "location", columnDefinition = "GEOMETRY(Point, 4326)", nullable = false)
   private Point location;
 

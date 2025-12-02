@@ -1,8 +1,8 @@
 package com.zonanquietud.backend.features.upload.controller.dto;
 
 /**
- * UploadImageResponse - DTO for image upload response
- * Returns the public URL of the uploaded image
+ * UploadImageResponse - DTO para respuesta de carga de imagen
+ * Retorna la URL pública de la imagen cargada
  */
 public record UploadImageResponse(
     String url,

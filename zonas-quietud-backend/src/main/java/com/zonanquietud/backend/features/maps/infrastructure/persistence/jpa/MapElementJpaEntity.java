@@ -24,10 +24,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * MapElementJpaEntity - JPA entity for map elements
- * Infrastructure layer - Persistence model with Hibernate Spatial
+ * MapElementJpaEntity - Entidad JPA para elementos del mapa
+ * Capa de infraestructura - Modelo de persistencia con Hibernate Spatial
  * 
- * Uses PostGIS geometry column with SRID 4326 (WGS 84)
+ * Usa columna de geometría PostGIS con SRID 4326 (WGS 84)
  */
 @Entity
 @Table(name = "map_elements")
@@ -53,10 +53,10 @@ public class MapElementJpaEntity {
   private Double score;
 
   /**
-   * Geometry column using PostGIS
-   * SRID 4326 = WGS 84 (standard for GPS coordinates)
+   * Columna de geometría usando PostGIS
+   * SRID 4326 = WGS 84 (estándar para coordenadas GPS)
    * 
-   * Supports: LineString, MultiLineString, Polygon, MultiPolygon
+   * Soporta: LineString, MultiLineString, Polygon, MultiPolygon
    */
   @Column(columnDefinition = "geometry(Geometry, 4326)", nullable = false)
   private Geometry geometry;

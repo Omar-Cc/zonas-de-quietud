@@ -22,92 +22,82 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * RateStreetUseCase - Submit a rating for a street/zone
- * Application layer - Business logic
+ * RateStreetUseCase - Enviar una calificación para una calle/zona
+ * Capa de aplicación - Lógica de negocio
  */
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class RateStreetUseCase {
 
-  private final RatingRepository repository;
-  private final ApplicationEventPublisher eventPublisher;
-  private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+	private final RatingRepository repository;
+	private final ApplicationEventPublisher eventPublisher;
+	private final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
-  /**
-   * Execute rating submission
-   */
-  public RatingResponse execute(RateStreetRequest request) {
-    log.info("Submitting rating for element {} by user {}",
-        request.streetId(), request.userId());
+	/** Ejecutar envío de calificación */
+	public RatingResponse execute(RateStreetRequest request) {
+		log.info("Submitting rating for element {} by user {}",
+				request.streetId(), request.userId());
 
-    // Convert lat/lng to PostGIS Point
-    Point location = geometryFactory.createPoint(
-        new Coordinate(request.location().longitude(),
-            request.location().latitude()));
+		Point location = geometryFactory.createPoint(
+				new Coordinate(request.location().longitude(),
+						request.location().latitude()));
 
-    // Create domain model
-    Rating rating = Rating.builder()
-        .id(UUID.randomUUID())
-        .userId(request.userId())
-        .mapElementId(request.streetId())
-        .overallScore(request.overallScore())
-        .comments(request.comments())
-        .ratingType(request.ratingType())
-        .security(request.detailedRatings().security())
-        .airQuality(request.detailedRatings().airQuality())
-        .noise(request.detailedRatings().noise())
-        .accessibility(request.detailedRatings().accessibility())
-        .tranquility(request.detailedRatings().tranquility())
-        .photos(request.photos())
-        .location(location)
-        .build();
+		Rating rating = Rating.builder()
+				.id(UUID.randomUUID())
+				.userId(request.userId())
+				.mapElementId(request.streetId())
+				.overallScore(request.overallScore())
+				.comments(request.comments())
+				.ratingType(request.ratingType())
+				.security(request.detailedRatings().security())
+				.airQuality(request.detailedRatings().airQuality())
+				.noise(request.detailedRatings().noise())
+				.accessibility(request.detailedRatings().accessibility())
+				.tranquility(request.detailedRatings().tranquility())
+				.photos(request.photos())
+				.location(location)
+				.build();
 
-    // Save rating
-    Rating saved = repository.save(rating);
+		Rating saved = repository.save(rating);
 
-    // Calculate new average score for the map element
-    Double newAverage = repository.calculateAverageScore(request.streetId());
+		Double newAverage = repository.calculateAverageScore(request.streetId());
 
-    log.info("Rating saved with ID {}. New average score: {}", saved.getId(), newAverage);
+		log.info("Rating saved with ID {}. New average score: {}", saved.getId(), newAverage);
 
-    // Publish event to update map
-    eventPublisher.publishEvent(new StreetRatedEvent(
-        saved.getId(),
-        request.streetId(),
-        newAverage,
-        Instant.now()));
+		eventPublisher.publishEvent(new StreetRatedEvent(
+				saved.getId(),
+				request.streetId(),
+				newAverage,
+				Instant.now()));
 
-    return toResponse(saved);
-  }
+		return toResponse(saved);
+	}
 
-  /**
-   * Convert domain model to response DTO
-   */
-  private RatingResponse toResponse(Rating rating) {
-    // Convert Point back to lat/lng
-    LocationDto location = new LocationDto(
-        rating.getLocation().getY(), // latitude
-        rating.getLocation().getX() // longitude
-    );
+	/** Convertir modelo de dominio a DTO de respuesta */
+	private RatingResponse toResponse(Rating rating) {
 
-    DetailedRatings detailedRatings = new DetailedRatings(
-        rating.getSecurity(),
-        rating.getAirQuality(),
-        rating.getNoise(),
-        rating.getAccessibility(),
-        rating.getTranquility());
+		LocationDto location = new LocationDto(
+				rating.getLocation().getY(), // latitude
+				rating.getLocation().getX()); // longitude
 
-    return new RatingResponse(
-        rating.getId(),
-        rating.getUserId(),
-        rating.getMapElementId(),
-        rating.getOverallScore(),
-        rating.getComments(),
-        rating.getRatingType(),
-        detailedRatings,
-        rating.getPhotos(),
-        location,
-        rating.getCreatedAt());
-  }
+		DetailedRatings detailedRatings = new DetailedRatings(
+				rating.getSecurity(),
+				rating.getAirQuality(),
+				rating.getNoise(),
+				rating.getAccessibility(),
+				rating.getTranquility());
+
+		return new RatingResponse(
+				rating.getId(),
+				rating.getUserId(),
+				rating.getMapElementId(),
+				rating.getOverallScore(),
+				rating.getComments(),
+				rating.getRatingType(),
+				detailedRatings,
+				rating.getPhotos(),
+				location,
+				rating.getCreatedAt());
+	}
 }

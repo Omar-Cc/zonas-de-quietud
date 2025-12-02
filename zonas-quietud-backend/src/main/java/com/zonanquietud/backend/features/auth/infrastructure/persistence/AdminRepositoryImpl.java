@@ -15,8 +15,8 @@ import com.zonanquietud.backend.features.auth.infrastructure.persistence.reposit
 import lombok.RequiredArgsConstructor;
 
 /**
- * AdminRepositoryImpl - Implementation of AdminRepository port
- * Infrastructure layer - implements domain repository interface
+ * AdminRepositoryImpl - Implementación del puerto AdminRepository
+ * Capa de infraestructura - implementa interfaz de repositorio de dominio
  */
 @Repository
 @RequiredArgsConstructor

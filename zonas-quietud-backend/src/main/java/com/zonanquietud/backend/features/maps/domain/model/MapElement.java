@@ -14,7 +14,7 @@ import lombok.Getter;
 
 /**
  * MapElement - Elemento urbano en el mapa
- * Domain model - Rich domain object with validation
+ * Modelo de dominio - Objeto de dominio rico con validación
  * 
  * Representa calles (STREET) o zonas (ZONE) con geometría espacial
  */
@@ -29,9 +29,7 @@ public class MapElement {
   private Double score;
   private Geometry geometry;
 
-  /**
-   * Validates that geometry type matches element type
-   */
+  /** Valida que el tipo de geometría coincida con el tipo de elemento */
   public void validate() {
     if (name == null || name.isBlank()) {
       throw new IllegalArgumentException("Name cannot be null or empty");
@@ -49,7 +47,6 @@ public class MapElement {
       throw new IllegalArgumentException("Score must be between 0 and 10");
     }
 
-    // Validate geometry type matches element type
     validateGeometryType();
   }
 
@@ -70,9 +67,7 @@ public class MapElement {
     }
   }
 
-  /**
-   * Updates the score (rating)
-   */
+  /** Actualiza el puntaje (calificación) */
   public void updateScore(Double newScore) {
     if (newScore == null || newScore < 0 || newScore > 10) {
       throw new IllegalArgumentException("Score must be between 0 and 10");
@@ -81,34 +76,32 @@ public class MapElement {
   }
 
   /**
-   * Sets the score directly (used by rating events)
-   * Ensures score stays within bounds
+   * Establece el puntaje directamente (usado por eventos de calificación)
+   * Asegura que el puntaje se mantenga dentro de los límites
    */
   public void setScore(Double newScore) {
     if (newScore == null) {
-      this.score = 5.0; // Default to neutral
+      this.score = 5.0;
     } else {
       this.score = Math.max(0.0, Math.min(10.0, newScore));
     }
   }
 
   /**
-   * Adjusts the score by a delta (used by incident events)
-   * Ensures score stays within bounds [0, 10]
+   * Ajusta el puntaje por un delta (usado por eventos de incidentes)
+   * Asegura que el puntaje se mantenga dentro de los límites [0, 10]
    */
   public void adjustScore(double delta) {
     this.score = Math.max(0.0, Math.min(10.0, this.score + delta));
   }
 
-  /**
-   * Factory method for creating new elements
-   */
+  /** Método factory para crear nuevos elementos */
   public static MapElement create(String name, ElementType type, Geometry geometry) {
     MapElement element = MapElement.builder()
         .name(name)
         .type(type)
         .geometry(geometry)
-        .score(5.0) // Default score
+        .score(5.0)
         .build();
 
     element.validate();

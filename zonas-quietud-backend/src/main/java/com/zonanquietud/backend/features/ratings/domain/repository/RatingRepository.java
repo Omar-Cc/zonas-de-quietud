@@ -6,39 +6,24 @@ import java.util.UUID;
 
 import com.zonanquietud.backend.features.ratings.domain.model.Rating;
 
-/**
- * RatingRepository - Domain repository for ratings
- * Domain layer
- */
+/** RatingRepository - Repositorio de dominio para calificaciones */
 public interface RatingRepository {
 
-  /**
-   * Save a rating
-   */
+  /** Guardar una calificación */
   Rating save(Rating rating);
 
-  /**
-   * Find rating by ID
-   */
+  /** Buscar calificación por ID */
   Optional<Rating> findById(UUID id);
 
-  /**
-   * Find all ratings for a map element
-   */
+  /** Buscar todas las calificaciones de un elemento del mapa */
   List<Rating> findByMapElementId(UUID mapElementId);
 
-  /**
-   * Find all ratings by a user
-   */
+  /** Buscar todas las calificaciones de un usuario */
   List<Rating> findByUserId(UUID userId);
 
-  /**
-   * Calculate average overall score for a map element
-   */
+  /** Calcular puntaje promedio general para un elemento del mapa */
   Double calculateAverageScore(UUID mapElementId);
 
-  /**
-   * Count total ratings
-   */
+  /** Contar total de calificaciones */
   long count();
 }

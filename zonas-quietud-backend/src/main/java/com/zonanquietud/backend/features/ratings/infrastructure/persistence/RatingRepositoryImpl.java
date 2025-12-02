@@ -15,8 +15,8 @@ import com.zonanquietud.backend.features.ratings.infrastructure.persistence.repo
 import lombok.RequiredArgsConstructor;
 
 /**
- * RatingRepositoryImpl - Implementation of domain repository
- * Infrastructure layer - Adapter between domain and JPA
+ * RatingRepositoryImpl - Implementación del repositorio de dominio
+ * Capa de infraestructura - Adaptador entre dominio y JPA
  */
 @Repository
 @RequiredArgsConstructor
@@ -27,7 +27,7 @@ public class RatingRepositoryImpl implements RatingRepository {
 
   @Override
   public Rating save(Rating rating) {
-    rating.validate(); // Domain validation
+    rating.validate();
 
     var entity = mapper.toEntity(rating);
     var savedEntity = jpaRepository.save(entity);
@@ -57,7 +57,7 @@ public class RatingRepositoryImpl implements RatingRepository {
   @Override
   public Double calculateAverageScore(UUID mapElementId) {
     Double average = jpaRepository.calculateAverageScore(mapElementId);
-    return average != null ? average : 5.0; // Default to neutral if no ratings
+    return average != null ? average : 5.0;
   }
 
   @Override
