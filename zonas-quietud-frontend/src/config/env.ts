@@ -6,6 +6,7 @@
 interface EnvConfig {
   // API Configuration
   apiUrl: string
+  appUrl: string
 
   // Firebase Configuration
   firebase: {
@@ -43,6 +44,7 @@ function validateEnvVar(key: string, value: string | undefined): string {
  */
 export const env: EnvConfig = {
   apiUrl: validateEnvVar('VITE_API_URL', import.meta.env.VITE_API_URL),
+  appUrl: validateEnvVar('VITE_APP_URL', import.meta.env.VITE_APP_URL),
 
   firebase: {
     apiKey: validateEnvVar(
