@@ -54,3 +54,6 @@ springdoc:
     operationsSorter: method
     tagsSorter: alpha
     disableSwaggerDefaultUrl: true
+
+firebase:
+  config-base64: ${FIREBASE_CONFIG_BASE64}

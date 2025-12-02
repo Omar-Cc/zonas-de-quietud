@@ -259,7 +259,7 @@ export default function UserDashboard() {
                 <div className="flex flex-col items-center text-center">
                   <div className="relative mb-4">
                     <Avatar className="border-primary h-24 w-24 border-4">
-                      <AvatarImage src={userData.avatar} alt={userData.name} />
+                      {/*<AvatarImage src={userData.avatar} alt={userData.name} />*/}
                       <AvatarFallback>{userData.initials}</AvatarFallback>
                     </Avatar>
                     <div className="bg-primary absolute -right-2 -bottom-2 flex h-10 w-10 items-center justify-center rounded-full border-4 border-white dark:border-gray-950">
