@@ -1,6 +1,7 @@
 package com.zonanquietud.backend.infrastructure.config;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -9,10 +10,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-/**
- * CorsConfig - Configuración CORS
- * Capa de infraestructura - configura Cross-Origin Resource Sharing
- */
 @Configuration
 public class CorsConfig {
 
@@ -23,7 +20,12 @@ public class CorsConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
 
-    configuration.setAllowedOrigins(Arrays.asList(allowedOrigins.split(",")));
+    List<String> origins = Arrays.stream(allowedOrigins.split(","))
+        .map(String::trim)
+        .filter(s -> !s.isEmpty())
+        .toList();
+
+    configuration.setAllowedOrigins(origins);
 
     configuration.setAllowedMethods(Arrays.asList(
         "GET",
