@@ -1,5 +1,22 @@
-{"properties": [{
-  "name": "app.cors.allowed-origins",
-  "type": "java.lang.String",
-  "description": "A description for 'app.cors.allowed-origins'"
-}]}
+{"properties": [
+  {
+    "name": "app.cors.allowed-origins",
+    "type": "java.lang.String",
+    "description": "A description for 'app.cors.allowed-origins'"
+  },
+  {
+    "name": "firebase.config-base64",
+    "type": "java.lang.String",
+    "description": "A description for 'firebase.config-base64'"
+  },
+  {
+    "name": "app.upload.dir",
+    "type": "java.lang.String",
+    "description": "A description for 'app.upload.dir'"
+  },
+  {
+    "name": "app.upload.base-url",
+    "type": "java.lang.String",
+    "description": "A description for 'app.upload.base-url'"
+  }
+]}
