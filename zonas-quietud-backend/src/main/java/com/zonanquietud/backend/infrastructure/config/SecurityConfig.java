@@ -33,6 +33,7 @@ public class SecurityConfig {
     log.info("Configuring security filter chain");
 
     http
+        .cors(org.springframework.security.config.Customizer.withDefaults())
         .csrf(AbstractHttpConfigurer::disable)
 
         .authorizeHttpRequests(auth -> auth
