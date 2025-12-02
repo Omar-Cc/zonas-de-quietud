@@ -26,7 +26,7 @@ FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
 # Instalar utilidades básicas y herramientas de red para diagnóstico
-RUN apk add --no-cache coreutils curl busybox-extras iputils
+# RUN apk add --no-cache coreutils curl busybox-extras iputils
 
 COPY --from=build /app/target/*.jar app.jar
 RUN mkdir -p uploads/images
